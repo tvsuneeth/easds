@@ -3,6 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulDataService", "RestfulDataService\RestfulDataService.csproj", "{0C3ADAA6-937B-4D74-BA39-5084687E223C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DAF05D9B-870F-460F-87CA-040D9B36C8CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01_Acceptance", "01_Acceptance", "{EABE75EB-2F16-4D05-B8BE-9273F0DDF385}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02_UnitTests", "02_UnitTests", "{4E67E999-4443-4103-9032-469A9A9617D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03_Integration", "03_Integration", "{16026E78-528D-4960-812C-0A8629775E2D}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -20,5 +28,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EABE75EB-2F16-4D05-B8BE-9273F0DDF385} = {DAF05D9B-870F-460F-87CA-040D9B36C8CA}
+		{4E67E999-4443-4103-9032-469A9A9617D6} = {DAF05D9B-870F-460F-87CA-040D9B36C8CA}
+		{16026E78-528D-4960-812C-0A8629775E2D} = {DAF05D9B-870F-460F-87CA-040D9B36C8CA}
 	EndGlobalSection
 EndGlobal
