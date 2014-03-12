@@ -12,7 +12,7 @@ namespace twg.chk.DataService.FrontOffice
 
         public void ConfigureWebApi(IAppBuilder app)
         {
-            _config.DependencyResolver = new NinjectResolver(NinjectConfig.CreateKernel(new StandardKernel()));
+            _config.DependencyResolver = new NinjectResolver(DependencyKernel);
             _config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "{controller}/{id}",
@@ -20,23 +20,6 @@ namespace twg.chk.DataService.FrontOffice
             );
 
             app.UseWebApi(_config);
-        }
-
-
-        public static class NinjectConfig
-        {
-            public static IKernel CreateKernel(IKernel kernel)
-            {
-                try
-                {
-                    kernel.Bind<ICarrouelManager>().To<CarrouselManager>();
-                    return kernel;
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }
         }
     }
 }

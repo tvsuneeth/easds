@@ -1,25 +1,21 @@
 ﻿using System;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace twg.chk.DataService.FrontOffice
 {
     public class CarrouselController: ApiController
     {
-        private ICarrouelManager _carrouselManager;
-        public CarrouselController(ICarrouelManager carrouselManager)
+        private ICarrouselService _carrouselManager;
+        public CarrouselController(ICarrouselService carrouselManager)
         {
             _carrouselManager = carrouselManager;
         }
 
 
-        public String Get()
+        public HttpResponseMessage Get()
         {
-            return _carrouselManager.GetHomepageCarrousel();
-        }
-
-        public String Get(int id)
-        {
-            return _carrouselManager.GetHomepageCarrousel() + " : " + id.ToString();
+            throw new NotImplementedException();
         }
     }
 }
