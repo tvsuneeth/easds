@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
@@ -20,7 +21,7 @@ namespace twg.chk.DataService.FrontOffice
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/Token"),
-                Provider = new Providers.OAuthProvider(DependencyKernel.Get<IAuthenticationService>()),
+                Provider = new Providers.OAuthProvider(DependencyKernel.Get<UserManager<IdentityUser>>()),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 AllowInsecureHttp = true
             };

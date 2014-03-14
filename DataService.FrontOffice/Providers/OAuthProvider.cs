@@ -4,6 +4,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 using twg.chk.DataService.api;
 
@@ -12,31 +14,32 @@ namespace twg.chk.DataService.FrontOffice.Providers
     public class OAuthProvider : OAuthAuthorizationServerProvider
     {
         private readonly String _publicClientId;
-        private readonly IAuthenticationService _authenticationService;
-
-        public OAuthProvider(IAuthenticationService authenticationService)
+        private readonly UserManager<IdentityUser> _userManager;
+        public OAuthProvider(UserManager<IdentityUser> userManager)
         {
-            if (authenticationService == null)
+            if (userManager == null)
             {
                 throw new ArgumentNullException("authenticationService");
             }
 
             _publicClientId = "self";
-            _authenticationService = authenticationService;
+            _userManager = userManager;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            try
+            var user = await _userManager.FindAsync(context.UserName, context.Password);
+            if (user != null)
             {
-                var oAuthIdentity = await _authenticationService.RequestAuthenticationToken(context.UserName, context.Password);
+                var oAuthIdentity = await _userManager.CreateIdentityAsync(user, context.Options.AuthenticationType);
                 AuthenticationProperties properties = CreateProperties(context.UserName);
                 AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
                 context.Validated(ticket);
+                context.Request.Context.Authentication.SignIn(oAuthIdentity);
             }
-            catch (AuthenticationException ex)
+            else
             {
-                context.SetError("invalid_grant", ex.Message);
+                context.SetError("invalid_grant", "The user name or password is incorrect.");
                 return;
             }
         }

@@ -22,7 +22,7 @@ namespace twg.chk.DataService.Tests.FakeDatabase
         public void Create()
         {
             Remove();
-            using (var userContext = new UserContext(_connection.ConnectionString))
+            using (var userContext = new DataServiceEntities(_connection.ConnectionString))
             {
                 userContext.Database.Create();
             }
@@ -30,7 +30,7 @@ namespace twg.chk.DataService.Tests.FakeDatabase
 
         public void Remove()
         {
-            using (var userContext = new UserContext(_connection.ConnectionString))
+            using (var userContext = new DataServiceEntities(_connection.ConnectionString))
             {
                 userContext.Database.Delete();
             }

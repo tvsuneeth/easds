@@ -30,8 +30,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.1.1\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,8 +55,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="StaticPageControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\chk.dal\chk.dal.csproj">
+      <Project>{1cf75ec6-932d-4cc6-8b29-8370aa240a15}</Project>
+      <Name>chk.dal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataService.api\DataService.api.csproj">
+      <Project>{83e510e4-ff7c-4782-9246-546df2c802be}</Project>
+      <Name>DataService.api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataService.Business\DataService.Business.csproj">
+      <Project>{6e6caee2-38c8-48ef-9bf5-d10e8ed860d0}</Project>
+      <Name>DataService.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataService.Core\DataService.Core.csproj">
+      <Project>{f3328353-c219-4785-881d-8bf051976241}</Project>
+      <Name>DataService.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataService.DbContext\DataService.DbContext.csproj">
+      <Project>{e8de0d38-1553-451c-903a-0af5c027585b}</Project>
+      <Name>DataService.DbContext</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataService.FrontOffice\DataService.FrontOffice.csproj">
+      <Project>{90809807-cf9c-430d-ae3c-b041b79ebeb2}</Project>
+      <Name>DataService.FrontOffice</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rhino.Mocks;
@@ -19,12 +21,12 @@ namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
 {
     /// <summary>
     /// ---------------------------
-    /// Autentication Controller Test class
+    /// OAuthProvider Test class
     /// ---------------------------
-    /// Contains a single method to request a token for an existing account
+    /// Contains mainly a method to request a token for an existing account
     /// Request need to contain the account user name and password
     /// If user name and password are valid we return the corresponding token
-    /// else a bad request message is returned
+    /// else a bad request (Httpcode: 400) message is returned
     /// </summary>
     [TestClass]
     public class OAuthProviderTests
@@ -32,6 +34,7 @@ namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
         private IKernel _kernel;
         private OAuthProvider _objectUnderTest;
         private twg.chk.DataService.Tests.FakeDatabase.FakeDatabase _fakeDb;
+        private UserManager<IdentityUser> _userManager;
 
         #region Setup and Cleanup
         [TestInitialize]
@@ -42,8 +45,8 @@ namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
 
             _kernel = new StandardKernel();
             Startup.NinjectConfig.CreateKernel(_kernel);
-
-            _objectUnderTest = new OAuthProvider(_kernel.Get<IAuthenticationService>());
+            _userManager = _kernel.Get<UserManager<IdentityUser>>();
+            _objectUnderTest = new OAuthProvider(_userManager);
         }
 
         [TestCleanup]
@@ -59,9 +62,8 @@ namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
         public void Token_RequestToken()
         {
             //add an user
-            var authService = _kernel.Get<IAuthenticationService>();
-            IEnumerable<String> dummyList;
-            authService.CreateUser("ravi", "Passw0rd", out dummyList);
+            var authService = _userManager;
+            var identityResult = authService.Create<IdentityUser>(new IdentityUser { UserName = "ravi" }, "Passw0rd");
 
             // Non-Existing Account authentication
             var owinContext = new FakeOwinContext();

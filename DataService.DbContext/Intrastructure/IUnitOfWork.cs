@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
+namespace twg.chk.DataService.DbContext.Intrastructure
 {
-    public class Class1
+    public interface IUnitOfWork
     {
+        void Commit();
     }
 }

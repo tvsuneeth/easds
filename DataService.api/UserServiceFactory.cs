@@ -17,7 +17,7 @@ namespace twg.chk.DataService.api
 
         public UserServiceFactory()
         {
-            Factory = () => new UserManager<IdentityUser>(new UserStore<IdentityUser>(new UserContext()));
+            Factory = () => new UserManager<IdentityUser>(new UserStore<IdentityUser>((DbContext)new DataServiceEntities()));
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Ninject;
 
 using twg.chk.DataService.api;
@@ -15,9 +17,9 @@ namespace twg.chk.DataService.FrontOffice
             {
                 try
                 {
-                    kernel.Bind<IUserServiceFactory>().To<UserServiceFactory>();
-                    kernel.Bind<IAuthenticationService>().To<AuthenticationService>();
-                    kernel.Bind<ICarrouselService>().To<CarrouselService>();
+                    //kernel.Bind<IUserServiceFactory>().To<UserServiceFactory>();
+                    //kernel.Bind<IAuthenticationService>().To<AuthenticationService>();
+                    kernel.Bind<UserManager<IdentityUser>>().ToConstructor<UserManager<IdentityUser>>(c => new UserManager<IdentityUser>(new UserStore<IdentityUser>(new twg.chk.DataService.DbContext.DataServiceEntities())));
 
                     DependencyKernel = kernel;
                 }

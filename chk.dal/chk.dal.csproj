@@ -7,8 +7,8 @@
     <ProjectGuid>{1CF75EC6-932D-4CC6-8B29-8370AA240A15}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>chk.dal</RootNamespace>
-    <AssemblyName>chk.dal</AssemblyName>
+    <RootNamespace>twg.chk.DataService.chkData</RootNamespace>
+    <AssemblyName>twg.chk.DataService.chkData</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,8 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Infrastructure\IChkRepositoryBase.cs" />
+    <Compile Include="Repository\StaticPageRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataService.Business\DataService.Business.csproj">
+      <Project>{6e6caee2-38c8-48ef-9bf5-d10e8ed860d0}</Project>
+      <Name>DataService.Business</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
