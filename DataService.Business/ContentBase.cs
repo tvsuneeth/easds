@@ -11,5 +11,7 @@ namespace twg.chk.DataService.Business
         public virtual int MyProperty { get; set; }
         public virtual DateTime LastModified { get; set; }
         public virtual List<TaxonomyItem> TaxonomyList { get; set; }
+        public String MetaDescription { get; set; }
+        public String MetaKeywords { get; set; }
     }
 }

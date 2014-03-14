@@ -6,7 +6,5 @@ namespace twg.chk.DataService.Business
     {
         public String PageName { get; set; }
         public String TitleForHtmlPage { get; set; }
-        public String MetaDescription { get; set; }
-        public String MetaKeywords { get; set; }
     }
 }
