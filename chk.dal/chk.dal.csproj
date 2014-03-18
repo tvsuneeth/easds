@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\IChkRepositoryBase.cs" />
+    <Compile Include="Repository\ArticleRepository.cs" />
     <Compile Include="Repository\StaticPageRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
