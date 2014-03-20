@@ -2,9 +2,11 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Ninject;
+using Ninject.Extensions.Conventions;
 
 using twg.chk.DataService.api;
 using twg.chk.DataService.chkData.Repository;
+using twg.chk.DataService.DbContext.Repository;
 
 namespace twg.chk.DataService.FrontOffice
 {
@@ -18,12 +20,21 @@ namespace twg.chk.DataService.FrontOffice
             {
                 try
                 {
-                    //kernel.Bind<IUserServiceFactory>().To<UserServiceFactory>();
-                    //kernel.Bind<IAuthenticationService>().To<AuthenticationService>();
-                    kernel.Bind<IStaticPageRepository>().To<StaticPageRepository>();
-                    kernel.Bind<IStaticPageService>().To<StaticPageService>();
-                    kernel.Bind<IArticleRepository>().To<ArticleRepository>();
-                    kernel.Bind<IArticleService>().To<ArticleService>();
+                    kernel.Bind(
+                        x => x.From(typeof(IStaticPageService).Assembly)
+                            .Select(c => !c.IsInterface && c.Name.EndsWith("Service"))
+                            .BindAllInterfaces());
+
+                    kernel.Bind(
+                        x => x.From(typeof(IStaticPageRepository).Assembly)
+                            .Select(c => !c.IsInterface && c.Name.EndsWith("Repository"))
+                            .BindAllInterfaces());
+
+                    kernel.Bind(
+                        x => x.From(typeof(IUserRepository).Assembly)
+                            .Select(c => !c.IsInterface && c.Name.EndsWith("Repository"))
+                            .BindAllInterfaces());
+
                     kernel.Bind<UserManager<IdentityUser>>().ToConstructor<UserManager<IdentityUser>>(c => new UserManager<IdentityUser>(new UserStore<IdentityUser>(new twg.chk.DataService.DbContext.DataServiceEntities())));
 
                     DependencyKernel = kernel;
