@@ -10,10 +10,10 @@ namespace twg.chk.DataService.api
     public interface IArticleService
     {
         Article GetById(int id);
-        IEnumerable<Article> GetByTopic(String topicName, int page, int pageSize);
-        IEnumerable<Article> GetBySector(String sectorName, int page, int pageSize);
-        IEnumerable<Article> GetByArticleSection(String articleSectionName, int page, int pageSize);
-        IEnumerable<Article> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize);
+        IEnumerable<Article> GetByTopic(String topicName, int page, int pageSize, out int totalElements);
+        IEnumerable<Article> GetBySector(String sectorName, int page, int pageSize, out int totalElements);
+        IEnumerable<Article> GetByArticleSection(String articleSectionName, int page, int pageSize, out int totalElements);
+        IEnumerable<Article> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize, out int totalElements);
     }
 
     public class ArticleService : IArticleService
@@ -30,28 +30,28 @@ namespace twg.chk.DataService.api
         }
 
 
-        public IEnumerable<Article> GetByTopic(String topicName, int page, int pageSize)
+        public IEnumerable<Article> GetByTopic(String topicName, int page, int pageSize, out int totalElements)
         {
             page--; //page number are 0 based
-            return _articleRepository.GetByTopic(new String[] {topicName}, page, pageSize);
+            return _articleRepository.GetByTopic(new String[] {topicName}, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetBySector(String sectorName, int page, int pageSize)
+        public IEnumerable<Article> GetBySector(String sectorName, int page, int pageSize, out int totalElements)
         {
             page--; //page number are 0 based
-            return _articleRepository.GetBySector(new String[] { sectorName }, page, pageSize);
+            return _articleRepository.GetBySector(new String[] { sectorName }, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetByArticleSection(String articleSectionName, int page, int pageSize)
+        public IEnumerable<Article> GetByArticleSection(String articleSectionName, int page, int pageSize, out int totalElements)
         {
             page--; //page number are 0 based
-            return _articleRepository.GetByArticleSection(new String[] { articleSectionName }, page, pageSize);
+            return _articleRepository.GetByArticleSection(new String[] { articleSectionName }, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize)
+        public IEnumerable<Article> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize, out int totalElements)
         {
             page--; //page number are 0 based
-            return _articleRepository.GetByArticleSectionAndSector(new String[] { articleSectionName }, new String[] { sectorName }, page, pageSize);
+            return _articleRepository.GetByArticleSectionAndSector(new String[] { articleSectionName }, new String[] { sectorName }, page, pageSize, out totalElements);
         }
     }
 }

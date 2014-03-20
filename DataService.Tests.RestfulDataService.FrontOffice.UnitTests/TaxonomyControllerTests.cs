@@ -43,7 +43,8 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         [TestMethod]
         public void Get_GetBySector()
         {
-            _articleRepository.Stub(r => r.GetBySector(Arg<String[]>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything)).Return(new List<Article> { new Article() });
+            _articleRepository.Stub(r => r.GetBySector(Arg<String[]>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything, out Arg<int>.Out(10).Dummy))
+                .Return(new List<Article> { new Article() });
 
             var httpMessageArticle = _objectUnderTest.GetSector("dummy_sector");
 
@@ -55,7 +56,8 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         [TestMethod]
         public void Get_GetByTopic()
         {
-            _articleRepository.Stub(r => r.GetByTopic(Arg<String[]>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything)).Return(new List<Article> { new Article() });
+            _articleRepository.Stub(r => r.GetByTopic(Arg<String[]>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything, out Arg<int>.Out(10).Dummy))
+                .Return(new List<Article> { new Article() });
 
             var httpMessageArticle = _objectUnderTest.GetTopic("dummy_topics");
 
@@ -67,7 +69,8 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         [TestMethod]
         public void Get_GetByArticleSection()
         {
-            _articleRepository.Stub(r => r.GetByArticleSection(Arg<String[]>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything)).Return(new List<Article> { new Article() });
+            _articleRepository.Stub(r => r.GetByArticleSection(Arg<String[]>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything, out Arg<int>.Out(10).Dummy))
+                .Return(new List<Article> { new Article() });
 
             var httpMessageArticle = _objectUnderTest.GetArticleSection("dummy_article-section");
 
@@ -79,7 +82,8 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         [TestMethod]
         public void Get_GetByArticleSectionAndSector()
         {
-            _articleRepository.Stub(r => r.GetByArticleSectionAndSector(Arg<String[]>.Is.Anything, Arg<String[]>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything)).Return(new List<Article> { new Article() });
+            _articleRepository.Stub(r => r.GetByArticleSectionAndSector(Arg<String[]>.Is.Anything, Arg<String[]>.Is.Anything, Arg<int>.Is.Anything, Arg<int>.Is.Anything, out Arg<int>.Out(10).Dummy))
+                .Return(new List<Article> { new Article() });
 
             var httpMessageArticle = _objectUnderTest.GetArticleSectionAndSector("dummy_article-section", "dummy_sector");
 

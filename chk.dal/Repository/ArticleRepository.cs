@@ -14,19 +14,19 @@ namespace twg.chk.DataService.chkData.Repository
     {
         IEnumerable<Article> Get(int[] ids);
 
-        IEnumerable<Article> GetByTopic(String[] topicNames, int page, int pageSize);
-        IEnumerable<Article> GetBySector(String[] sectorNames, int page, int pageSize);
-        IEnumerable<Article> GetByArticleSection(String[] articleSectionNames, int page, int pageSize);
-        IEnumerable<Article> GetByArticleSectionAndSector(String[] articleSectionNames, String[] sectorNames, int page, int pageSize);
-        IEnumerable<Article> GetByArticleSectionSectorAndTopic(String[] articleSectionNames, String[] sectorNames, String[] topicNames, int page, int pageSize);
+        IEnumerable<Article> GetByTopic(String[] topicNames, int page, int pageSize, out int totalElements);
+        IEnumerable<Article> GetBySector(String[] sectorNames, int page, int pageSize, out int totalElements);
+        IEnumerable<Article> GetByArticleSection(String[] articleSectionNames, int page, int pageSize, out int totalElements);
+        IEnumerable<Article> GetByArticleSectionAndSector(String[] articleSectionNames, String[] sectorNames, int page, int pageSize, out int totalElements);
+        IEnumerable<Article> GetByArticleSectionSectorAndTopic(String[] articleSectionNames, String[] sectorNames, String[] topicNames, int page, int pageSize, out int totalElements);
 
-        IEnumerable<Article> GetByTopic(String[] includeTopicNames, String[] excludeTopicNames, int page, int pageSize);
-        IEnumerable<Article> GetBySector(String[] includeSectorNames, String[] excludeSectorNames, int page, int pageSize);
-        IEnumerable<Article> GetByArticleSection(String[] includeArticleSectionNames, String[] excludeArticleSectionNames, int page, int pageSize);
+        IEnumerable<Article> GetByTopic(String[] includeTopicNames, String[] excludeTopicNames, int page, int pageSize, out int totalElements);
+        IEnumerable<Article> GetBySector(String[] includeSectorNames, String[] excludeSectorNames, int page, int pageSize, out int totalElements);
+        IEnumerable<Article> GetByArticleSection(String[] includeArticleSectionNames, String[] excludeArticleSectionNames, int page, int pageSize, out int totalElements);
         IEnumerable<Article> GetByArticleSectionAndSector(String[] includeArticleSectionNames, String[] includeSectorNames,
-            String[] excludeArticleSectionNames, String[] excludeSectorNames, int page, int pageSize);
+            String[] excludeArticleSectionNames, String[] excludeSectorNames, int page, int pageSize, out int totalElements);
         IEnumerable<Article> GetByArticleSectionSectorAndTopic(String[] includeArticleSectionNames, String[] includeSectorNames,
-            String[] includeTopicNames, String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize);
+            String[] includeTopicNames, String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize, out int totalElements);
     }
 
     public class ArticleRepository : IArticleRepository
@@ -82,59 +82,61 @@ namespace twg.chk.DataService.chkData.Repository
 
         #region Taxonomy Search methods
 
-        public IEnumerable<Article> GetByTopic(String[] topicNames, int page, int pageSize)
+        public IEnumerable<Article> GetByTopic(String[] topicNames, int page, int pageSize, out int totalElements)
         {
-            return GetByTaxonomy(null, null, topicNames, null, null, null, page, pageSize);
+            return GetByTaxonomy(null, null, topicNames, null, null, null, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetBySector(String[] sectorNames, int page, int pageSize)
+        public IEnumerable<Article> GetBySector(String[] sectorNames, int page, int pageSize, out int totalElements)
         {
-            return GetByTaxonomy(null, sectorNames, null, null, null, null, page, pageSize);
+            return GetByTaxonomy(null, sectorNames, null, null, null, null, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetByArticleSection(String[] articleSectionNames, int page, int pageSize)
+        public IEnumerable<Article> GetByArticleSection(String[] articleSectionNames, int page, int pageSize, out int totalElements)
         {
-            return GetByTaxonomy(articleSectionNames, null, null, null, null, null, page, pageSize);
+            return GetByTaxonomy(articleSectionNames, null, null, null, null, null, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetByArticleSectionAndSector(String[] articleSectionNames, String[] sectorNames, int page, int pageSize)
+        public IEnumerable<Article> GetByArticleSectionAndSector(String[] articleSectionNames, String[] sectorNames, int page, int pageSize, out int totalElements)
         {
-            return GetByTaxonomy(articleSectionNames, sectorNames, null, null, null, null, page, pageSize);
+            return GetByTaxonomy(articleSectionNames, sectorNames, null, null, null, null, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetByArticleSectionSectorAndTopic(String[] articleSectionNames, String[] sectorNames, String[] topicNames, int page, int pageSize)
+        public IEnumerable<Article> GetByArticleSectionSectorAndTopic(String[] articleSectionNames, String[] sectorNames, String[] topicNames, int page, int pageSize, out int totalElements)
         {
-            return GetByTaxonomy(articleSectionNames, sectorNames, topicNames, null, null, null, page, pageSize);
+            return GetByTaxonomy(articleSectionNames, sectorNames, topicNames, null, null, null, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetByTopic(string[] includeTopicNames, string[] excludeTopicNames, int page, int pageSize)
+        public IEnumerable<Article> GetByTopic(string[] includeTopicNames, string[] excludeTopicNames, int page, int pageSize, out int totalElements)
         {
-            return GetByTaxonomy(null, null, includeTopicNames, null, null, excludeTopicNames, page, pageSize);
+            return GetByTaxonomy(null, null, includeTopicNames, null, null, excludeTopicNames, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetBySector(string[] includeSectorNames, string[] excludeSectorNames, int page, int pageSize)
+        public IEnumerable<Article> GetBySector(string[] includeSectorNames, string[] excludeSectorNames, int page, int pageSize, out int totalElements)
         {
-            return GetByTaxonomy(null, includeSectorNames, null, null, excludeSectorNames, null, page, pageSize);
+            return GetByTaxonomy(null, includeSectorNames, null, null, excludeSectorNames, null, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetByArticleSection(string[] includeArticleSectionNames, string[] excludeArticleSectionNames, int page, int pageSize)
+        public IEnumerable<Article> GetByArticleSection(string[] includeArticleSectionNames, string[] excludeArticleSectionNames, int page, int pageSize, out int totalElements)
         {
-            return GetByTaxonomy(includeArticleSectionNames, null, null, excludeArticleSectionNames, null, null, page, pageSize);
+            return GetByTaxonomy(includeArticleSectionNames, null, null, excludeArticleSectionNames, null, null, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetByArticleSectionAndSector(string[] includeArticleSectionNames, string[] includeSectorNames, string[] excludeArticleSectionNames, string[] excludeSectorNames, int page, int pageSize)
+        public IEnumerable<Article> GetByArticleSectionAndSector(string[] includeArticleSectionNames, string[] includeSectorNames, string[] excludeArticleSectionNames, string[] excludeSectorNames, int page, int pageSize, out int totalElements)
         {
             return GetByTaxonomy(includeArticleSectionNames, includeSectorNames, null,
-                excludeArticleSectionNames, excludeSectorNames, null, page, pageSize);
+                excludeArticleSectionNames, excludeSectorNames, null, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetByArticleSectionSectorAndTopic(string[] includeArticleSectionNames, string[] includeSectorNames, string[] includeTopicNames, string[] excludeArticleSectionNames, string[] excludeSectorNames, string[] excludeTopicNames, int page, int pageSize)
+        public IEnumerable<Article> GetByArticleSectionSectorAndTopic(string[] includeArticleSectionNames, string[] includeSectorNames, 
+            string[] includeTopicNames, string[] excludeArticleSectionNames, string[] excludeSectorNames, string[] excludeTopicNames, int page, int pageSize, out int totalElements)
         {
             return GetByTaxonomy(includeArticleSectionNames, includeSectorNames, includeTopicNames,
-                excludeArticleSectionNames, excludeSectorNames, excludeTopicNames, page, pageSize);
+                excludeArticleSectionNames, excludeSectorNames, excludeTopicNames, page, pageSize, out totalElements);
         }
 
-        private IEnumerable<Article> GetByTaxonomy(String[] includeArticleSectionNames, String[] includeSectorNames, String[] includeTopicNames, String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize)
+        private IEnumerable<Article> GetByTaxonomy(String[] includeArticleSectionNames, String[] includeSectorNames, String[] includeTopicNames,
+            String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize, out int totalElements)
         {
             var articleList = new List<Article>();
             Nullable<int> totalNumberOfResult = null;
@@ -195,6 +197,8 @@ namespace twg.chk.DataService.chkData.Repository
                     }
                 }
             }
+
+            totalElements = totalNumberOfResult ?? 0;
 
             return articleList;
         }
