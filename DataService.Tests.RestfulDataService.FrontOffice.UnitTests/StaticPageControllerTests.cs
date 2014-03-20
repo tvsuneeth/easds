@@ -46,7 +46,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(new StaticPage());
 
-            var httpMessageStaticPage = _objectUnderTest.Get("existing_page_name");
+            var httpMessageStaticPage = _objectUnderTest.GetByName("existing_page_name");
 
             Assert.IsNotNull(httpMessageStaticPage);
             Assert.AreEqual<HttpStatusCode>(HttpStatusCode.OK, httpMessageStaticPage.StatusCode);
@@ -58,7 +58,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(null);
 
-            var httpMessageStaticPage = _objectUnderTest.Get("nonexisting_page_name");
+            var httpMessageStaticPage = _objectUnderTest.GetByName("nonexisting_page_name");
 
             Assert.IsNotNull(httpMessageStaticPage);
             Assert.AreEqual<HttpStatusCode>(HttpStatusCode.NotFound, httpMessageStaticPage.StatusCode);

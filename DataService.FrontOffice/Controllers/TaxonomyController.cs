@@ -23,7 +23,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         {
             HttpResponseMessage responseMessage;
 
-            var articles = _articleService.GetByTopic(topic);
+            var articles = _articleService.GetByTopic(topic, page, 20);
             if (articles.Count() > 0)
             {
                 responseMessage = Request.CreateResponse<IEnumerable<Article>>(HttpStatusCode.OK, articles);
@@ -41,7 +41,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         {
             HttpResponseMessage responseMessage;
 
-            var articles = _articleService.GetBySector(sector);
+            var articles = _articleService.GetBySector(sector, page, 20);
             if (articles.Count() > 0)
             {
                 responseMessage = Request.CreateResponse<IEnumerable<Article>>(HttpStatusCode.OK, articles);
@@ -59,7 +59,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         {
             HttpResponseMessage responseMessage;
 
-            var articles = _articleService.GetByArticleSection(articleSection);
+            var articles = _articleService.GetByArticleSection(articleSection, page, 20);
             if (articles.Count() > 0)
             {
                 responseMessage = Request.CreateResponse<IEnumerable<Article>>(HttpStatusCode.OK, articles);
@@ -77,7 +77,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         {
             HttpResponseMessage responseMessage;
 
-            var articles = _articleService.GetByArticleSectionAndSector(articleSection, sector);
+            var articles = _articleService.GetByArticleSectionAndSector(articleSection, sector, page, 20);
             if (articles.Count() > 0)
             {
                 responseMessage = Request.CreateResponse<IEnumerable<Article>>(HttpStatusCode.OK, articles);

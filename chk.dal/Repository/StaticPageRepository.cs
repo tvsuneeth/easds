@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Configuration;
 
 using twg.chk.DataService.chkData.Infrastructure;
 using twg.chk.DataService.Business;
@@ -25,15 +26,15 @@ namespace  twg.chk.DataService.chkData.Repository
             pageName = pageName + ".htm";
 
             StaticPage staticPage = null;
-            using (var connection = new SqlConnection())
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
             {
                 using (var command = new SqlCommand())
                 {
                     connection.Open();
                     command.Connection = connection;
                     command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "call here stored procedure";
-                    command.Parameters.Add(new SqlParameter("@staticPageName", pageName));
+                    command.CommandText = "chk.GetStaticPage";
+                    command.Parameters.Add(new SqlParameter("@StaticPageName", pageName));
 
                     var sqlReader = command.ExecuteReader();
                     if (sqlReader.Read())
@@ -60,15 +61,15 @@ namespace  twg.chk.DataService.chkData.Repository
         {
             StaticPage staticPage = null;
 
-            using (var connection = new SqlConnection())
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
             {
                 using (var command = new SqlCommand())
                 {
                     connection.Open();
                     command.Connection = connection;
                     command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "call here stored procedure";
-                    command.Parameters.Add(new SqlParameter("@staticPageId", id));
+                    command.CommandText = "chk.GetStaticPage";
+                    command.Parameters.Add(new SqlParameter("@StaticPageId", id));
 
                     var sqlReader = command.ExecuteReader();
                     if (sqlReader.Read())
@@ -76,7 +77,7 @@ namespace  twg.chk.DataService.chkData.Repository
                         staticPage = new StaticPage
                         {
                             Id = Convert.ToInt32(sqlReader["liStaticPageID"]),
-                            PageName = Convert.ToString(sqlReader["sPageURL"]),
+                            PageName = Convert.ToString(sqlReader["sPageURL"]).Replace(".htm", ""),
                             Title = Convert.ToString(sqlReader["sTitle"]),
                             Body = Convert.ToString(sqlReader["sBody"]),
                             TitleForHtmlPage = Convert.ToString(sqlReader["sPageTitle"]),

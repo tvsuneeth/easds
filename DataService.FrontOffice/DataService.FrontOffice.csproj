@@ -138,6 +138,10 @@
     <Folder Include="App_Code\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\chk.dal\chk.dal.csproj">
+      <Project>{1cf75ec6-932d-4cc6-8b29-8370aa240a15}</Project>
+      <Name>chk.dal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataService.api\DataService.api.csproj">
       <Project>{83e510e4-ff7c-4782-9246-546df2c802be}</Project>
       <Name>DataService.api</Name>

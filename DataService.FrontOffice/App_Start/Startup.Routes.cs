@@ -22,10 +22,16 @@ namespace twg.chk.DataService.FrontOffice
             );
 
             _config.Routes.MapHttpRoute(
-                name: "Static page content",
+                name: "Static page content GetById",
                 routeTemplate: "content/{id}",
-                defaults: new { controller = "StaticPage" },
+                defaults: new { controller = "StaticPage", action = "GetById" },
                 constraints: new { id = @"^\d+" }
+            );
+
+            _config.Routes.MapHttpRoute(
+                name: "Static page content GetByName",
+                routeTemplate: "content/{pageName}",
+                defaults: new { controller = "StaticPage", action = "GetByName" }
             );
 
             _config.Routes.MapHttpRoute(

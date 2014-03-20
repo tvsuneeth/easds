@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Scripts">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="TWEEDEV10\SQLEXPRESS:TRAVELWEEKLY\ravindra.solanki">
+          <Created>2014-03-18T15:43:27.7090247+00:00</Created>
+          <Type>SQL</Type>
+          <Server>TWEEDEV10\SQLEXPRESS</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB>CatererAndHotelKeeper_test</InitialDB>
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="chk.ElementTable.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>chk.ElementTable.sql</FullPath>
+        </FileNode>
+        <FileNode Name="chk.GetArticle.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>chk.GetArticle.sql</FullPath>
+        </FileNode>
+        <FileNode Name="chk.GetArticles.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>chk.GetArticles.sql</FullPath>
+        </FileNode>
+        <FileNode Name="chk.GetStaticPage.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>chk.GetStaticPage.sql</FullPath>
+        </FileNode>
+        <FileNode Name="chk.IdsTable.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>chk.IdsTable.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>

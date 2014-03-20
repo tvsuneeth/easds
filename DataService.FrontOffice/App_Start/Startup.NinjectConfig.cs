@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Ninject;
 
 using twg.chk.DataService.api;
+using twg.chk.DataService.chkData.Repository;
 
 namespace twg.chk.DataService.FrontOffice
 {
@@ -19,6 +20,10 @@ namespace twg.chk.DataService.FrontOffice
                 {
                     //kernel.Bind<IUserServiceFactory>().To<UserServiceFactory>();
                     //kernel.Bind<IAuthenticationService>().To<AuthenticationService>();
+                    kernel.Bind<IStaticPageRepository>().To<StaticPageRepository>();
+                    kernel.Bind<IStaticPageService>().To<StaticPageService>();
+                    kernel.Bind<IArticleRepository>().To<ArticleRepository>();
+                    kernel.Bind<IArticleService>().To<ArticleService>();
                     kernel.Bind<UserManager<IdentityUser>>().ToConstructor<UserManager<IdentityUser>>(c => new UserManager<IdentityUser>(new UserStore<IdentityUser>(new twg.chk.DataService.DbContext.DataServiceEntities())));
 
                     DependencyKernel = kernel;

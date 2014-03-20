@@ -19,11 +19,30 @@ namespace twg.chk.DataService.FrontOffice.Controllers
             _staticPageService = staticPageService;
         }
 
-        public HttpResponseMessage Get(String pageName)
+        [HttpGet]
+        public HttpResponseMessage GetByName(String pageName)
         {
             HttpResponseMessage responseMessage;
 
             var staticPage = _staticPageService.GetByName(pageName);
+            if (staticPage != null)
+            {
+                responseMessage = Request.CreateResponse<StaticPage>(HttpStatusCode.OK, staticPage);
+            }
+            else
+            {
+                responseMessage = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Static page not found.");
+            }
+
+            return responseMessage;
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetById(int id)
+        {
+            HttpResponseMessage responseMessage;
+
+            var staticPage = _staticPageService.GetById(id);
             if (staticPage != null)
             {
                 responseMessage = Request.CreateResponse<StaticPage>(HttpStatusCode.OK, staticPage);
