@@ -19,6 +19,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "frontofficegroup")]
         public HttpResponseMessage GetTopic(String topic, int page = 1)
         {
             HttpResponseMessage responseMessage;
@@ -38,6 +39,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "frontofficegroup")]
         public HttpResponseMessage GetSector(String sector, int page = 1)
         {
             HttpResponseMessage responseMessage;
@@ -57,6 +59,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "frontofficegroup")]
         public HttpResponseMessage GetArticleSection(String articleSection, int page = 1)
         {
             HttpResponseMessage responseMessage;
@@ -76,6 +79,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "frontofficegroup")]
         public HttpResponseMessage GetArticleSectionAndSector(String articleSection, String sector, int page = 1)
         {
             HttpResponseMessage responseMessage;

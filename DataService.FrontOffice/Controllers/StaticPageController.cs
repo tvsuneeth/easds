@@ -20,6 +20,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "frontofficegroup")]
         public HttpResponseMessage GetByName(String pageName)
         {
             HttpResponseMessage responseMessage;
@@ -38,6 +39,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "frontofficegroup")]
         public HttpResponseMessage GetById(int id)
         {
             HttpResponseMessage responseMessage;

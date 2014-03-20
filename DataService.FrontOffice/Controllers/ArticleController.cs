@@ -18,6 +18,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
             _articleService = articleService;
         }
 
+        [Authorize(Roles = "frontofficegroup")]
         public HttpResponseMessage Get(int id)
         {
             HttpResponseMessage responseMessage;
