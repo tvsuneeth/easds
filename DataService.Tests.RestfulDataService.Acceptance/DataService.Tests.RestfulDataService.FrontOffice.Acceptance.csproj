@@ -119,13 +119,13 @@
       <Project>{6e6caee2-38c8-48ef-9bf5-d10e8ed860d0}</Project>
       <Name>DataService.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataService.DbContext\DataService.DbContext.csproj">
+      <Project>{e8de0d38-1553-451c-903a-0af5c027585b}</Project>
+      <Name>DataService.DbContext</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataService.FrontOffice\DataService.FrontOffice.csproj">
       <Project>{90809807-cf9c-430d-ae3c-b041b79ebeb2}</Project>
       <Name>DataService.FrontOffice</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FakeDatabase\FakeDatabase.csproj">
-      <Project>{dbb26145-abe5-4334-b9b3-0feab1c9358f}</Project>
-      <Name>FakeDatabase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

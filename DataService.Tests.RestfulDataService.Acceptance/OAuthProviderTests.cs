@@ -31,28 +31,25 @@ namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
     [TestClass]
     public class OAuthProviderTests
     {
-        private IKernel _kernel;
         private OAuthProvider _objectUnderTest;
-        private twg.chk.DataService.Tests.FakeDatabase.FakeDatabase _fakeDb;
         private UserManager<IdentityUser> _userManager;
 
         #region Setup and Cleanup
         [TestInitialize]
         public void Setup()
         {
-            _fakeDb = new twg.chk.DataService.Tests.FakeDatabase.FakeDatabase("myTestDatabase.mdf");
-            _fakeDb.Create();
+            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(new twg.chk.DataService.DbContext.DataServiceEntities("Datasource=myTestDatabase.mdf")));
 
-            _kernel = new StandardKernel();
-            Startup.NinjectConfig.CreateKernel(_kernel);
-            _userManager = _kernel.Get<UserManager<IdentityUser>>();
             _objectUnderTest = new OAuthProvider(_userManager);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _fakeDb.Remove();
+            using (var userContext = new twg.chk.DataService.DbContext.DataServiceEntities("Datasource=myTestDatabase.mdf"))
+            {
+                userContext.Database.Delete();
+            }
         }
         #endregion
 
