@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Data;
+using System.Data.SqlServerCe;
 using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin;
 using Microsoft.AspNet.Identity;
