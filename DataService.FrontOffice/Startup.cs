@@ -2,10 +2,12 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Owin;
+using Microsoft.Owin;
 using Ninject;
 
 using twg.chk.DataService.DbContext;
 
+[assembly: OwinStartup(typeof(twg.chk.DataService.FrontOffice.Startup))]
 namespace twg.chk.DataService.FrontOffice
 {
     public partial class Startup
