@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Data;
 using System.Data.SqlServerCe;
+using System.IO;
+using System.Reflection;
+using System.Data.Entity;
 using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin;
 using Microsoft.AspNet.Identity;
@@ -16,11 +19,20 @@ using Ninject;
 using twg.chk.DataService.api;
 using twg.chk.DataService.FrontOffice;
 using twg.chk.DataService.FrontOffice.Providers;
-using System.IO;
-using System.Reflection;
 
 namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
 {
+    public class SqlCeConfiguration : DbConfiguration
+    {
+        public SqlCeConfiguration()
+        {
+            SetDefaultConnectionFactory(new System.Data.Entity.Infrastructure.SqlCeConnectionFactory(System.Data.Entity.SqlServerCompact.SqlCeProviderServices.ProviderInvariantName));
+
+            SetProviderServices(System.Data.Entity.SqlServerCompact.SqlCeProviderServices.ProviderInvariantName,
+                System.Data.Entity.SqlServerCompact.SqlCeProviderServices.Instance);
+        }
+    }
+
     /// <summary>
     /// ---------------------------
     /// OAuthProvider Test class
@@ -37,6 +49,13 @@ namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
         private UserManager<IdentityUser> _userManager;
 
         #region Setup and Cleanup
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext context)
+        {
+
+        }
+
         [TestInitialize]
         public void Setup()
         {
