@@ -20,14 +20,14 @@ namespace twg.chk.DataService.FrontOffice
                 name: "Taxonomy Article Section content",
                 routeTemplate: "{articleSection}/{page}",
                 defaults: new { controller = "Taxonomy", action = "GetArticleSection", page = RouteParameter.Optional },
-                constraints: new { articleSection = @"^[a-zA-Z-]+", page = @"^\d*" }
+                constraints: new { articleSection = @"^[a-zA-Z- ]+", page = @"^\d*" }
             );
 
             _config.Routes.MapHttpRoute(
                 name: "Taxonomy Article Section + Sector content",
                 routeTemplate: "{articleSection}/{sector}/{page}",
                 defaults: new { controller = "Taxonomy", action = "GetArticleSectionAndSector", page = RouteParameter.Optional },
-                constraints: new { articleSection = @"^[a-zA-Z-]+", sector = @"^[a-zA-Z-]+", page = @"^\d*" }
+                constraints: new { articleSection = @"^[a-zA-Z- ]+", sector = @"^[a-zA-Z- ]+", page = @"^\d*" }
             );
 
             app.UseWebApi(_config);
