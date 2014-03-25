@@ -10,6 +10,7 @@ using twg.chk.DataService.Business;
 
 namespace twg.chk.DataService.FrontOffice.Controllers
 {
+    [RoutePrefix("article")]
     public class ArticleController : ApiController
     {
         private IArticleService _articleService;
@@ -18,6 +19,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
             _articleService = articleService;
         }
 
+        [Route("{id:int}", Name = "GetArticleById")]
         [Authorize(Roles = "frontofficegroup")]
         public HttpResponseMessage Get(int id)
         {

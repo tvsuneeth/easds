@@ -10,6 +10,7 @@ using twg.chk.DataService.Business;
 
 namespace twg.chk.DataService.FrontOffice.Controllers
 {
+    [RoutePrefix("content")]
     public class StaticPageController : ApiController
     {
         private IStaticPageService _staticPageService;
@@ -20,12 +21,13 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
+        [Route("{id:int}", Name = "GetStaticPageById")]
         [Authorize(Roles = "frontofficegroup")]
-        public HttpResponseMessage GetByName(String pageName)
+        public HttpResponseMessage GetById(int id)
         {
             HttpResponseMessage responseMessage;
 
-            var staticPage = _staticPageService.GetByName(pageName);
+            var staticPage = _staticPageService.GetById(id);
             if (staticPage != null)
             {
                 responseMessage = Request.CreateResponse<StaticPage>(HttpStatusCode.OK, staticPage);
@@ -39,12 +41,13 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
+        [Route("{pageName:regex(^[a-zA-Z-]+)}", Name = "GetStaticPageByName")]
         [Authorize(Roles = "frontofficegroup")]
-        public HttpResponseMessage GetById(int id)
+        public HttpResponseMessage GetByName(String pageName)
         {
             HttpResponseMessage responseMessage;
 
-            var staticPage = _staticPageService.GetById(id);
+            var staticPage = _staticPageService.GetByName(pageName);
             if (staticPage != null)
             {
                 responseMessage = Request.CreateResponse<StaticPage>(HttpStatusCode.OK, staticPage);

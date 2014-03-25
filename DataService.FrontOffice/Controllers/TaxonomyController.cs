@@ -19,6 +19,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
+        [Route("topic/{topic:regex(^[a-zA-Z-]+)}/{page:int?}", Name = "GetArticleByTopic")]
         [Authorize(Roles = "frontofficegroup")]
         public HttpResponseMessage GetTopic(String topic, int page = 1)
         {
@@ -39,6 +40,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
+        [Route("sector/{sector:regex(^[a-zA-Z-]+)}/{page:int?}", Name = "GetArticleBySector")]
         [Authorize(Roles = "frontofficegroup")]
         public HttpResponseMessage GetSector(String sector, int page = 1)
         {
