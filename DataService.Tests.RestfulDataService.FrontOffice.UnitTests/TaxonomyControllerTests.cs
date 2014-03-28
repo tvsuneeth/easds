@@ -28,7 +28,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         public void Setup()
         {
             _articleRepository = MockRepository.GenerateStub<IArticleRepository>();
-            _articleService = new ArticleService(_articleRepository);
+            _articleService = new ArticleService(_articleRepository, );
             _objectUnderTest = new TaxonomyController(_articleService);
 
             _objectUnderTest.Request = new HttpRequestMessage();

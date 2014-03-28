@@ -23,9 +23,30 @@ BEGIN
 		, a.dtPublicationDate
 		, a.dtLastModified
 		, a.dtExpiryDate
-		, '' AS metaDescription
-		, '' AS metaKeywords
-	FROM [dbo].[Articles] a
-	WHERE a.dtApproved IS NOT NULL
-	AND a.liArticleID IN (SELECT CAST(Name AS INT) AS Id  FROM @ArticleIds)
+		, a.metaDescription
+		, a.metaKeywords
+		, s.*
+	FROM
+	(
+		SELECT
+			  a.liArticleID
+			, a.sHeadline
+			, a.sIntro
+			, a.sBody
+			, a.dtPublicationDate
+			, a.dtLastModified
+			, a.dtExpiryDate
+			, '' AS metaDescription
+			, '' AS metaKeywords
+			, a.liThumbnailID
+		FROM [dbo].[Articles] a
+		WHERE a.dtApproved IS NOT NULL
+		AND a.liArticleID IN (SELECT CAST(Name AS INT) AS Id  FROM @ArticleIds)
+	) AS a
+	LEFT OUTER JOIN 
+	(
+		SELECT liAssetID, sAssetName, sAssetDescription, blobAsset, sFileExt
+		FROM [dbo].[Assets]
+		WHERE (bDeleted IS NULL OR bDeleted = 0)
+	) AS s ON a.liThumbnailID = s.liAssetID
 END

@@ -2,7 +2,7 @@
 
 namespace twg.chk.DataService.Business
 {
-    public class Author
+    public class Person
     {
         public virtual String FirstName { get; set; }
         public virtual String LastName { get; set; }

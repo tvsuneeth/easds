@@ -17,7 +17,6 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         /// <returns></returns>
         public HttpResponseMessage GetHomePageContent()
         {
-
             throw new NotImplementedException();
         }
     }

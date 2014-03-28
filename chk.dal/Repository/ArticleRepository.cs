@@ -59,20 +59,39 @@ namespace twg.chk.DataService.chkData.Repository
                     var sqlReader = command.ExecuteReader();
                     while (sqlReader.Read())
                     {
-                        articleList.Add(
-                            new Article
+                        var article = new Article
+                        {
+                            Id = Convert.ToInt32(sqlReader["liArticleID"]),
+                            Title = Convert.ToString(sqlReader["sHeadline"]),
+                            Introduction = Convert.ToString(sqlReader["sIntro"]),
+                            Body = Convert.ToString(sqlReader["sBody"]),
+                            PublishedDate = Convert.ToDateTime(sqlReader["dtPublicationDate"]),
+                            LastModified = Convert.ToDateTime(sqlReader["dtLastModified"]),
+                            ExpiryDate = DBNull.Value.Equals(sqlReader["dtExpiryDate"]) ? null : (DateTime?)Convert.ToDateTime(sqlReader["dtExpiryDate"]),
+                            MetaDescription = Convert.ToString(sqlReader["metaDescription"]),
+                            MetaKeywords = Convert.ToString(sqlReader["metaKeywords"])
+                        };
+
+                        if (!DBNull.Value.Equals(sqlReader["liAssetID"]))
+                        {
+                            var image = new MediaContent
                             {
-                                Id = Convert.ToInt32(sqlReader["liArticleID"]),
-                                Title = Convert.ToString(sqlReader["sHeadline"]),
-                                Introduction = Convert.ToString(sqlReader["sIntro"]),
-                                Body = Convert.ToString(sqlReader["sBody"]),
-                                PublishedDate = Convert.ToDateTime(sqlReader["dtPublicationDate"]),
-                                LastModified = Convert.ToDateTime(sqlReader["dtLastModified"]),
-                                ExpiryDate = DBNull.Value.Equals(sqlReader["dtExpiryDate"]) ? null : (DateTime?) Convert.ToDateTime(sqlReader["dtExpiryDate"]),
-                                MetaDescription = Convert.ToString(sqlReader["metaDescription"]),
-                                MetaKeywords = Convert.ToString(sqlReader["metaKeywords"])
+                                Id = Convert.ToInt32(sqlReader["liAssetID"]),
+                                Title = Convert.ToString(sqlReader["sAssetDescription"]),
+                                FileName = Convert.ToString(sqlReader["sAssetName"]),
+                                Extension = Convert.ToString(sqlReader["sFileExt"]),
+                                ContentBinary = (byte[])sqlReader["blobAsset"]
+                            };
+
+                            if (String.IsNullOrWhiteSpace(image.Title))
+                            {
+                                image.Title = image.FileName.Replace(String.Format(".{0}", image.Extension), "");
                             }
-                        );
+
+                            article.ThumbnailImage = image;
+                        }
+
+                        articleList.Add(article);
                     }
                 }
             }
@@ -128,7 +147,7 @@ namespace twg.chk.DataService.chkData.Repository
                 excludeArticleSectionNames, excludeSectorNames, null, page, pageSize, out totalElements);
         }
 
-        public IEnumerable<Article> GetByArticleSectionSectorAndTopic(string[] includeArticleSectionNames, string[] includeSectorNames, 
+        public IEnumerable<Article> GetByArticleSectionSectorAndTopic(string[] includeArticleSectionNames, string[] includeSectorNames,
             string[] includeTopicNames, string[] excludeArticleSectionNames, string[] excludeSectorNames, string[] excludeTopicNames, int page, int pageSize, out int totalElements)
         {
             return GetByTaxonomy(includeArticleSectionNames, includeSectorNames, includeTopicNames,

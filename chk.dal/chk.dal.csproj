@@ -53,6 +53,7 @@
     <Compile Include="Repository\ArticleRepository.cs" />
     <Compile Include="Repository\StaticPageRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ArticleTaxonomyRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataService.Business\DataService.Business.csproj">

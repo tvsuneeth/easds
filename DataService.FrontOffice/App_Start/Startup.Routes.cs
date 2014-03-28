@@ -14,17 +14,20 @@ namespace twg.chk.DataService.FrontOffice
         {
             _config.DependencyResolver = new NinjectResolver(DependencyKernel);
 
+            // add specific formatter for contentType application/atom+xml
+            //_config.Formatters.Add(new AtomSyndicationFeedFormatter());
+
             _config.MapHttpAttributeRoutes();
 
             _config.Routes.MapHttpRoute(
-                name: "Taxonomy Article Section content",
+                name: "GetArticleByArticleSection",
                 routeTemplate: "{articleSection}/{page}",
                 defaults: new { controller = "Taxonomy", action = "GetArticleSection", page = RouteParameter.Optional },
                 constraints: new { articleSection = @"^[a-zA-Z- ]+", page = @"^\d*" }
             );
 
             _config.Routes.MapHttpRoute(
-                name: "Taxonomy Article Section + Sector content",
+                name: "GetArticleByArticleSectionAndSector",
                 routeTemplate: "{articleSection}/{sector}/{page}",
                 defaults: new { controller = "Taxonomy", action = "GetArticleSectionAndSector", page = RouteParameter.Optional },
                 constraints: new { articleSection = @"^[a-zA-Z- ]+", sector = @"^[a-zA-Z- ]+", page = @"^\d*" }

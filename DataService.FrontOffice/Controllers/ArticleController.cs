@@ -4,9 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.ServiceModel.Syndication;
 
 using twg.chk.DataService.api;
 using twg.chk.DataService.Business;
+using twg.chk.DataService.FrontOffice.Models;
 
 namespace twg.chk.DataService.FrontOffice.Controllers
 {
@@ -24,11 +26,13 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         public HttpResponseMessage Get(int id)
         {
             HttpResponseMessage responseMessage;
-
+            
             var article = _articleService.GetById(id);
             if (article != null)
             {
-                responseMessage = Request.CreateResponse<Article>(HttpStatusCode.OK, article);
+                var articleFeed = new ContentFeed<Article>(Url, article);
+
+                responseMessage = Request.CreateResponse<ContentFeed<Article>>(HttpStatusCode.OK, articleFeed);
             }
             else
             {

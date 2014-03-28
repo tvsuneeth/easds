@@ -37,6 +37,12 @@
           <AssociatedConnUserName />
           <FullPath>chk.GetArticles.sql</FullPath>
         </FileNode>
+        <FileNode Name="chk.GetArticleTaxonomy.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>chk.GetArticleTaxonomy.sql</FullPath>
+        </FileNode>
         <FileNode Name="chk.GetStaticPage.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>

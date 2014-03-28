@@ -19,14 +19,21 @@ namespace twg.chk.DataService.api
     public class ArticleService : IArticleService
     {
         private IArticleRepository _articleRepository;
-        public ArticleService(IArticleRepository articleRepository)
+        private IArticleTaxonomyRepository _articleTaxonomyRepository;
+        public ArticleService(IArticleRepository articleRepository, IArticleTaxonomyRepository articleTaxonomyRepository)
         {
             _articleRepository = articleRepository;
+            _articleTaxonomyRepository = articleTaxonomyRepository;
         }
 
         public Article GetById(int id)
         {
-            return _articleRepository.Get(id);
+            var article = _articleRepository.Get(id);
+            if (article != null)
+            {
+                article.SetTaxonomyList(_articleTaxonomyRepository.Get(id));
+            }
+            return article;
         }
 
 
