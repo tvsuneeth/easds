@@ -77,7 +77,7 @@ namespace twg.chk.DataService.chkData.Repository
                             FirstName = DBNull.Value.Equals(sqlReader["sFirstName"]) ? String.Empty : Convert.ToString(sqlReader["sFirstName"]).Trim(),
                             LastName = DBNull.Value.Equals(sqlReader["sLastName"]) ? String.Empty : Convert.ToString(sqlReader["sLastName"]).Trim(),
                             Email = DBNull.Value.Equals(sqlReader["sEmailAddress"]) ? String.Empty : Convert.ToString(sqlReader["sEmailAddress"]).Trim(),
-                            
+
                         };
 
                         if (!DBNull.Value.Equals(sqlReader["liAssetID"]))
@@ -207,20 +207,47 @@ namespace twg.chk.DataService.chkData.Repository
                     while (sqlReader.Read())
                     {
                         totalNumberOfResult = totalNumberOfResult ?? Convert.ToInt32(sqlReader["TotalNumberOfRow"]);
-                        articleList.Add(
-                            new Article
+                        var article = new Article
+                        {
+                            Id = Convert.ToInt32(sqlReader["liArticleID"]),
+                            Title = Convert.ToString(sqlReader["sHeadline"]),
+                            Introduction = Convert.ToString(sqlReader["sIntro"]),
+                            Body = Convert.ToString(sqlReader["sBody"]),
+                            PublishedDate = Convert.ToDateTime(sqlReader["dtPublicationDate"]),
+                            LastModified = Convert.ToDateTime(sqlReader["dtLastModified"]),
+                            ExpiryDate = DBNull.Value.Equals(sqlReader["dtExpiryDate"]) ? null : (DateTime?)Convert.ToDateTime(sqlReader["dtExpiryDate"]),
+                            MetaDescription = Convert.ToString(sqlReader["metaDescription"]),
+                            MetaKeywords = Convert.ToString(sqlReader["metaKeywords"])
+                        };
+
+                        article.Author = new Person
+                        {
+                            Title = DBNull.Value.Equals(sqlReader["sTitle"]) ? String.Empty : Convert.ToString(sqlReader["sTitle"]).Trim(),
+                            FirstName = DBNull.Value.Equals(sqlReader["sFirstName"]) ? String.Empty : Convert.ToString(sqlReader["sFirstName"]).Trim(),
+                            LastName = DBNull.Value.Equals(sqlReader["sLastName"]) ? String.Empty : Convert.ToString(sqlReader["sLastName"]).Trim(),
+                            Email = DBNull.Value.Equals(sqlReader["sEmailAddress"]) ? String.Empty : Convert.ToString(sqlReader["sEmailAddress"]).Trim(),
+                        };
+
+                        if (!DBNull.Value.Equals(sqlReader["liAssetID"]))
+                        {
+                            var image = new MediaContent
                             {
-                                Id = Convert.ToInt32(sqlReader["liArticleID"]),
-                                Title = Convert.ToString(sqlReader["sHeadline"]),
-                                Introduction = Convert.ToString(sqlReader["sIntro"]),
-                                Body = Convert.ToString(sqlReader["sBody"]),
-                                PublishedDate = Convert.ToDateTime(sqlReader["dtPublicationDate"]),
-                                LastModified = Convert.ToDateTime(sqlReader["dtLastModified"]),
-                                ExpiryDate = DBNull.Value.Equals(sqlReader["dtExpiryDate"]) ? null : (DateTime?)Convert.ToDateTime(sqlReader["dtExpiryDate"]),
-                                MetaDescription = Convert.ToString(sqlReader["metaDescription"]),
-                                MetaKeywords = Convert.ToString(sqlReader["metaKeywords"])
+                                Id = Convert.ToInt32(sqlReader["liAssetID"]),
+                                Title = Convert.ToString(sqlReader["sAssetDescription"]),
+                                FileName = Convert.ToString(sqlReader["sAssetName"]),
+                                Extension = Convert.ToString(sqlReader["sFileExt"]),
+                                ContentBinary = (byte[])sqlReader["blobAsset"]
+                            };
+
+                            if (String.IsNullOrWhiteSpace(image.Title))
+                            {
+                                image.Title = image.FileName.Replace(String.Format(".{0}", image.Extension), "");
                             }
-                        );
+
+                            article.ThumbnailImage = image;
+                        }
+
+                        articleList.Add(article);
                     }
                 }
             }

@@ -118,32 +118,41 @@ BEGIN
 		)
 
 	SELECT
-		  ta.liArticleID
-		, ta.sHeadline
-		, ta.sIntro
-		, ta.sBody
-		, ta.dtPublicationDate
-		, ta.dtLastModified
-		, ta.dtExpiryDate
-		, ta.metaDescription
-		, ta.metaKeywords
-		, ta.TotalNumberOfRow
+		  a.liArticleID
+		, a.sHeadline
+		, a.sIntro
+		, a.sBody
+		, a.dtPublicationDate
+		, a.dtLastModified
+		, a.dtExpiryDate
+		, a.metaDescription
+		, a.metaKeywords
+		, a.TotalNumberOfRow
+		, au.sTitle
+		, au.sFirstName
+		, au.sLastName
+		, au.sEmailAddress
+		, s.*
 	FROM
 	(
-		SELECT
-				a.liArticleID
-			, a.sHeadline
-			, a.sIntro
-			, a.sBody
-			, a.dtPublicationDate
-			, a.dtLastModified
-			, a.dtExpiryDate
-			, '' AS metaDescription
-			, '' AS metaKeywords
-			, CAST(ROW_NUMBER() OVER (ORDER BY a.dtPublicationDate DESC) AS INT) AS RowNumber
-			, COUNT(*) OVER () AS TotalNumberOfRow
-		FROM @ArticleTable at LEFT OUTER JOIN [dbo].[Articles] a ON at.ArticleId = a.liArticleID
-		WHERE a.dtApproved IS NOT NULL
-	) AS ta
-	WHERE ta.RowNumber BETWEEN (@PageNumber * @PageSize) + 1 AND (@PageNumber + 1) * @PageSize
+		SELECT *
+		FROM
+		(
+			SELECT
+				*
+				, '' AS metaDescription
+				, '' AS metaKeywords
+				, CAST(ROW_NUMBER() OVER (ORDER BY a.dtPublicationDate DESC) AS INT) AS RowNumber
+				, COUNT(*) OVER () AS TotalNumberOfRow
+			FROM @ArticleTable at LEFT OUTER JOIN [dbo].[Articles] a ON at.ArticleId = a.liArticleID
+			WHERE a.dtApproved IS NOT NULL
+		) AS ta
+		WHERE ta.RowNumber BETWEEN (@PageNumber * @PageSize) + 1 AND (@PageNumber + 1) * @PageSize
+	) AS a LEFT OUTER JOIN [dbo].[Authors] AS au ON a.liAuthorID = au.liAuthorID
+	LEFT OUTER JOIN 
+	(
+		SELECT liAssetID, sAssetName, sAssetDescription, blobAsset, sFileExt
+		FROM [dbo].[Assets]
+		WHERE (bDeleted IS NULL OR bDeleted = 0)
+	) AS s ON a.liThumbnailID = s.liAssetID
 END
