@@ -9,6 +9,7 @@ using System.ServiceModel.Syndication;
 using twg.chk.DataService.api;
 using twg.chk.DataService.Business;
 using twg.chk.DataService.FrontOffice.Models;
+using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace twg.chk.DataService.FrontOffice.Controllers
 {
@@ -16,9 +17,11 @@ namespace twg.chk.DataService.FrontOffice.Controllers
     public class ArticleController : ApiController
     {
         private IArticleService _articleService;
-        public ArticleController(IArticleService articleService)
+        private IContentFeedHelper _contentFeedHelper;
+        public ArticleController(IArticleService articleService, IContentFeedHelper contentFeedHelper)
         {
             _articleService = articleService;
+            _contentFeedHelper = contentFeedHelper;
         }
 
         [Route("{id:int}", Name = "GetArticleById")]
@@ -30,7 +33,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
             var article = _articleService.GetById(id);
             if (article != null)
             {
-                var articleFeed = new ContentFeed<Article>(Url, article);
+                var articleFeed = new ContentFeed<Article>(Url, article, _contentFeedHelper);
 
                 responseMessage = Request.CreateResponse<ContentFeed<Article>>(HttpStatusCode.OK, articleFeed);
             }

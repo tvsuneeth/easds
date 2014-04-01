@@ -151,6 +151,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StaticPageController.cs" />
     <Compile Include="Controllers\TaxonomyController.cs" />
+    <Compile Include="Helpers\ContentFeedHelper.cs" />
     <Compile Include="Helpers\HttpMessageHelper.cs" />
     <Compile Include="Models\ContentFeed.cs" />
     <Compile Include="Models\LinkItem.cs" />

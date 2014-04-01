@@ -15,6 +15,7 @@ using twg.chk.DataService.chkData.Repository;
 using twg.chk.DataService.api;
 using twg.chk.DataService.FrontOffice.Controllers;
 using twg.chk.DataService.FrontOffice.Models;
+using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
 {
@@ -25,14 +26,16 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         private IArticleRepository _articleRepository;
         private IArticleTaxonomyRepository _articleTaxonomyRepository;
         private IArticleService _articleService;
+        private IContentFeedHelper _contentFeedHelper;
 
         [TestInitialize]
         public void Setup()
         {
             _articleRepository = MockRepository.GenerateStub<IArticleRepository>();
             _articleTaxonomyRepository = MockRepository.GenerateStub<IArticleTaxonomyRepository>();
+            _contentFeedHelper = MockRepository.GenerateStub<IContentFeedHelper>();
             _articleService = new ArticleService(_articleRepository, _articleTaxonomyRepository);
-            _objectUnderTest = new ArticleController(_articleService);
+            _objectUnderTest = new ArticleController(_articleService, _contentFeedHelper);
 
             _objectUnderTest.Request = new HttpRequestMessage();
             _objectUnderTest.Request.SetConfiguration(new HttpConfiguration());
@@ -72,6 +75,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article());
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem> { new TaxonomyItem { Id = 1, Category = TaxonomyCategories.ArticleSection, Name = "sample"}});
+            _contentFeedHelper.Stub(h => h.GenerateLink(Arg<System.Web.Http.Routing.UrlHelper>.Is.Anything, Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
 
             var httpMessageArticle = _objectUnderTest.Get(1);
 

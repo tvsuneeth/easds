@@ -22,17 +22,22 @@ namespace twg.chk.DataService.FrontOffice
                 {
                     kernel.Bind(
                         x => x.From(typeof(IStaticPageService).Assembly)
-                            .Select(c => !c.IsInterface && c.Name.EndsWith("Service"))
+                            .Select(c => c.IsClass && c.Name.EndsWith("Service"))
                             .BindAllInterfaces());
 
                     kernel.Bind(
                         x => x.From(typeof(IStaticPageRepository).Assembly)
-                            .Select(c => !c.IsInterface && c.Name.EndsWith("Repository"))
+                            .Select(c => c.IsClass && c.Name.EndsWith("Repository"))
                             .BindAllInterfaces());
 
                     kernel.Bind(
                         x => x.From(typeof(IUserRepository).Assembly)
-                            .Select(c => !c.IsInterface && c.Name.EndsWith("Repository"))
+                            .Select(c => c.IsClass && c.Name.EndsWith("Repository"))
+                            .BindAllInterfaces());
+
+                    kernel.Bind(
+                        x => x.From(typeof(Helpers.IContentFeedHelper).Assembly)
+                            .Select(c => c.IsClass && c.Name.EndsWith("Helper"))
                             .BindAllInterfaces());
 
                     kernel.Bind<UserManager<IdentityUser>>().ToConstructor<UserManager<IdentityUser>>(c => new UserManager<IdentityUser>(new UserStore<IdentityUser>(new twg.chk.DataService.DbContext.DataServiceEntities())));
