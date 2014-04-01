@@ -25,6 +25,10 @@ BEGIN
 		, a.dtExpiryDate
 		, a.metaDescription
 		, a.metaKeywords
+		, a.sTitle
+		, a.sFirstName
+		, a.sLastName
+		, a.sEmailAddress
 		, s.*
 	FROM
 	(
@@ -39,7 +43,12 @@ BEGIN
 			, '' AS metaDescription
 			, '' AS metaKeywords
 			, a.liThumbnailID
+			, au.sTitle
+			, au.sFirstName
+			, au.sLastName
+			, au.sEmailAddress
 		FROM [dbo].[Articles] a
+		LEFT OUTER JOIN [dbo].[Authors] au ON a.liAuthorID = au.liAuthorID
 		WHERE a.dtApproved IS NOT NULL
 		AND a.liArticleID IN (SELECT CAST(Name AS INT) AS Id  FROM @ArticleIds)
 	) AS a

@@ -3,6 +3,18 @@
   <Items>
     <LogicalFolder Name="Connections" Type="2" Sorted="true">
       <Items>
+        <ConnectionNode Name="88.208.247.10:CatererAndHotelKeeper_dev">
+          <Created>2014-04-01T11:16:33.9266764+01:00</Created>
+          <Type>SQL</Type>
+          <Server>88.208.247.10</Server>
+          <UserName>CatererAndHotelKeeper_dev</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
         <ConnectionNode Name="TWEEDEV10\SQLEXPRESS:TRAVELWEEKLY\ravindra.solanki">
           <Created>2014-03-18T15:43:27.7090247+00:00</Created>
           <Type>SQL</Type>
@@ -20,9 +32,9 @@
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
         <FileNode Name="chk.ElementTable.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:88.208.247.10:False:CatererAndHotelKeeper_dev</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>88.208.247.10</AssociatedConnSrvName>
+          <AssociatedConnUserName>CatererAndHotelKeeper_dev</AssociatedConnUserName>
           <FullPath>chk.ElementTable.sql</FullPath>
         </FileNode>
         <FileNode Name="chk.GetArticle.sql">
@@ -32,21 +44,21 @@
           <FullPath>chk.GetArticle.sql</FullPath>
         </FileNode>
         <FileNode Name="chk.GetArticles.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:88.208.247.10:False:CatererAndHotelKeeper_dev</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>88.208.247.10</AssociatedConnSrvName>
+          <AssociatedConnUserName>CatererAndHotelKeeper_dev</AssociatedConnUserName>
           <FullPath>chk.GetArticles.sql</FullPath>
         </FileNode>
         <FileNode Name="chk.GetArticleTaxonomy.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:88.208.247.10:False:CatererAndHotelKeeper_dev</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>88.208.247.10</AssociatedConnSrvName>
+          <AssociatedConnUserName>CatererAndHotelKeeper_dev</AssociatedConnUserName>
           <FullPath>chk.GetArticleTaxonomy.sql</FullPath>
         </FileNode>
         <FileNode Name="chk.GetStaticPage.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:88.208.247.10:False:CatererAndHotelKeeper_dev</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>88.208.247.10</AssociatedConnSrvName>
+          <AssociatedConnUserName>CatererAndHotelKeeper_dev</AssociatedConnUserName>
           <FullPath>chk.GetStaticPage.sql</FullPath>
         </FileNode>
         <FileNode Name="chk.IdsTable.sql">
