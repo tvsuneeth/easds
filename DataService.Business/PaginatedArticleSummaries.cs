@@ -12,7 +12,7 @@ namespace twg.chk.DataService.Business
             _taxonomySearchItem = taxonomySearchItem;
         }
 
-        public List<Article> Summaries { get; set; }
+        public List<ArticleSummary> Summaries { get; set; }
         public int TotalResult { get; set; }
         public int PageNumber { get; set; }
         private IEnumerable<TaxonomyItem> _taxonomyList;

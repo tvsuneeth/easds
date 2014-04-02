@@ -167,7 +167,7 @@ namespace twg.chk.DataService.chkData.Repository
         {
             page--; //pagination in database with 0 as first page
 
-            var articleList = new List<Article>();
+            var articleList = new List<ArticleSummary>();
             Nullable<int> totalNumberOfResult = null;
 
             var includeArticleSectionDataTable = Helpers.ElementTableHelper.BuidTable(includeArticleSectionNames);
@@ -209,20 +209,16 @@ namespace twg.chk.DataService.chkData.Repository
                     while (sqlReader.Read())
                     {
                         totalNumberOfResult = totalNumberOfResult ?? Convert.ToInt32(sqlReader["TotalNumberOfRow"]);
-                        var article = new Article
+                        var articleSummary = new ArticleSummary
                         {
                             Id = Convert.ToInt32(sqlReader["liArticleID"]),
                             Title = Convert.ToString(sqlReader["sHeadline"]),
                             Introduction = Convert.ToString(sqlReader["sIntro"]),
-                            Body = Convert.ToString(sqlReader["sBody"]),
                             PublishedDate = Convert.ToDateTime(sqlReader["dtPublicationDate"]),
                             LastModified = Convert.ToDateTime(sqlReader["dtLastModified"]),
-                            ExpiryDate = DBNull.Value.Equals(sqlReader["dtExpiryDate"]) ? null : (DateTime?)Convert.ToDateTime(sqlReader["dtExpiryDate"]),
-                            MetaDescription = Convert.ToString(sqlReader["metaDescription"]),
-                            MetaKeywords = Convert.ToString(sqlReader["metaKeywords"])
                         };
 
-                        article.Author = new Person
+                        articleSummary.Author = new Person
                         {
                             Title = DBNull.Value.Equals(sqlReader["sTitle"]) ? String.Empty : Convert.ToString(sqlReader["sTitle"]).Trim(),
                             FirstName = DBNull.Value.Equals(sqlReader["sFirstName"]) ? String.Empty : Convert.ToString(sqlReader["sFirstName"]).Trim(),
@@ -246,10 +242,10 @@ namespace twg.chk.DataService.chkData.Repository
                                 image.Title = image.FileName.Replace(String.Format(".{0}", image.Extension), "");
                             }
 
-                            article.ThumbnailImage = image;
+                            articleSummary.ThumbnailImage = image;
                         }
 
-                        articleList.Add(article);
+                        articleList.Add(articleSummary);
                     }
                 }
             }

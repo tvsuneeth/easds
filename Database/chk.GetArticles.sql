@@ -121,12 +121,8 @@ BEGIN
 		  a.liArticleID
 		, a.sHeadline
 		, a.sIntro
-		, a.sBody
 		, a.dtPublicationDate
 		, a.dtLastModified
-		, a.dtExpiryDate
-		, a.metaDescription
-		, a.metaKeywords
 		, a.TotalNumberOfRow
 		, au.sTitle
 		, au.sFirstName

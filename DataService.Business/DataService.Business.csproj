@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Article.cs" />
+    <Compile Include="ArticleSummary.cs" />
     <Compile Include="PaginatedArticleSummaries.cs" />
     <Compile Include="ITaxonomy.cs" />
     <Compile Include="MediaContent.cs" />
