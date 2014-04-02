@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace twg.chk.DataService.Business
 {
-    public class ArticleSummary: IIdentification
+    public class ArticleSummary
     {
         public int Id { get; set; }
         public String Title { get; set; }
@@ -15,10 +15,5 @@ namespace twg.chk.DataService.Business
         public DateTime PublishedDate { get; set; }
         public MediaContent ThumbnailImage { get; set; }
         public Person Author { get; set; }
-
-        public dynamic GetIdentityItem()
-        {
-            return Id;
-        }
     }
 }
