@@ -7,15 +7,19 @@ using System.Web.Http;
 
 using twg.chk.DataService.api;
 using twg.chk.DataService.Business;
+using twg.chk.DataService.FrontOffice.Models;
+using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace twg.chk.DataService.FrontOffice.Controllers
 {
     public class TaxonomyController : ApiController
     {
         private IArticleService _articleService;
-        public TaxonomyController(IArticleService articleService)
+        private IContentFeedHelper _contentFeedHelper;
+        public TaxonomyController(IArticleService articleService, IContentFeedHelper contentFeedHelper)
         {
             _articleService = articleService;
+            _contentFeedHelper = contentFeedHelper;
         }
 
         [HttpGet]
@@ -25,11 +29,12 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         {
             HttpResponseMessage responseMessage;
 
-            int totalNumArticles;
-            var articles = _articleService.GetByTopic(topic, page, 20, out totalNumArticles);
-            if (articles.Count() > 0)
+            var articles = _articleService.GetByTopic(topic, page, 20);
+            if (articles.Summaries.Count > 0)
             {
-                responseMessage = Request.CreateResponse<IEnumerable<Article>>(HttpStatusCode.OK, articles);
+                var contentFeed = new ContentFeed<PaginatedArticleSummaries>(Url, articles, _contentFeedHelper);
+
+                responseMessage = Request.CreateResponse<ContentFeed<PaginatedArticleSummaries>>(HttpStatusCode.OK, contentFeed);
             }
             else
             {
@@ -46,11 +51,12 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         {
             HttpResponseMessage responseMessage;
 
-            int totalNumArticles;
-            var articles = _articleService.GetBySector(sector, page, 20, out totalNumArticles);
-            if (articles.Count() > 0)
+            var articles = _articleService.GetBySector(sector, page, 20);
+            if (articles.Summaries.Count > 0)
             {
-                responseMessage = Request.CreateResponse<IEnumerable<Article>>(HttpStatusCode.OK, articles);
+                var contentFeed = new ContentFeed<PaginatedArticleSummaries>(Url, articles, _contentFeedHelper);
+
+                responseMessage = Request.CreateResponse<ContentFeed<PaginatedArticleSummaries>>(HttpStatusCode.OK, contentFeed);
             }
             else
             {
@@ -66,11 +72,12 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         {
             HttpResponseMessage responseMessage;
 
-            int totalNumArticles;
-            var articles = _articleService.GetByArticleSection(articleSection, page, 20, out totalNumArticles);
-            if (articles.Count() > 0)
+            var articles = _articleService.GetByArticleSection(articleSection, page, 20);
+            if (articles.Summaries.Count > 0)
             {
-                responseMessage = Request.CreateResponse<IEnumerable<Article>>(HttpStatusCode.OK, articles);
+                var contentFeed = new ContentFeed<PaginatedArticleSummaries>(Url, articles, _contentFeedHelper);
+
+                responseMessage = Request.CreateResponse<ContentFeed<PaginatedArticleSummaries>>(HttpStatusCode.OK, contentFeed);
             }
             else
             {
@@ -86,11 +93,12 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         {
             HttpResponseMessage responseMessage;
 
-            int totalNumArticles;
-            var articles = _articleService.GetByArticleSectionAndSector(articleSection, sector, page, 20, out totalNumArticles);
-            if (articles.Count() > 0)
+            var articles = _articleService.GetByArticleSectionAndSector(articleSection, sector, page, 20);
+            if (articles.Summaries.Count > 0)
             {
-                responseMessage = Request.CreateResponse<IEnumerable<Article>>(HttpStatusCode.OK, articles);
+                var contentFeed = new ContentFeed<PaginatedArticleSummaries>(Url, articles, _contentFeedHelper);
+
+                responseMessage = Request.CreateResponse<ContentFeed<PaginatedArticleSummaries>>(HttpStatusCode.OK, contentFeed);
             }
             else
             {

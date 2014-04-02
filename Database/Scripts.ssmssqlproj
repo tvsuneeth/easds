@@ -61,6 +61,12 @@
           <AssociatedConnUserName>CatererAndHotelKeeper_dev</AssociatedConnUserName>
           <FullPath>chk.GetStaticPage.sql</FullPath>
         </FileNode>
+        <FileNode Name="chk.GetTaxonomy.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>chk.GetTaxonomy.sql</FullPath>
+        </FileNode>
         <FileNode Name="chk.IdsTable.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>

@@ -27,6 +27,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         private IArticleTaxonomyRepository _articleTaxonomyRepository;
         private IArticleService _articleService;
         private IContentFeedHelper _contentFeedHelper;
+        private ITaxonomyRepository _taxonomyRepository;
 
         [TestInitialize]
         public void Setup()
@@ -34,7 +35,8 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             _articleRepository = MockRepository.GenerateStub<IArticleRepository>();
             _articleTaxonomyRepository = MockRepository.GenerateStub<IArticleTaxonomyRepository>();
             _contentFeedHelper = MockRepository.GenerateStub<IContentFeedHelper>();
-            _articleService = new ArticleService(_articleRepository, _articleTaxonomyRepository);
+            _taxonomyRepository = MockRepository.GenerateStub<ITaxonomyRepository>();
+            _articleService = new ArticleService(_articleRepository, _articleTaxonomyRepository, _taxonomyRepository);
             _objectUnderTest = new ArticleController(_articleService, _contentFeedHelper);
 
             _objectUnderTest.Request = new HttpRequestMessage();
@@ -85,7 +87,6 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             var articleContent = httpMessageArticle.Content as ObjectContent<ContentFeed<Article>>;
             var articleFeed = articleContent.Value as ContentFeed<Article>;
             Assert.IsNotNull(articleFeed.Parents);
-            Assert.AreEqual<int>(1, articleFeed.Parents.Count);
         }
 
         [TestMethod]

@@ -41,7 +41,13 @@ namespace twg.chk.DataService.FrontOffice.Models
                 }
                 else
                 {
-                    return null;
+                    return new LinkItem
+                    {
+                        Href = _contentFeedHelper.GenerateLink(_urlHelper, "GetRoot", null),
+                        Title = "Home",
+                        Rel = "up",
+                        Verb = "GET"
+                    };
                 }
             }
         }
@@ -52,7 +58,7 @@ namespace twg.chk.DataService.FrontOffice.Models
                 var sections = _data.GetArticleSections();
                 if (sections != null)
                 {
-                    return _data.GetArticleSections().Select(a =>
+                    var parentList = _data.GetArticleSections().Select(a =>
                         new LinkItem
                         {
                             Href = _contentFeedHelper.GenerateLink(_urlHelper, "GetArticleByArticleSection", new { articleSection = a.Name }),
@@ -60,10 +66,30 @@ namespace twg.chk.DataService.FrontOffice.Models
                             Rel = "up",
                             Verb = "GET"
                         }).ToList();
+
+                    parentList.Add(
+                        new LinkItem
+                        {
+                            Href = _contentFeedHelper.GenerateLink(_urlHelper, "GetRoot", null),
+                            Title = "Home",
+                            Rel = "up",
+                            Verb = "GET"
+                        }
+                    );
+
+                    return parentList.OrderBy(l => l.Href).ToList();
                 }
                 else
                 {
-                    return null;
+                    return new List<LinkItem> {
+                        new LinkItem
+                        {
+                            Href = _contentFeedHelper.GenerateLink(_urlHelper, "GetRoot", null),
+                            Title = "Home",
+                            Rel = "up",
+                            Verb = "GET"
+                        }
+                    };
                 }
             }
         }

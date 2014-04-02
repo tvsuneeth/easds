@@ -10,20 +10,22 @@ namespace twg.chk.DataService.api
     public interface IArticleService
     {
         Article GetById(int id);
-        IEnumerable<Article> GetByTopic(String topicName, int page, int pageSize, out int totalElements);
-        IEnumerable<Article> GetBySector(String sectorName, int page, int pageSize, out int totalElements);
-        IEnumerable<Article> GetByArticleSection(String articleSectionName, int page, int pageSize, out int totalElements);
-        IEnumerable<Article> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize, out int totalElements);
+        PaginatedArticleSummaries GetByTopic(String topicName, int page, int pageSize);
+        PaginatedArticleSummaries GetBySector(String sectorName, int page, int pageSize);
+        PaginatedArticleSummaries GetByArticleSection(String articleSectionName, int page, int pageSize);
+        PaginatedArticleSummaries GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize);
     }
 
     public class ArticleService : IArticleService
     {
         private IArticleRepository _articleRepository;
         private IArticleTaxonomyRepository _articleTaxonomyRepository;
-        public ArticleService(IArticleRepository articleRepository, IArticleTaxonomyRepository articleTaxonomyRepository)
+        private ITaxonomyRepository _taxonomyRepository;
+        public ArticleService(IArticleRepository articleRepository, IArticleTaxonomyRepository articleTaxonomyRepository, ITaxonomyRepository taxonomyRepository)
         {
             _articleRepository = articleRepository;
             _articleTaxonomyRepository = articleTaxonomyRepository;
+            _taxonomyRepository = taxonomyRepository;
         }
 
         public Article GetById(int id)
@@ -36,29 +38,46 @@ namespace twg.chk.DataService.api
             return article;
         }
 
-
-        public IEnumerable<Article> GetByTopic(String topicName, int page, int pageSize, out int totalElements)
+        public PaginatedArticleSummaries GetByTopic(String topicName, int page, int pageSize)
         {
-            page--; //page number are 0 based
-            return _articleRepository.GetByTopic(new String[] {topicName}, page, pageSize, out totalElements);
+            var articleSummaries = _articleRepository.GetByTopic(new String[] {topicName}, page, pageSize);
+
+            //Note: we don't fetch parent taxonomy for topic because topics elements are one level taxonomy elements
+
+            return articleSummaries;
         }
 
-        public IEnumerable<Article> GetBySector(String sectorName, int page, int pageSize, out int totalElements)
+        public PaginatedArticleSummaries GetBySector(String sectorName, int page, int pageSize)
         {
-            page--; //page number are 0 based
-            return _articleRepository.GetBySector(new String[] { sectorName }, page, pageSize, out totalElements);
+            var articleSummaries = _articleRepository.GetBySector(new String[] { sectorName }, page, pageSize);
+
+            //fetch taxonomy for the given sector
+            var sectors = _taxonomyRepository.GetSectorParents(sectorName);
+            articleSummaries.SetTaxonomyList(sectors);
+
+            return articleSummaries;
         }
 
-        public IEnumerable<Article> GetByArticleSection(String articleSectionName, int page, int pageSize, out int totalElements)
+        public PaginatedArticleSummaries GetByArticleSection(String articleSectionName, int page, int pageSize)
         {
-            page--; //page number are 0 based
-            return _articleRepository.GetByArticleSection(new String[] { articleSectionName }, page, pageSize, out totalElements);
+            var articleSummaries = _articleRepository.GetByArticleSection(new String[] { articleSectionName }, page, pageSize);
+
+            //fetch taxonomy for the given article section
+            var articleSections = _taxonomyRepository.GetArticleSectionParents(articleSectionName);
+            articleSummaries.SetTaxonomyList(articleSections);
+
+            return articleSummaries;
         }
 
-        public IEnumerable<Article> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize, out int totalElements)
+        public PaginatedArticleSummaries GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize)
         {
-            page--; //page number are 0 based
-            return _articleRepository.GetByArticleSectionAndSector(new String[] { articleSectionName }, new String[] { sectorName }, page, pageSize, out totalElements);
+            var articleSummaries = _articleRepository.GetByArticleSectionAndSector(new String[] { articleSectionName }, new String[] { sectorName }, page, pageSize);
+
+            //fetch taxonomy for the given article section
+            var articleSectionsAndSectors = _taxonomyRepository.GetArticleSectionAndSectorParents(articleSectionName, sectorName);
+            articleSummaries.SetTaxonomyList(articleSectionsAndSectors);
+
+            return articleSummaries;
         }
     }
 }
