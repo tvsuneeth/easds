@@ -7,6 +7,8 @@ using System.Web.Http;
 
 using twg.chk.DataService.api;
 using twg.chk.DataService.Business;
+using twg.chk.DataService.FrontOffice.Models;
+using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace twg.chk.DataService.FrontOffice.Controllers
 {
@@ -14,10 +16,11 @@ namespace twg.chk.DataService.FrontOffice.Controllers
     public class StaticPageController : ApiController
     {
         private IStaticPageService _staticPageService;
-
-        public StaticPageController(IStaticPageService staticPageService)
+        private IContentFeedHelper _contentFeedHelper;
+        public StaticPageController(IStaticPageService staticPageService, IContentFeedHelper contentFeedHelper)
         {
             _staticPageService = staticPageService;
+            _contentFeedHelper = contentFeedHelper;
         }
 
         [HttpGet]
@@ -30,7 +33,8 @@ namespace twg.chk.DataService.FrontOffice.Controllers
             var staticPage = _staticPageService.GetById(id);
             if (staticPage != null)
             {
-                responseMessage = Request.CreateResponse<StaticPage>(HttpStatusCode.OK, staticPage);
+                var contentFeed = new ContentFeed<StaticPage>(Url, staticPage, _contentFeedHelper);
+                responseMessage = Request.CreateResponse<ContentFeed<StaticPage>>(HttpStatusCode.OK, contentFeed);
             }
             else
             {
@@ -50,7 +54,8 @@ namespace twg.chk.DataService.FrontOffice.Controllers
             var staticPage = _staticPageService.GetByName(pageName);
             if (staticPage != null)
             {
-                responseMessage = Request.CreateResponse<StaticPage>(HttpStatusCode.OK, staticPage);
+                var contentFeed = new ContentFeed<StaticPage>(Url, staticPage, _contentFeedHelper);
+                responseMessage = Request.CreateResponse<ContentFeed<StaticPage>>(HttpStatusCode.OK, contentFeed);
             }
             else
             {
