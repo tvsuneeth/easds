@@ -1,21 +1,40 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace twg.chk.DataService.Business
 {
-    public class PaginatedArticleSummaries : ITaxonomy
+    public class PaginatedArticleSummaries : ITaxonomy, IEnumerable<ArticleSummary>, IPagination
     {
         private TaxonomyCategories _taxonomySearchItem;
-        public PaginatedArticleSummaries(TaxonomyCategories taxonomySearchItem)
+        public PaginatedArticleSummaries(TaxonomyCategories taxonomySearchItem, int currentPage, int totalResult, int numberOfResultPerPage)
         {
             _taxonomySearchItem = taxonomySearchItem;
+            
+            // Setting-up pagination properties
+            CurrentPage = currentPage;
+            _totalResults = totalResult;
+            _numberOfResultPerPage = numberOfResultPerPage;
+
+            var totalPageNumber = totalResult / _numberOfResultPerPage;
+            totalPageNumber = totalResult % _numberOfResultPerPage > 0 ? totalPageNumber + 1 : totalPageNumber;
+
+            LastPage = totalPageNumber;
+            FirstPage = 1;
+
+            HasNextPage = CurrentPage < LastPage;
+            NextPage = HasNextPage ? CurrentPage + 1 : 0;
+            HasPreviousPage = CurrentPage > FirstPage;
+            PreviousPage = HasPreviousPage ? CurrentPage + 1 : 0;
         }
 
         public List<ArticleSummary> Summaries { get; set; }
-        public int TotalResult { get; set; }
-        public int PageNumber { get; set; }
+
+        private int _numberOfResultPerPage;
+        private int _totalResults;
         private IEnumerable<TaxonomyItem> _taxonomyList;
+
         public virtual void SetTaxonomyList(IEnumerable<TaxonomyItem> taxonomyList) { _taxonomyList = taxonomyList; }
 
         public TaxonomyItem GetParent()
@@ -102,5 +121,23 @@ namespace twg.chk.DataService.Business
 
             return topics.Count == 0 ? null : topics;
         }
+
+        public IEnumerator<ArticleSummary> GetEnumerator()
+        {
+            return Summaries.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Summaries.GetEnumerator();
+        }
+
+        public int CurrentPage { get; private set; }
+        public bool HasNextPage { get; private set; }
+        public int NextPage { get; private set; }
+        public bool HasPreviousPage { get; private set; }
+        public int PreviousPage { get; private set; }
+        public int FirstPage { get; private set; }
+        public int LastPage { get; private set; }
     }
 }

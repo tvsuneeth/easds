@@ -250,11 +250,9 @@ namespace twg.chk.DataService.chkData.Repository
                 }
             }
 
-            PaginatedArticleSummaries paginatedArticleSummaries = new PaginatedArticleSummaries(principalSearchTaxonomy);
+            PaginatedArticleSummaries paginatedArticleSummaries = new PaginatedArticleSummaries(principalSearchTaxonomy, (page + 1), totalNumberOfResult ?? 0, pageSize);
 
             paginatedArticleSummaries.Summaries = articleList;
-            paginatedArticleSummaries.PageNumber = page + 1; // uper application layer use pagination with 1 is the first page
-            paginatedArticleSummaries.TotalResult = totalNumberOfResult ?? 0;
 
             return paginatedArticleSummaries;
         }

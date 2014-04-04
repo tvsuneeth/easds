@@ -151,10 +151,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StaticPageController.cs" />
     <Compile Include="Controllers\TaxonomyController.cs" />
-    <Compile Include="Helpers\ContentFeedHelper.cs" />
+    <Compile Include="Helpers\UrlHelper.cs" />
     <Compile Include="Helpers\HttpMessageHelper.cs" />
-    <Compile Include="Models\ContentFeed.cs" />
+    <Compile Include="Models\Feed.cs" />
     <Compile Include="Models\LinkItem.cs" />
+    <Compile Include="Models\MultipleContentFeed.cs" />
+    <Compile Include="Models\SingleContentFeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\OAuthProvider.cs" />
     <Compile Include="Startup.cs" />

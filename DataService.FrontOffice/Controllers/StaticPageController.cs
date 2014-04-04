@@ -16,8 +16,8 @@ namespace twg.chk.DataService.FrontOffice.Controllers
     public class StaticPageController : ApiController
     {
         private IStaticPageService _staticPageService;
-        private IContentFeedHelper _contentFeedHelper;
-        public StaticPageController(IStaticPageService staticPageService, IContentFeedHelper contentFeedHelper)
+        private IUrlHelper _contentFeedHelper;
+        public StaticPageController(IStaticPageService staticPageService, IUrlHelper contentFeedHelper)
         {
             _staticPageService = staticPageService;
             _contentFeedHelper = contentFeedHelper;
@@ -33,8 +33,12 @@ namespace twg.chk.DataService.FrontOffice.Controllers
             var staticPage = _staticPageService.GetById(id);
             if (staticPage != null)
             {
-                var contentFeed = new ContentFeed<StaticPage>(Url, staticPage, _contentFeedHelper);
-                responseMessage = Request.CreateResponse<ContentFeed<StaticPage>>(HttpStatusCode.OK, contentFeed);
+                var contentFeed = new SingleContentFeed<StaticPage>(
+                    _contentFeedHelper.GenerateUrl("GetStaticPageById", new { id }),
+                    staticPage,
+                    _contentFeedHelper
+                );
+                responseMessage = Request.CreateResponse<SingleContentFeed<StaticPage>>(HttpStatusCode.OK, contentFeed);
             }
             else
             {
@@ -54,8 +58,14 @@ namespace twg.chk.DataService.FrontOffice.Controllers
             var staticPage = _staticPageService.GetByName(pageName);
             if (staticPage != null)
             {
-                var contentFeed = new ContentFeed<StaticPage>(Url, staticPage, _contentFeedHelper);
-                responseMessage = Request.CreateResponse<ContentFeed<StaticPage>>(HttpStatusCode.OK, contentFeed);
+                var contentFeed = new SingleContentFeed<StaticPage>(
+                    _contentFeedHelper.GenerateUrl("GetStaticPageByName", new { pageName }),
+                    staticPage,
+                    _contentFeedHelper
+                );
+                responseMessage = Request.CreateResponse<SingleContentFeed<StaticPage>>(HttpStatusCode.OK, contentFeed);
+
+                responseMessage = Request.CreateResponse<Feed<StaticPage>>(HttpStatusCode.OK, contentFeed);
             }
             else
             {

@@ -25,15 +25,15 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         private StaticPageController _objectUnderTest;
         private IStaticPageRepository _staticPageRepository;
         private IStaticPageService _staticPageService;
-        private IContentFeedHelper _contentFeedHelper;
+        private IUrlHelper _urlHelper;
 
         [TestInitialize]
         public void Setup()
         {
             _staticPageRepository = MockRepository.GenerateStub<IStaticPageRepository>();
-            _contentFeedHelper = MockRepository.GenerateStub<IContentFeedHelper>();
+            _urlHelper = MockRepository.GenerateStub<IUrlHelper>();
             _staticPageService = new StaticPageService(_staticPageRepository);
-            _objectUnderTest = new StaticPageController(_staticPageService, _contentFeedHelper);
+            _objectUnderTest = new StaticPageController(_staticPageService, _urlHelper);
 
             _objectUnderTest.Request = new HttpRequestMessage();
             _objectUnderTest.Request.SetConfiguration(new HttpConfiguration());
@@ -49,20 +49,20 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         public void Get_RequestExisting()
         {
             _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(new StaticPage());
-            _contentFeedHelper.Stub(h => h.GenerateLink(Arg<System.Web.Http.Routing.UrlHelper>.Is.Anything, Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
+            _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
 
             var httpMessageStaticPage = _objectUnderTest.GetByName("existing_page_name");
 
             Assert.IsNotNull(httpMessageStaticPage);
             Assert.AreEqual<HttpStatusCode>(HttpStatusCode.OK, httpMessageStaticPage.StatusCode);
-            Assert.IsInstanceOfType(httpMessageStaticPage.Content, typeof(ObjectContent<ContentFeed<StaticPage>>));
+            Assert.IsInstanceOfType(httpMessageStaticPage.Content, typeof(ObjectContent<Feed<StaticPage>>));
         }
 
         [TestMethod]
         public void Get_RequestNonExisting()
         {
             _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(null);
-            _contentFeedHelper.Stub(h => h.GenerateLink(Arg<System.Web.Http.Routing.UrlHelper>.Is.Anything, Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
+            _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
 
             var httpMessageStaticPage = _objectUnderTest.GetByName("nonexisting_page_name");
 

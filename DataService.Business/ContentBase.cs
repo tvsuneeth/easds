@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace twg.chk.DataService.Business
 {
-    public abstract class ContentBase : ITaxonomy
+    public abstract class ContentBase : ITaxonomy, IWebIdentifiable
     {
         public virtual int Id { get; set; }
         public virtual String Title { get; set; }
@@ -13,6 +13,10 @@ namespace twg.chk.DataService.Business
         public virtual String MetaDescription { get; set; }
         public virtual String MetaKeywords { get; set; }
         public virtual Person Author { get; set; }
+
+        public virtual object GetIdentificationElement() { return new { Id }; }
+
+        public virtual String GetIdentificationTitle() { return Title; }
 
         private List<TaxonomyItem> _taxonomyList;
         public virtual void SetTaxonomyList(List<TaxonomyItem> taxonomyList) { _taxonomyList = taxonomyList; }

@@ -1,39 +1,37 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http.Routing;
 
 using twg.chk.DataService.Business;
 using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace twg.chk.DataService.FrontOffice.Models
 {
-    public class ContentFeed<tEntity> where tEntity : ITaxonomy
+    public abstract class Feed<tEntity> where tEntity : ITaxonomy
     {
-        private tEntity _data;
-        private UrlHelper _urlHelper;
-        private IContentFeedHelper _contentFeedHelper;
-        public ContentFeed(UrlHelper urlHelper, tEntity data, IContentFeedHelper contentFeedHelper)
+        protected tEntity _feedContent;
+        protected IUrlHelper _urlHelper;
+        protected String _feedUrl;
+
+        public Feed(String feedUrl, tEntity data, IUrlHelper urlHelper)
         {
             _urlHelper = urlHelper;
-            _contentFeedHelper = contentFeedHelper;
-            _data = data;
-
+            _feedContent = data;
+            _feedUrl = feedUrl;
         }
-
-        public tEntity Item { get { return _data; } }
 
         public LinkItem Parent
         {
             get
             {
-                var parentItem = _data.GetParent();
+                var parentItem = _feedContent.GetParent();
 
                 if (parentItem != null)
                 {
                     return new LinkItem
                     {
-                        Href = _contentFeedHelper.GenerateLink(_urlHelper, "GetArticleByArticleSection", new { articleSection = parentItem.Name }),
+                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection = parentItem.Name }),
                         Title = parentItem.Name,
                         Rel = "up",
                         Verb = "GET"
@@ -43,7 +41,7 @@ namespace twg.chk.DataService.FrontOffice.Models
                 {
                     return new LinkItem
                     {
-                        Href = _contentFeedHelper.GenerateLink(_urlHelper, "GetRoot", null),
+                        Href = _urlHelper.GenerateUrl("GetRoot", null),
                         Title = "Home",
                         Rel = "up",
                         Verb = "GET"
@@ -55,13 +53,13 @@ namespace twg.chk.DataService.FrontOffice.Models
         {
             get
             {
-                var sections = _data.GetArticleSections();
+                var sections = _feedContent.GetArticleSections();
                 if (sections != null)
                 {
-                    var parentList = _data.GetArticleSections().Select(a =>
+                    var parentList = sections.Select(a =>
                         new LinkItem
                         {
-                            Href = _contentFeedHelper.GenerateLink(_urlHelper, "GetArticleByArticleSection", new { articleSection = a.Name }),
+                            Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection = a.Name }),
                             Title = a.Name,
                             Rel = "up",
                             Verb = "GET"
@@ -70,7 +68,7 @@ namespace twg.chk.DataService.FrontOffice.Models
                     parentList.Add(
                         new LinkItem
                         {
-                            Href = _contentFeedHelper.GenerateLink(_urlHelper, "GetRoot", null),
+                            Href = _urlHelper.GenerateUrl("GetRoot", null),
                             Title = "Home",
                             Rel = "up",
                             Verb = "GET"
@@ -84,7 +82,7 @@ namespace twg.chk.DataService.FrontOffice.Models
                     return new List<LinkItem> {
                         new LinkItem
                         {
-                            Href = _contentFeedHelper.GenerateLink(_urlHelper, "GetRoot", null),
+                            Href = _urlHelper.GenerateUrl("GetRoot", null),
                             Title = "Home",
                             Rel = "up",
                             Verb = "GET"
@@ -97,13 +95,13 @@ namespace twg.chk.DataService.FrontOffice.Models
         {
             get
             {
-                var sectors = _data.GetSectors();
+                var sectors = _feedContent.GetSectors();
                 if (sectors != null)
                 {
-                    return _data.GetSectors().Select(a =>
+                    return sectors.Select(a =>
                         new LinkItem
                         {
-                            Href = _contentFeedHelper.GenerateLink(_urlHelper, "GetArticleBySector", new { sector = a.Name }),
+                            Href = _urlHelper.GenerateUrl("GetArticleBySector", new { sector = a.Name }),
                             Title = a.Name,
                             Rel = "related",
                             Verb = "GET"
@@ -119,13 +117,13 @@ namespace twg.chk.DataService.FrontOffice.Models
         {
             get
             {
-                var topics = _data.GetTopics();
+                var topics = _feedContent.GetTopics();
                 if (topics != null)
                 {
-                    return _data.GetTopics().Select(a =>
+                    return topics.Select(a =>
                         new LinkItem
                         {
-                            Href = _contentFeedHelper.GenerateLink(_urlHelper, "GetArticleByTopic", new { topic = a.Name }),
+                            Href = _urlHelper.GenerateUrl("GetArticleByTopic", new { topic = a.Name }),
                             Title = a.Name,
                             Rel = "tag",
                             Verb = "GET"
@@ -137,5 +135,9 @@ namespace twg.chk.DataService.FrontOffice.Models
                 }
             }
         }
+
+        public abstract LinkItem Link { get; }
+        internal abstract tEntity FeedContent();
+        public abstract dynamic Entry { get; }
     }
 }

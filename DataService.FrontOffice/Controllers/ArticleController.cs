@@ -17,25 +17,31 @@ namespace twg.chk.DataService.FrontOffice.Controllers
     public class ArticleController : ApiController
     {
         private IArticleService _articleService;
-        private IContentFeedHelper _contentFeedHelper;
-        public ArticleController(IArticleService articleService, IContentFeedHelper contentFeedHelper)
+        private IUrlHelper _urlHelper;
+        public ArticleController(IArticleService articleService, IUrlHelper urlHelper)
         {
             _articleService = articleService;
-            _contentFeedHelper = contentFeedHelper;
+            _urlHelper = urlHelper;
         }
 
         [Route("{id:int}", Name = "GetArticleById")]
         [Authorize(Roles = "frontofficegroup")]
         public HttpResponseMessage Get(int id)
         {
+            _urlHelper.RouteHelper = Url;
+
             HttpResponseMessage responseMessage;
             
             var article = _articleService.GetById(id);
             if (article != null)
             {
-                var articleFeed = new ContentFeed<Article>(Url, article, _contentFeedHelper);
+                var articleFeed = new SingleContentFeed<Article>(
+                    _urlHelper.GenerateUrl("GetArticleById", new { id = article.Id }),
+                    article,
+                    _urlHelper
+                );
 
-                responseMessage = Request.CreateResponse<ContentFeed<Article>>(HttpStatusCode.OK, articleFeed);
+                responseMessage = Request.CreateResponse<SingleContentFeed<Article>>(HttpStatusCode.OK, articleFeed);
             }
             else
             {

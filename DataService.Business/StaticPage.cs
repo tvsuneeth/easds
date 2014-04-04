@@ -6,5 +6,7 @@ namespace twg.chk.DataService.Business
     {
         public String PageName { get; set; }
         public String TitleForHtmlPage { get; set; }
+
+        public override object GetIdentificationElement() { return new { name = PageName }; }
     }
 }

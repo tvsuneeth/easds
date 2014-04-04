@@ -36,7 +36,7 @@ namespace twg.chk.DataService.FrontOffice
                             .BindAllInterfaces());
 
                     kernel.Bind(
-                        x => x.From(typeof(Helpers.IContentFeedHelper).Assembly)
+                        x => x.From(typeof(Helpers.IUrlHelper).Assembly)
                             .Select(c => c.IsClass && c.Name.EndsWith("Helper"))
                             .BindAllInterfaces());
 
