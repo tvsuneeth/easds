@@ -26,7 +26,7 @@ namespace twg.chk.DataService.Business
             HasNextPage = CurrentPage < LastPage;
             NextPage = HasNextPage ? CurrentPage + 1 : 0;
             HasPreviousPage = CurrentPage > FirstPage;
-            PreviousPage = HasPreviousPage ? CurrentPage + 1 : 0;
+            PreviousPage = HasPreviousPage ? CurrentPage - 1 : 0;
         }
 
         public List<ArticleSummary> Summaries { get; set; }

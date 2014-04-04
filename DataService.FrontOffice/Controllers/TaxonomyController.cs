@@ -41,44 +41,10 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     "GetArticleById"
                 );
 
-                contentFeed.NextLink = paginatedArticleSummaries.HasNextPage ? 
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByTopic", new { topic, page = paginatedArticleSummaries.NextPage }), 
-                        Rel = "next",
-                        Title = String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.NextPage), 
-                        Verb = "GET"  } 
-                    : null;
-
-                contentFeed.PreviousLink = paginatedArticleSummaries.HasPreviousPage ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByTopic", new { topic, page = paginatedArticleSummaries.PreviousPage }),
-                        Rel = "prev",
-                        Title = String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.PreviousPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
-                contentFeed.LastLink = paginatedArticleSummaries.LastPage > 0 ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByTopic", new { topic, page = paginatedArticleSummaries.LastPage }),
-                        Rel = "last",
-                        Title = String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.LastPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
-                contentFeed.FirstLink = paginatedArticleSummaries.FirstPage > 0 ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByTopic", new { topic, page = paginatedArticleSummaries.FirstPage }),
-                        Rel = "first",
-                        Title = String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.FirstPage),
-                        Verb = "GET"
-                    }
-                    : null;
+                contentFeed.SetNextLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.NextPage), new { topic, page = paginatedArticleSummaries.NextPage });
+                contentFeed.SetPreviousLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.PreviousPage), new { topic, page = paginatedArticleSummaries.PreviousPage });
+                contentFeed.SetFirstLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.FirstPage), new { topic, page = paginatedArticleSummaries.FirstPage });
+                contentFeed.SetLastLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.LastPage), new { topic, page = paginatedArticleSummaries.LastPage });
 
                 responseMessage = Request.CreateResponse<Feed<PaginatedArticleSummaries>>(HttpStatusCode.OK, contentFeed);
             }
@@ -109,46 +75,10 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     "GetArticleById"
                 );
 
-                contentFeed.NextLink = paginatedArticleSummaries.HasNextPage ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleBySector", new { sector, page = paginatedArticleSummaries.NextPage }),
-                        Rel = "next",
-                        Title = String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.NextPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
-                contentFeed.PreviousLink = paginatedArticleSummaries.HasPreviousPage ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleBySector", new { sector, page = paginatedArticleSummaries.PreviousPage }),
-                        Rel = "prev",
-                        Title = String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.PreviousPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
-                contentFeed.LastLink = paginatedArticleSummaries.LastPage > 0 ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleBySector", new { sector, page = paginatedArticleSummaries.LastPage }),
-                        Rel = "last",
-                        Title = String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.LastPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
-                contentFeed.FirstLink = paginatedArticleSummaries.FirstPage > 0 ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleBySector", new { sector, page = paginatedArticleSummaries.FirstPage }),
-                        Rel = "first",
-                        Title = String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.FirstPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
+                contentFeed.SetNextLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.NextPage), new { sector, page = paginatedArticleSummaries.NextPage });
+                contentFeed.SetPreviousLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.PreviousPage), new { sector, page = paginatedArticleSummaries.PreviousPage });
+                contentFeed.SetFirstLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.FirstPage), new { sector, page = paginatedArticleSummaries.FirstPage });
+                contentFeed.SetLastLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.LastPage), new { sector, page = paginatedArticleSummaries.LastPage });
 
                 responseMessage = Request.CreateResponse<MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary>>(HttpStatusCode.OK, contentFeed);
             }
@@ -178,45 +108,10 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     "GetArticleById"
                 );
 
-                contentFeed.NextLink = paginatedArticleSummaries.HasNextPage ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection, page = paginatedArticleSummaries.NextPage }),
-                        Rel = "next",
-                        Title = String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.NextPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
-                contentFeed.PreviousLink = paginatedArticleSummaries.HasPreviousPage ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection, page = paginatedArticleSummaries.PreviousPage }),
-                        Rel = "prev",
-                        Title = String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.PreviousPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
-                contentFeed.LastLink = paginatedArticleSummaries.LastPage > 0 ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection, page = paginatedArticleSummaries.LastPage }),
-                        Rel = "last",
-                        Title = String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.LastPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
-                contentFeed.FirstLink = paginatedArticleSummaries.FirstPage > 0 ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection, page = paginatedArticleSummaries.FirstPage }),
-                        Rel = "first",
-                        Title = String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.FirstPage),
-                        Verb = "GET"
-                    }
-                    : null;
+                contentFeed.SetNextLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.NextPage), new { articleSection, page = paginatedArticleSummaries.NextPage });
+                contentFeed.SetPreviousLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.PreviousPage), new { articleSection, page = paginatedArticleSummaries.PreviousPage });
+                contentFeed.SetFirstLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.FirstPage), new { articleSection, page = paginatedArticleSummaries.FirstPage });
+                contentFeed.SetLastLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.LastPage), new { articleSection, page = paginatedArticleSummaries.LastPage });
 
                 responseMessage = Request.CreateResponse<MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary>>(HttpStatusCode.OK, contentFeed);
             }
@@ -246,45 +141,10 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     "GetArticleById"
                 );
 
-                contentFeed.NextLink = paginatedArticleSummaries.HasNextPage ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSectionAndSector", new { articleSection, sector, page = paginatedArticleSummaries.NextPage }),
-                        Rel = "next",
-                        Title = String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.NextPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
-                contentFeed.PreviousLink = paginatedArticleSummaries.HasPreviousPage ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSectionAndSector", new { articleSection, sector, page = paginatedArticleSummaries.PreviousPage }),
-                        Rel = "prev",
-                        Title = String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.PreviousPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
-                contentFeed.LastLink = paginatedArticleSummaries.LastPage > 0 ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSectionAndSector", new { articleSection, sector, page = paginatedArticleSummaries.LastPage }),
-                        Rel = "last",
-                        Title = String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.LastPage),
-                        Verb = "GET"
-                    }
-                    : null;
-
-                contentFeed.FirstLink = paginatedArticleSummaries.FirstPage > 0 ?
-                    new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSectionAndSector", new { articleSection, sector, page = paginatedArticleSummaries.FirstPage }),
-                        Rel = "first",
-                        Title = String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.FirstPage),
-                        Verb = "GET"
-                    }
-                    : null;
+                contentFeed.SetNextLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.NextPage), new { articleSection, sector, page = paginatedArticleSummaries.NextPage });
+                contentFeed.SetPreviousLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.PreviousPage), new { articleSection, sector, page = paginatedArticleSummaries.PreviousPage });
+                contentFeed.SetFirstLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.FirstPage), new { articleSection, sector, page = paginatedArticleSummaries.FirstPage });
+                contentFeed.SetLastLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.LastPage), new { articleSection, sector, page = paginatedArticleSummaries.LastPage });
 
                 responseMessage = Request.CreateResponse<MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary>>(HttpStatusCode.OK, contentFeed);
             }

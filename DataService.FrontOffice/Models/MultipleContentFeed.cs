@@ -18,10 +18,54 @@ namespace twg.chk.DataService.FrontOffice.Models
             _feedContentRouteName = feedContentRouteName;
         }
 
-        public LinkItem PreviousLink { get; set; }
-        public LinkItem NextLink { get; set; }
-        public LinkItem FirstLink { get; set; }
-        public LinkItem LastLink { get; set; }
+        public LinkItem PreviousLink { get; private set; }
+        public LinkItem NextLink { get; private set; }
+        public LinkItem FirstLink { get; private set; }
+        public LinkItem LastLink { get; private set; }
+
+        public void SetPreviousLink(String routeName, String linkTitle, dynamic routeAttributes)
+        {
+            PreviousLink = new LinkItem
+            {
+                Href = _urlHelper.GenerateUrl(routeName, routeAttributes),
+                Rel = "prev",
+                Title = linkTitle,
+                Verb = "GET"
+            };
+        }
+
+        public void SetNextLink(String routeName, String linkTitle, dynamic routeAttributes)
+        {
+            NextLink = new LinkItem
+            {
+                Href = _urlHelper.GenerateUrl(routeName, routeAttributes),
+                Rel = "next",
+                Title = linkTitle,
+                Verb = "GET"
+            };
+        }
+
+        public void SetFirstLink(String routeName, String linkTitle, dynamic routeAttributes)
+        {
+            FirstLink = new LinkItem
+            {
+                Href = _urlHelper.GenerateUrl(routeName, routeAttributes),
+                Rel = "first",
+                Title = linkTitle,
+                Verb = "GET"
+            };
+        }
+
+        public void SetLastLink(String routeName, String linkTitle, dynamic routeAttributes)
+        {
+            LastLink = new LinkItem
+            {
+                Href = _urlHelper.GenerateUrl(routeName, routeAttributes),
+                Rel = "last",
+                Title = linkTitle,
+                Verb = "GET"
+            };
+        }
 
         public override LinkItem Link { get { return new LinkItem { Href = _feedUrl, Title = _feedTitle, Rel = "self", Verb = "GET" }; } }
         internal override L FeedContent() { return _feedContent; }
