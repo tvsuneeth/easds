@@ -23,6 +23,7 @@ namespace twg.chk.DataService.Business
             LastPage = totalPageNumber;
             FirstPage = 1;
 
+            HasMultiplePage = LastPage > 1;
             HasNextPage = CurrentPage < LastPage;
             NextPage = HasNextPage ? CurrentPage + 1 : 0;
             HasPreviousPage = CurrentPage > FirstPage;
@@ -132,6 +133,7 @@ namespace twg.chk.DataService.Business
             return Summaries.GetEnumerator();
         }
 
+        public bool HasMultiplePage { get; private set; }
         public int CurrentPage { get; private set; }
         public bool HasNextPage { get; private set; }
         public int NextPage { get; private set; }

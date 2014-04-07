@@ -7,7 +7,7 @@ using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace twg.chk.DataService.FrontOffice.Models
 {
-    public class MultipleContentFeed<L, T> : Feed<L> where L : ITaxonomy, IEnumerable<T> where T : IWebIdentifiable
+    public class MultipleContentFeed<L, T> : Feed<L>, IPaginatedFeed where L : ITaxonomy, IEnumerable<T> where T : IWebIdentifiable
     {
         private String _feedContentRouteName;
         private String _feedTitle;
@@ -68,7 +68,6 @@ namespace twg.chk.DataService.FrontOffice.Models
         }
 
         public override LinkItem Link { get { return new LinkItem { Href = _feedUrl, Title = _feedTitle, Rel = "self", Verb = "GET" }; } }
-        internal override L FeedContent() { return _feedContent; }
 
         public override dynamic Entry
         {
@@ -82,7 +81,7 @@ namespace twg.chk.DataService.FrontOffice.Models
 
                     // We add a link property based on the identification element given by the content object (it implement IWebIdentifiable)
                     var link = _urlHelper.GenerateUrl(_feedContentRouteName, content.GetIdentificationElement());
-                    dynContent.Link = new LinkItem { Href = link, Title = content.GetIdentificationTitle(), Rel = "self", Verb = "GET" };
+                    dynContent.Link = new LinkItem { Href = link, Title = content.GetIdentificationTitle(), Rel = "alternate", Verb = "GET" };
 
                     contentList.Add(dynContent);
                 }

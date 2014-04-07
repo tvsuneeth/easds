@@ -13,7 +13,6 @@ namespace twg.chk.DataService.FrontOffice.Models
             : base(feedUrl, feedData, urlHelper) { }
 
         public override LinkItem Link { get { return new LinkItem { Href = _feedUrl, Title = _feedContent.GetIdentificationTitle(), Rel = "self", Verb = "GET" }; } }
-        internal override T FeedContent() { return _feedContent; }
         public override dynamic Entry { get { return (dynamic)_feedContent; } }
     }
 }

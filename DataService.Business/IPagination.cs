@@ -4,6 +4,7 @@ namespace twg.chk.DataService.Business
 {
     public interface IPagination
     {
+        bool HasMultiplePage { get; }
         int CurrentPage { get; }
         bool HasNextPage { get; }
         int NextPage { get; }

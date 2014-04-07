@@ -8,7 +8,18 @@ using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace twg.chk.DataService.FrontOffice.Models
 {
-    public abstract class Feed<tEntity> where tEntity : ITaxonomy
+    public interface IFeed
+    {
+        LinkItem Parent { get; }
+        List<LinkItem> Parents { get; }
+        List<LinkItem> Related { get; }
+        List<LinkItem> Tags { get; }
+        LinkItem Link { get; }
+        Object FeedContent { get; }
+        dynamic Entry { get; }
+    }
+
+    public abstract class Feed<tEntity> : IFeed where tEntity : ITaxonomy
     {
         protected tEntity _feedContent;
         protected IUrlHelper _urlHelper;
@@ -17,127 +28,127 @@ namespace twg.chk.DataService.FrontOffice.Models
         public Feed(String feedUrl, tEntity data, IUrlHelper urlHelper)
         {
             _urlHelper = urlHelper;
-            _feedContent = data;
+            FeedContent =_feedContent = data;
             _feedUrl = feedUrl;
+
+            // Set navigations links based on taxonomy items
+            SetParent();
+            SetParents();
+            SetRelated();
+            SetTags();
         }
 
-        public LinkItem Parent
+        private void SetParent()
         {
-            get
-            {
-                var parentItem = _feedContent.GetParent();
+            var parentItem = _feedContent.GetParent();
 
-                if (parentItem != null)
+            if (parentItem != null)
+            {
+                Parent = new LinkItem
                 {
-                    return new LinkItem
+                    Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection = parentItem.Name }),
+                    Title = parentItem.Name,
+                    Rel = "up",
+                    Verb = "GET"
+                };
+            }
+            else
+            {
+                Parent = new LinkItem
+                {
+                    Href = _urlHelper.GenerateUrl("GetRoot", null),
+                    Title = "Home",
+                    Rel = "up",
+                    Verb = "GET"
+                };
+            }
+        }
+        private void SetParents()
+        {
+            var sections = _feedContent.GetArticleSections();
+            if (sections != null)
+            {
+                var parentList = sections.Select(a =>
+                    new LinkItem
                     {
-                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection = parentItem.Name }),
-                        Title = parentItem.Name,
+                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection = a.Name }),
+                        Title = a.Name,
                         Rel = "up",
                         Verb = "GET"
-                    };
-                }
-                else
-                {
-                    return new LinkItem
+                    }).ToList();
+
+                parentList.Add(
+                    new LinkItem
                     {
                         Href = _urlHelper.GenerateUrl("GetRoot", null),
                         Title = "Home",
                         Rel = "up",
                         Verb = "GET"
-                    };
-                }
-            }
-        }
-        public List<LinkItem> Parents
-        {
-            get
-            {
-                var sections = _feedContent.GetArticleSections();
-                if (sections != null)
-                {
-                    var parentList = sections.Select(a =>
-                        new LinkItem
-                        {
-                            Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection = a.Name }),
-                            Title = a.Name,
-                            Rel = "up",
-                            Verb = "GET"
-                        }).ToList();
+                    }
+                );
 
-                    parentList.Add(
-                        new LinkItem
-                        {
-                            Href = _urlHelper.GenerateUrl("GetRoot", null),
-                            Title = "Home",
-                            Rel = "up",
-                            Verb = "GET"
-                        }
-                    );
+                Parents = parentList.OrderBy(l => l.Href).ToList();
+            }
+            else
+            {
+                Parents = new List<LinkItem> {
+                    new LinkItem
+                    {
+                        Href = _urlHelper.GenerateUrl("GetRoot", null),
+                        Title = "Home",
+                        Rel = "up",
+                        Verb = "GET"
+                    }
+                };
+            }
+        }
+        private void SetRelated()
+        {
+            var sectors = _feedContent.GetSectors();
+            if (sectors != null)
+            {
+                Related = sectors.Select(a =>
+                    new LinkItem
+                    {
+                        Href = _urlHelper.GenerateUrl("GetArticleBySector", new { sector = a.Name }),
+                        Title = a.Name,
+                        Rel = "related",
+                        Verb = "GET"
+                    }).ToList();
+            }
+            else
+            {
+                Related = null;
+            }
+        }
+        private void SetTags()
+        {
+            var topics = _feedContent.GetTopics();
+            if (topics != null)
+            {
+                Tags = topics.Select(a =>
+                    new LinkItem
+                    {
+                        Href = _urlHelper.GenerateUrl("GetArticleByTopic", new { topic = a.Name }),
+                        Title = a.Name,
+                        Rel = "tag",
+                        Verb = "GET"
+                    }).ToList();
+            }
+            else
+            {
+                Tags = null;
+            }
+        }
 
-                    return parentList.OrderBy(l => l.Href).ToList();
-                }
-                else
-                {
-                    return new List<LinkItem> {
-                        new LinkItem
-                        {
-                            Href = _urlHelper.GenerateUrl("GetRoot", null),
-                            Title = "Home",
-                            Rel = "up",
-                            Verb = "GET"
-                        }
-                    };
-                }
-            }
-        }
-        public List<LinkItem> Related
-        {
-            get
-            {
-                var sectors = _feedContent.GetSectors();
-                if (sectors != null)
-                {
-                    return sectors.Select(a =>
-                        new LinkItem
-                        {
-                            Href = _urlHelper.GenerateUrl("GetArticleBySector", new { sector = a.Name }),
-                            Title = a.Name,
-                            Rel = "related",
-                            Verb = "GET"
-                        }).ToList();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-        public List<LinkItem> Tags
-        {
-            get
-            {
-                var topics = _feedContent.GetTopics();
-                if (topics != null)
-                {
-                    return topics.Select(a =>
-                        new LinkItem
-                        {
-                            Href = _urlHelper.GenerateUrl("GetArticleByTopic", new { topic = a.Name }),
-                            Title = a.Name,
-                            Rel = "tag",
-                            Verb = "GET"
-                        }).ToList();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+        public LinkItem Parent { get; private set; }
+        public List<LinkItem> Parents { get; private set; }
+        public List<LinkItem> Related { get; private set; }
+        public List<LinkItem> Tags { get; private set; }
 
         public abstract LinkItem Link { get; }
-        internal abstract tEntity FeedContent();
+
+        public virtual Object FeedContent { get; private set; }
         public abstract dynamic Entry { get; }
     }
 }

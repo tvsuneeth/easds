@@ -15,7 +15,7 @@ namespace twg.chk.DataService.FrontOffice
             _config.DependencyResolver = new NinjectResolver(DependencyKernel);
 
             // add specific formatter for contentType application/atom+xml
-            //_config.Formatters.Add(new AtomSyndicationFeedFormatter());
+            _config.Formatters.Add(new AtomSyndicationFeedFormatter());
 
             _config.MapHttpAttributeRoutes();
 

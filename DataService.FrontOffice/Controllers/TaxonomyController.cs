@@ -25,10 +25,9 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         [HttpGet]
         [Route("topic/{topic:regex(^[a-zA-Z- ]+)}/{page:int?}", Name = "GetArticleByTopic")]
         [Authorize(Roles = "frontofficegroup")]
-        public HttpResponseMessage GetTopic(String topic, int page = 1)
+        public MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary> GetTopic(String topic, int page = 1)
         {
             _urlHelper.RouteHelper = Url;
-            HttpResponseMessage responseMessage;
 
             var paginatedArticleSummaries = _articleService.GetByTopic(topic, page, 20);
             if (paginatedArticleSummaries.Summaries.Count > 0)
@@ -46,23 +45,20 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                 contentFeed.SetFirstLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.FirstPage), new { topic, page = paginatedArticleSummaries.FirstPage });
                 contentFeed.SetLastLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.LastPage), new { topic, page = paginatedArticleSummaries.LastPage });
 
-                responseMessage = Request.CreateResponse<Feed<PaginatedArticleSummaries>>(HttpStatusCode.OK, contentFeed);
+                return contentFeed;
             }
             else
             {
-                responseMessage = Request.CreateErrorResponse(HttpStatusCode.NotFound, "No article found.");
+                return null;
             }
-
-            return responseMessage;
         }
 
         [HttpGet]
         [Route("sector/{sector:regex(^[a-zA-Z- ]+)}/{page:int?}", Name = "GetArticleBySector")]
         [Authorize(Roles = "frontofficegroup")]
-        public HttpResponseMessage GetSector(String sector, int page = 1)
+        public MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary> GetSector(String sector, int page = 1)
         {
             _urlHelper.RouteHelper = Url;
-            HttpResponseMessage responseMessage;
 
             var paginatedArticleSummaries = _articleService.GetBySector(sector, page, 20);
             if (paginatedArticleSummaries.Summaries.Count > 0)
@@ -80,22 +76,19 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                 contentFeed.SetFirstLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.FirstPage), new { sector, page = paginatedArticleSummaries.FirstPage });
                 contentFeed.SetLastLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.LastPage), new { sector, page = paginatedArticleSummaries.LastPage });
 
-                responseMessage = Request.CreateResponse<MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary>>(HttpStatusCode.OK, contentFeed);
+                return contentFeed;
             }
             else
             {
-                responseMessage = Request.CreateErrorResponse(HttpStatusCode.NotFound, "No article found.");
+                return null;
             }
-
-            return responseMessage;
         }
 
         [HttpGet]
         [Authorize(Roles = "frontofficegroup")]
-        public HttpResponseMessage GetArticleSection(String articleSection, int page = 1)
+        public MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary> GetArticleSection(String articleSection, int page = 1)
         {
             _urlHelper.RouteHelper = Url;
-            HttpResponseMessage responseMessage;
 
             var paginatedArticleSummaries = _articleService.GetByArticleSection(articleSection, page, 20);
             if (paginatedArticleSummaries.Summaries.Count > 0)
@@ -113,22 +106,19 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                 contentFeed.SetFirstLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.FirstPage), new { articleSection, page = paginatedArticleSummaries.FirstPage });
                 contentFeed.SetLastLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.LastPage), new { articleSection, page = paginatedArticleSummaries.LastPage });
 
-                responseMessage = Request.CreateResponse<MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary>>(HttpStatusCode.OK, contentFeed);
+                return contentFeed;
             }
             else
             {
-                responseMessage = Request.CreateErrorResponse(HttpStatusCode.NotFound, "No article found.");
+                return null;
             }
-
-            return responseMessage;
         }
 
         [HttpGet]
         [Authorize(Roles = "frontofficegroup")]
-        public HttpResponseMessage GetArticleSectionAndSector(String articleSection, String sector, int page = 1)
+        public MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary> GetArticleSectionAndSector(String articleSection, String sector, int page = 1)
         {
             _urlHelper.RouteHelper = Url;
-            HttpResponseMessage responseMessage;
 
             var paginatedArticleSummaries = _articleService.GetByArticleSectionAndSector(articleSection, sector, page, 20);
             if (paginatedArticleSummaries.Summaries.Count > 0)
@@ -146,14 +136,12 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                 contentFeed.SetFirstLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.FirstPage), new { articleSection, sector, page = paginatedArticleSummaries.FirstPage });
                 contentFeed.SetLastLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.LastPage), new { articleSection, sector, page = paginatedArticleSummaries.LastPage });
 
-                responseMessage = Request.CreateResponse<MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary>>(HttpStatusCode.OK, contentFeed);
+                return contentFeed;
             }
             else
             {
-                responseMessage = Request.CreateErrorResponse(HttpStatusCode.NotFound, "No article found.");
+                return null;
             }
-
-            return responseMessage;
         }
     }
 }

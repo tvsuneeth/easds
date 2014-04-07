@@ -26,11 +26,9 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [Route("{id:int}", Name = "GetArticleById")]
         [Authorize(Roles = "frontofficegroup")]
-        public HttpResponseMessage Get(int id)
+        public SingleContentFeed<Article> Get(int id)
         {
             _urlHelper.RouteHelper = Url;
-
-            HttpResponseMessage responseMessage;
             
             var article = _articleService.GetById(id);
             if (article != null)
@@ -41,14 +39,12 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     _urlHelper
                 );
 
-                responseMessage = Request.CreateResponse<SingleContentFeed<Article>>(HttpStatusCode.OK, articleFeed);
+                return articleFeed;
             }
             else
             {
-                responseMessage = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Article not found.");
+                return null;
             }
-
-            return responseMessage;
         }
     }
 }
