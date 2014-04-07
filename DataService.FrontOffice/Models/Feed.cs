@@ -16,7 +16,7 @@ namespace twg.chk.DataService.FrontOffice.Models
         List<LinkItem> Tags { get; }
         LinkItem Link { get; }
         Object FeedContent { get; }
-        dynamic Entry { get; }
+        IEnumerable<FeedEntry> Entries { get; }
     }
 
     public abstract class Feed<tEntity> : IFeed where tEntity : ITaxonomy
@@ -146,9 +146,9 @@ namespace twg.chk.DataService.FrontOffice.Models
         public List<LinkItem> Related { get; private set; }
         public List<LinkItem> Tags { get; private set; }
 
-        public abstract LinkItem Link { get; }
+        public virtual LinkItem Link { get; protected set; }
 
-        public virtual Object FeedContent { get; private set; }
-        public abstract dynamic Entry { get; }
+        public virtual Object FeedContent { get; protected set; }
+        public abstract IEnumerable<FeedEntry> Entries { get; protected set; }
     }
 }

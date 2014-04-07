@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace twg.chk.DataService.Business
 {
-    public class PaginatedArticleSummaries : ITaxonomy, IEnumerable<ArticleSummary>, IPagination
+    public class PagedResult<T> : List<T>, IPagination<T>, ITaxonomy where T : IWebIdentifiable
     {
         private TaxonomyCategories _taxonomySearchItem;
-        public PaginatedArticleSummaries(TaxonomyCategories taxonomySearchItem, int currentPage, int totalResult, int numberOfResultPerPage)
+        public PagedResult(TaxonomyCategories taxonomySearchItem, int currentPage, int totalResult, int numberOfResultPerPage)
         {
             _taxonomySearchItem = taxonomySearchItem;
             
@@ -29,8 +29,6 @@ namespace twg.chk.DataService.Business
             HasPreviousPage = CurrentPage > FirstPage;
             PreviousPage = HasPreviousPage ? CurrentPage - 1 : 0;
         }
-
-        public List<ArticleSummary> Summaries { get; set; }
 
         private int _numberOfResultPerPage;
         private int _totalResults;
@@ -121,16 +119,6 @@ namespace twg.chk.DataService.Business
             var topics = _taxonomyList.Where(t => t.Category == TaxonomyCategories.Topic).ToList();
 
             return topics.Count == 0 ? null : topics;
-        }
-
-        public IEnumerator<ArticleSummary> GetEnumerator()
-        {
-            return Summaries.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Summaries.GetEnumerator();
         }
 
         public bool HasMultiplePage { get; private set; }

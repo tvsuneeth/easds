@@ -14,18 +14,18 @@ namespace twg.chk.DataService.chkData.Repository
     {
         IEnumerable<Article> Get(int[] ids);
 
-        PaginatedArticleSummaries GetByTopic(String[] topicNames, int page, int pageSize);
-        PaginatedArticleSummaries GetBySector(String[] sectorNames, int page, int pageSize);
-        PaginatedArticleSummaries GetByArticleSection(String[] articleSectionNames, int page, int pageSize);
-        PaginatedArticleSummaries GetByArticleSectionAndSector(String[] articleSectionNames, String[] sectorNames, int page, int pageSize);
-        PaginatedArticleSummaries GetByArticleSectionSectorAndTopic(String[] articleSectionNames, String[] sectorNames, String[] topicNames, int page, int pageSize);
+        PagedResult<ArticleSummary> GetByTopic(String[] topicNames, int page, int pageSize);
+        PagedResult<ArticleSummary> GetBySector(String[] sectorNames, int page, int pageSize);
+        PagedResult<ArticleSummary> GetByArticleSection(String[] articleSectionNames, int page, int pageSize);
+        PagedResult<ArticleSummary> GetByArticleSectionAndSector(String[] articleSectionNames, String[] sectorNames, int page, int pageSize);
+        PagedResult<ArticleSummary> GetByArticleSectionSectorAndTopic(String[] articleSectionNames, String[] sectorNames, String[] topicNames, int page, int pageSize);
 
-        PaginatedArticleSummaries GetByTopic(String[] includeTopicNames, String[] excludeTopicNames, int page, int pageSize);
-        PaginatedArticleSummaries GetBySector(String[] includeSectorNames, String[] excludeSectorNames, int page, int pageSize);
-        PaginatedArticleSummaries GetByArticleSection(String[] includeArticleSectionNames, String[] excludeArticleSectionNames, int page, int pageSize);
-        PaginatedArticleSummaries GetByArticleSectionAndSector(String[] includeArticleSectionNames, String[] includeSectorNames,
+        PagedResult<ArticleSummary> GetByTopic(String[] includeTopicNames, String[] excludeTopicNames, int page, int pageSize);
+        PagedResult<ArticleSummary> GetBySector(String[] includeSectorNames, String[] excludeSectorNames, int page, int pageSize);
+        PagedResult<ArticleSummary> GetByArticleSection(String[] includeArticleSectionNames, String[] excludeArticleSectionNames, int page, int pageSize);
+        PagedResult<ArticleSummary> GetByArticleSectionAndSector(String[] includeArticleSectionNames, String[] includeSectorNames,
             String[] excludeArticleSectionNames, String[] excludeSectorNames, int page, int pageSize);
-        PaginatedArticleSummaries GetByArticleSectionSectorAndTopic(String[] includeArticleSectionNames, String[] includeSectorNames,
+        PagedResult<ArticleSummary> GetByArticleSectionSectorAndTopic(String[] includeArticleSectionNames, String[] includeSectorNames,
             String[] includeTopicNames, String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize);
     }
 
@@ -109,60 +109,60 @@ namespace twg.chk.DataService.chkData.Repository
 
         #region Taxonomy Search methods
 
-        public PaginatedArticleSummaries GetByTopic(String[] topicNames, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetByTopic(String[] topicNames, int page, int pageSize)
         {
             return GetByTaxonomy(null, null, topicNames, null, null, null, page, pageSize, TaxonomyCategories.Topic);
         }
 
-        public PaginatedArticleSummaries GetBySector(String[] sectorNames, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetBySector(String[] sectorNames, int page, int pageSize)
         {
             return GetByTaxonomy(null, sectorNames, null, null, null, null, page, pageSize, TaxonomyCategories.Sector);
         }
 
-        public PaginatedArticleSummaries GetByArticleSection(String[] articleSectionNames, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetByArticleSection(String[] articleSectionNames, int page, int pageSize)
         {
             return GetByTaxonomy(articleSectionNames, null, null, null, null, null, page, pageSize, TaxonomyCategories.ArticleSection);
         }
 
-        public PaginatedArticleSummaries GetByArticleSectionAndSector(String[] articleSectionNames, String[] sectorNames, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetByArticleSectionAndSector(String[] articleSectionNames, String[] sectorNames, int page, int pageSize)
         {
             return GetByTaxonomy(articleSectionNames, sectorNames, null, null, null, null, page, pageSize, TaxonomyCategories.ArticleSection);
         }
 
-        public PaginatedArticleSummaries GetByArticleSectionSectorAndTopic(String[] articleSectionNames, String[] sectorNames, String[] topicNames, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetByArticleSectionSectorAndTopic(String[] articleSectionNames, String[] sectorNames, String[] topicNames, int page, int pageSize)
         {
             return GetByTaxonomy(articleSectionNames, sectorNames, topicNames, null, null, null, page, pageSize, TaxonomyCategories.ArticleSection);
         }
 
-        public PaginatedArticleSummaries GetByTopic(string[] includeTopicNames, string[] excludeTopicNames, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetByTopic(string[] includeTopicNames, string[] excludeTopicNames, int page, int pageSize)
         {
             return GetByTaxonomy(null, null, includeTopicNames, null, null, excludeTopicNames, page, pageSize, TaxonomyCategories.Topic);
         }
 
-        public PaginatedArticleSummaries GetBySector(string[] includeSectorNames, string[] excludeSectorNames, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetBySector(string[] includeSectorNames, string[] excludeSectorNames, int page, int pageSize)
         {
             return GetByTaxonomy(null, includeSectorNames, null, null, excludeSectorNames, null, page, pageSize, TaxonomyCategories.Sector);
         }
 
-        public PaginatedArticleSummaries GetByArticleSection(string[] includeArticleSectionNames, string[] excludeArticleSectionNames, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetByArticleSection(string[] includeArticleSectionNames, string[] excludeArticleSectionNames, int page, int pageSize)
         {
             return GetByTaxonomy(includeArticleSectionNames, null, null, excludeArticleSectionNames, null, null, page, pageSize, TaxonomyCategories.ArticleSection);
         }
 
-        public PaginatedArticleSummaries GetByArticleSectionAndSector(string[] includeArticleSectionNames, string[] includeSectorNames, string[] excludeArticleSectionNames, string[] excludeSectorNames, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetByArticleSectionAndSector(string[] includeArticleSectionNames, string[] includeSectorNames, string[] excludeArticleSectionNames, string[] excludeSectorNames, int page, int pageSize)
         {
             return GetByTaxonomy(includeArticleSectionNames, includeSectorNames, null,
                 excludeArticleSectionNames, excludeSectorNames, null, page, pageSize, TaxonomyCategories.ArticleSection);
         }
 
-        public PaginatedArticleSummaries GetByArticleSectionSectorAndTopic(string[] includeArticleSectionNames, string[] includeSectorNames,
+        public PagedResult<ArticleSummary> GetByArticleSectionSectorAndTopic(string[] includeArticleSectionNames, string[] includeSectorNames,
             string[] includeTopicNames, string[] excludeArticleSectionNames, string[] excludeSectorNames, string[] excludeTopicNames, int page, int pageSize)
         {
             return GetByTaxonomy(includeArticleSectionNames, includeSectorNames, includeTopicNames,
                 excludeArticleSectionNames, excludeSectorNames, excludeTopicNames, page, pageSize, TaxonomyCategories.ArticleSection);
         }
 
-        private PaginatedArticleSummaries GetByTaxonomy(String[] includeArticleSectionNames, String[] includeSectorNames, String[] includeTopicNames,
+        private PagedResult<ArticleSummary> GetByTaxonomy(String[] includeArticleSectionNames, String[] includeSectorNames, String[] includeTopicNames,
             String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize, TaxonomyCategories principalSearchTaxonomy)
         {
             page--; //pagination in database with 0 as first page
@@ -250,9 +250,9 @@ namespace twg.chk.DataService.chkData.Repository
                 }
             }
 
-            PaginatedArticleSummaries paginatedArticleSummaries = new PaginatedArticleSummaries(principalSearchTaxonomy, (page + 1), totalNumberOfResult ?? 0, pageSize);
+            PagedResult<ArticleSummary> paginatedArticleSummaries = new PagedResult<ArticleSummary>(principalSearchTaxonomy, (page + 1), totalNumberOfResult ?? 0, pageSize);
 
-            paginatedArticleSummaries.Summaries = articleList;
+            paginatedArticleSummaries.AddRange(articleList);
 
             return paginatedArticleSummaries;
         }

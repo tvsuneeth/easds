@@ -7,15 +7,32 @@ using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace twg.chk.DataService.FrontOffice.Models
 {
-    public class MultipleContentFeed<L, T> : Feed<L>, IPaginatedFeed where L : ITaxonomy, IEnumerable<T> where T : IWebIdentifiable
+    public class MultipleContentFeed<T> : Feed<PagedResult<T>>, IPaginatedFeed where T : IWebIdentifiable
     {
-        private String _feedContentRouteName;
+        private String _feedEntriesRouteName;
         private String _feedTitle;
-        public MultipleContentFeed(String feedUrl, String feedTitle, L feedContent, IUrlHelper urlHelper, String feedContentRouteName)
+        public MultipleContentFeed(String feedUrl, String feedTitle, PagedResult<T> feedContent, IUrlHelper urlHelper, String feedEntriesRouteName)
             : base(feedUrl, feedContent, urlHelper)
         {
             _feedTitle = feedTitle;
-            _feedContentRouteName = feedContentRouteName;
+            _feedEntriesRouteName = feedEntriesRouteName;
+
+            var contentList = new List<FeedEntry>();
+            foreach (T content in feedContent)
+            {
+
+                var link = _urlHelper.GenerateUrl(_feedEntriesRouteName, content.GetIdentificationElement());
+                var entry = new FeedEntry
+                {
+                    Content = content,
+                    Link = new LinkItem { Href = link, Title = content.GetIdentificationTitle(), Rel = "alternate", Verb = "GET" }
+                };
+
+                // We add a link property based on the identification element given by the content object (it implement IWebIdentifiable)
+                contentList.Add(entry);
+            }
+
+            Entries = contentList;
         }
 
         public LinkItem PreviousLink { get; private set; }
@@ -69,25 +86,6 @@ namespace twg.chk.DataService.FrontOffice.Models
 
         public override LinkItem Link { get { return new LinkItem { Href = _feedUrl, Title = _feedTitle, Rel = "self", Verb = "GET" }; } }
 
-        public override dynamic Entry
-        {
-            get
-            {
-                var contentList = new List<dynamic>();
-                foreach (T content in _feedContent)
-                {
-                    dynamic dynContent = new System.Dynamic.ExpandoObject();
-                    dynContent.Content = content;
-
-                    // We add a link property based on the identification element given by the content object (it implement IWebIdentifiable)
-                    var link = _urlHelper.GenerateUrl(_feedContentRouteName, content.GetIdentificationElement());
-                    dynContent.Link = new LinkItem { Href = link, Title = content.GetIdentificationTitle(), Rel = "alternate", Verb = "GET" };
-
-                    contentList.Add(dynContent);
-                }
-
-                return contentList;
-            }
-        }
+        public override IEnumerable<FeedEntry> Entries { get; protected set; }
     }
 }

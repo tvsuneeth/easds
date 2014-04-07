@@ -108,7 +108,7 @@ namespace twg.chk.DataService.FrontOffice
             var items = new List<SyndicationItem>();
             if (feed.FeedContent is IEnumerable)
             {
-                foreach (dynamic item in feed.Entry as IEnumerable)
+                foreach (var item in feed.Entries)
                 {
                     var syndicationItem = _switchOnType[item.Content.GetType()](item.Content, item.Link);
                     items.Add(syndicationItem);

@@ -25,14 +25,14 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         [HttpGet]
         [Route("topic/{topic:regex(^[a-zA-Z- ]+)}/{page:int?}", Name = "GetArticleByTopic")]
         [Authorize(Roles = "frontofficegroup")]
-        public MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary> GetTopic(String topic, int page = 1)
+        public MultipleContentFeed<ArticleSummary> GetTopic(String topic, int page = 1)
         {
             _urlHelper.RouteHelper = Url;
 
             var paginatedArticleSummaries = _articleService.GetByTopic(topic, page, 20);
-            if (paginatedArticleSummaries.Summaries.Count > 0)
+            if (paginatedArticleSummaries.Count > 0)
             {
-                var contentFeed = new MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary>(
+                var contentFeed = new MultipleContentFeed<ArticleSummary>(
                     _urlHelper.GenerateUrl("GetArticleByTopic", new { topic, page }),
                     String.Format("Topic {0} page {1}", topic, page), 
                     paginatedArticleSummaries,
@@ -56,14 +56,14 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         [HttpGet]
         [Route("sector/{sector:regex(^[a-zA-Z- ]+)}/{page:int?}", Name = "GetArticleBySector")]
         [Authorize(Roles = "frontofficegroup")]
-        public MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary> GetSector(String sector, int page = 1)
+        public MultipleContentFeed<ArticleSummary> GetSector(String sector, int page = 1)
         {
             _urlHelper.RouteHelper = Url;
 
             var paginatedArticleSummaries = _articleService.GetBySector(sector, page, 20);
-            if (paginatedArticleSummaries.Summaries.Count > 0)
+            if (paginatedArticleSummaries.Count > 0)
             {
-                var contentFeed = new MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary>(
+                var contentFeed = new MultipleContentFeed<ArticleSummary>(
                     _urlHelper.GenerateUrl("GetArticleBySector", new { sector, page }),
                     String.Format("Sector {0} page {1}", sector, page), 
                     paginatedArticleSummaries,
@@ -86,14 +86,14 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Authorize(Roles = "frontofficegroup")]
-        public MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary> GetArticleSection(String articleSection, int page = 1)
+        public MultipleContentFeed<ArticleSummary> GetArticleSection(String articleSection, int page = 1)
         {
             _urlHelper.RouteHelper = Url;
 
             var paginatedArticleSummaries = _articleService.GetByArticleSection(articleSection, page, 20);
-            if (paginatedArticleSummaries.Summaries.Count > 0)
+            if (paginatedArticleSummaries.Count > 0)
             {
-                var contentFeed = new MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary>(
+                var contentFeed = new MultipleContentFeed<ArticleSummary>(
                     _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection, page }),
                     String.Format("Article Section {0} page {1}", articleSection, page), 
                     paginatedArticleSummaries,
@@ -116,14 +116,14 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Authorize(Roles = "frontofficegroup")]
-        public MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary> GetArticleSectionAndSector(String articleSection, String sector, int page = 1)
+        public MultipleContentFeed<ArticleSummary> GetArticleSectionAndSector(String articleSection, String sector, int page = 1)
         {
             _urlHelper.RouteHelper = Url;
 
             var paginatedArticleSummaries = _articleService.GetByArticleSectionAndSector(articleSection, sector, page, 20);
-            if (paginatedArticleSummaries.Summaries.Count > 0)
+            if (paginatedArticleSummaries.Count > 0)
             {
-                var contentFeed = new MultipleContentFeed<PaginatedArticleSummaries, ArticleSummary>(
+                var contentFeed = new MultipleContentFeed<ArticleSummary>(
                     _urlHelper.GenerateUrl("GetArticleByArticleSectionAndSector", new { articleSection, sector, page }),
                     String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, page), 
                     paginatedArticleSummaries,

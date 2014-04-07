@@ -10,10 +10,10 @@ namespace twg.chk.DataService.api
     public interface IArticleService
     {
         Article GetById(int id);
-        PaginatedArticleSummaries GetByTopic(String topicName, int page, int pageSize);
-        PaginatedArticleSummaries GetBySector(String sectorName, int page, int pageSize);
-        PaginatedArticleSummaries GetByArticleSection(String articleSectionName, int page, int pageSize);
-        PaginatedArticleSummaries GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize);
+        PagedResult<ArticleSummary> GetByTopic(String topicName, int page, int pageSize);
+        PagedResult<ArticleSummary> GetBySector(String sectorName, int page, int pageSize);
+        PagedResult<ArticleSummary> GetByArticleSection(String articleSectionName, int page, int pageSize);
+        PagedResult<ArticleSummary> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize);
     }
 
     public class ArticleService : IArticleService
@@ -38,7 +38,7 @@ namespace twg.chk.DataService.api
             return article;
         }
 
-        public PaginatedArticleSummaries GetByTopic(String topicName, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetByTopic(String topicName, int page, int pageSize)
         {
             var articleSummaries = _articleRepository.GetByTopic(new String[] {topicName}, page, pageSize);
 
@@ -47,7 +47,7 @@ namespace twg.chk.DataService.api
             return articleSummaries;
         }
 
-        public PaginatedArticleSummaries GetBySector(String sectorName, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetBySector(String sectorName, int page, int pageSize)
         {
             var articleSummaries = _articleRepository.GetBySector(new String[] { sectorName }, page, pageSize);
 
@@ -58,7 +58,7 @@ namespace twg.chk.DataService.api
             return articleSummaries;
         }
 
-        public PaginatedArticleSummaries GetByArticleSection(String articleSectionName, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetByArticleSection(String articleSectionName, int page, int pageSize)
         {
             var articleSummaries = _articleRepository.GetByArticleSection(new String[] { articleSectionName }, page, pageSize);
 
@@ -69,7 +69,7 @@ namespace twg.chk.DataService.api
             return articleSummaries;
         }
 
-        public PaginatedArticleSummaries GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize)
+        public PagedResult<ArticleSummary> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize)
         {
             var articleSummaries = _articleRepository.GetByArticleSectionAndSector(new String[] { articleSectionName }, new String[] { sectorName }, page, pageSize);
 

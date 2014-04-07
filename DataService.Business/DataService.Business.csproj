@@ -50,9 +50,9 @@
   <ItemGroup>
     <Compile Include="Article.cs" />
     <Compile Include="ArticleSummary.cs" />
-    <Compile Include="IIdentification.cs" />
+    <Compile Include="IWebIdentifiable.cs" />
     <Compile Include="IPagination.cs" />
-    <Compile Include="PaginatedArticleSummaries.cs" />
+    <Compile Include="PagedResult.cs" />
     <Compile Include="ITaxonomy.cs" />
     <Compile Include="MediaContent.cs" />
     <Compile Include="Person.cs" />

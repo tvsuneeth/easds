@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace twg.chk.DataService.Business
 {
-    public interface IPagination
+    public interface IPagination<T> : IList<T>, IEnumerable<T>
     {
         bool HasMultiplePage { get; }
         int CurrentPage { get; }
