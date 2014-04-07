@@ -51,11 +51,9 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(new StaticPage());
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
 
-            var httpMessageStaticPage = _objectUnderTest.GetByName("existing_page_name");
+            var staticPageFeed = _objectUnderTest.GetByName("existing_page_name");
 
-            Assert.IsNotNull(httpMessageStaticPage);
-            Assert.AreEqual<HttpStatusCode>(HttpStatusCode.OK, httpMessageStaticPage.StatusCode);
-            Assert.IsInstanceOfType(httpMessageStaticPage.Content, typeof(ObjectContent<Feed<StaticPage>>));
+            Assert.IsNotNull(staticPageFeed);
         }
 
         [TestMethod]
@@ -64,10 +62,9 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(null);
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
 
-            var httpMessageStaticPage = _objectUnderTest.GetByName("nonexisting_page_name");
+            var staticPageFeed = _objectUnderTest.GetByName("nonexisting_page_name");
 
-            Assert.IsNotNull(httpMessageStaticPage);
-            Assert.AreEqual<HttpStatusCode>(HttpStatusCode.NotFound, httpMessageStaticPage.StatusCode);
+            Assert.IsNull(staticPageFeed);
         }
     }
 }

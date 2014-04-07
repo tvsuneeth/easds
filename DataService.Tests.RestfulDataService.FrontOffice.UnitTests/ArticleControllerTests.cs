@@ -54,11 +54,9 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article());
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem>());
 
-            var httpMessageArticle = _objectUnderTest.Get(1);
+            var articleFeed = _objectUnderTest.Get(1);
 
-            Assert.IsNotNull(httpMessageArticle);
-            Assert.AreEqual<HttpStatusCode>(HttpStatusCode.OK, httpMessageArticle.StatusCode);
-            Assert.IsInstanceOfType(httpMessageArticle.Content, typeof(ObjectContent<SingleContentFeed<Article>>));
+            Assert.IsNotNull(articleFeed);
         }
 
         [TestMethod]
@@ -66,10 +64,9 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(null);
 
-            var httpMessageArticle = _objectUnderTest.Get(1);
+            var articleFeed = _objectUnderTest.Get(1);
 
-            Assert.IsNotNull(httpMessageArticle);
-            Assert.AreEqual<HttpStatusCode>(HttpStatusCode.NotFound, httpMessageArticle.StatusCode);
+            Assert.IsNull(articleFeed);
         }
 
         [TestMethod]
@@ -79,13 +76,10 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem> { new TaxonomyItem { Id = 1, Category = TaxonomyCategories.ArticleSection, Name = "sample"}});
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
 
-            var httpMessageArticle = _objectUnderTest.Get(1);
+            var articleFeed = _objectUnderTest.Get(1);
 
-            Assert.IsNotNull(httpMessageArticle);
-            Assert.AreEqual<HttpStatusCode>(HttpStatusCode.OK, httpMessageArticle.StatusCode);
+            Assert.IsNotNull(articleFeed);
 
-            var articleContent = httpMessageArticle.Content as ObjectContent<SingleContentFeed<Article>>;
-            var articleFeed = articleContent.Value as SingleContentFeed<Article>;
             Assert.IsNotNull(articleFeed.Parents);
         }
 
@@ -95,14 +89,11 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article { ThumbnailImage = new MediaContent { Title = "image file", Extension = "jpg", FileName = "imagefile.jpg" } });
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem>());
 
-            var httpMessageArticle = _objectUnderTest.Get(1);
+            var articleFeed = _objectUnderTest.Get(1);
 
-            Assert.IsNotNull(httpMessageArticle);
-            Assert.AreEqual<HttpStatusCode>(HttpStatusCode.OK, httpMessageArticle.StatusCode);
+            Assert.IsNotNull(articleFeed);
 
-            var articleContent = httpMessageArticle.Content as ObjectContent<SingleContentFeed<Article>>;
-            var articleFeed = articleContent.Value as SingleContentFeed<Article>;
-            Assert.IsNotNull(articleFeed.Entry.ThumbnailImage);
+            Assert.IsNotNull(((Article)articleFeed.FeedContent).ThumbnailImage);
         }
     }
 }
