@@ -85,18 +85,11 @@ namespace twg.chk.DataService.chkData.Repository
                             var image = new MediaContent
                             {
                                 Id = Convert.ToInt32(sqlReader["liAssetID"]),
-                                Title = Convert.ToString(sqlReader["sAssetDescription"]),
                                 FileName = Convert.ToString(sqlReader["sAssetName"]),
-                                Extension = Convert.ToString(sqlReader["sFileExt"]),
-                                ContentBinary = (byte[])sqlReader["blobAsset"]
+                                Extension = Convert.ToString(sqlReader["sFileExt"])
                             };
 
-                            if (String.IsNullOrWhiteSpace(image.Title))
-                            {
-                                image.Title = image.FileName.Replace(String.Format(".{0}", image.Extension), "");
-                            }
-
-                            article.ThumbnailImage = image;
+                            article.AttachedMedia = image;
                         }
 
                         articleList.Add(article);
@@ -231,18 +224,11 @@ namespace twg.chk.DataService.chkData.Repository
                             var image = new MediaContent
                             {
                                 Id = Convert.ToInt32(sqlReader["liAssetID"]),
-                                Title = Convert.ToString(sqlReader["sAssetDescription"]),
                                 FileName = Convert.ToString(sqlReader["sAssetName"]),
-                                Extension = Convert.ToString(sqlReader["sFileExt"]),
-                                ContentBinary = (byte[])sqlReader["blobAsset"]
+                                Extension = Convert.ToString(sqlReader["sFileExt"])
                             };
 
-                            if (String.IsNullOrWhiteSpace(image.Title))
-                            {
-                                image.Title = image.FileName.Replace(String.Format(".{0}", image.Extension), "");
-                            }
-
-                            articleSummary.ThumbnailImage = image;
+                            articleSummary.AttachedMedia = image;
                         }
 
                         articleList.Add(articleSummary);

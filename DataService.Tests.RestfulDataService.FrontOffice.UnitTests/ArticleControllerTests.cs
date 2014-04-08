@@ -86,14 +86,14 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         [TestMethod]
         public void Get_ExistingArticleHasImage()
         {
-            _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article { ThumbnailImage = new MediaContent { Title = "image file", Extension = "jpg", FileName = "imagefile.jpg" } });
+            _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article { AttachedMedia = new MediaContent { Extension = "jpg", FileName = "imagefile.jpg" } });
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem>());
 
             var articleFeed = _objectUnderTest.Get(1);
 
             Assert.IsNotNull(articleFeed);
 
-            Assert.IsNotNull(((Article)articleFeed.FeedContent).ThumbnailImage);
+            Assert.IsNotNull(((Article)articleFeed.FeedContent).AttachedMedia);
         }
     }
 }

@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Article.cs" />
     <Compile Include="ArticleSummary.cs" />
+    <Compile Include="IMediaAttachment.cs" />
     <Compile Include="IWebIdentifiable.cs" />
     <Compile Include="IPagination.cs" />
     <Compile Include="PagedResult.cs" />

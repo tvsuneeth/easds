@@ -7,7 +7,7 @@ using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace twg.chk.DataService.FrontOffice.Models
 {
-    public class MultipleContentFeed<T> : Feed<PagedResult<T>>, IPaginatedFeed where T : IWebIdentifiable
+    public class MultipleContentFeed<T> : Feed<PagedResult<T>>, IPaginatedFeed where T : IWebIdentifiable, IMediaAttachment
     {
         private String _feedEntriesRouteName;
         private String _feedTitle;
@@ -27,6 +27,18 @@ namespace twg.chk.DataService.FrontOffice.Models
                     Content = content,
                     Link = new LinkItem { Href = link, Title = content.GetIdentificationTitle(), Rel = "alternate", Verb = "GET" }
                 };
+                if (content.HasAttachedMedia)
+                {
+                    entry.ThumbnailImage = new LinkItem
+                    {
+                        Href = _urlHelper.GenerateUrl("GetMedia", 
+                            new
+                            {
+                                id = content.AttachedMedia.Id,
+                                fileName = String.Format("{0}.{1}", content.AttachedMedia.FileName, content.AttachedMedia.Extension)
+                            })
+                    };
+                }
 
                 // We add a link property based on the identification element given by the content object (it implement IWebIdentifiable)
                 contentList.Add(entry);

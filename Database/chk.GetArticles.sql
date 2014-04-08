@@ -147,7 +147,7 @@ BEGIN
 	) AS a LEFT OUTER JOIN [dbo].[Authors] AS au ON a.liAuthorID = au.liAuthorID
 	LEFT OUTER JOIN 
 	(
-		SELECT liAssetID, sAssetName, sAssetDescription, blobAsset, sFileExt
+		SELECT liAssetID, sAssetName, sFileExt
 		FROM [dbo].[Assets]
 		WHERE (bDeleted IS NULL OR bDeleted = 0)
 	) AS s ON a.liThumbnailID = s.liAssetID

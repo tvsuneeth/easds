@@ -45,6 +45,9 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                 contentFeed.SetFirstLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.FirstPage), new { topic, page = paginatedArticleSummaries.FirstPage });
                 contentFeed.SetLastLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.LastPage), new { topic, page = paginatedArticleSummaries.LastPage });
 
+                // Add thumbnail image to the feed entries
+
+
                 return contentFeed;
             }
             else

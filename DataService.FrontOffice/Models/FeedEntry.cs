@@ -7,5 +7,6 @@ namespace twg.chk.DataService.FrontOffice.Models
     {
         public Object Content { get; set; }
         public LinkItem Link { get; set; }
+        public LinkItem ThumbnailImage { get; set; }
     }
 }

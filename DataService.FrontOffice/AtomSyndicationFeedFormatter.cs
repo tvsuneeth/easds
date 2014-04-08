@@ -14,25 +14,36 @@ using System.Xml;
 
 using twg.chk.DataService.FrontOffice.Models;
 using twg.chk.DataService.Business;
+using System.Xml.Linq;
 
 namespace twg.chk.DataService.FrontOffice
 {
     public class AtomSyndicationFeedFormatter: MediaTypeFormatter
     {
+        private static readonly Dictionary<String, String> IMAGE_MIME_TYPES = new Dictionary<String, String>
+        {
+            {"jpg", "image/jpeg"},
+            {"jpeg", "image/jpeg"},
+            {"bmp", "image/bmp"},
+            {"gif", "image/gif"},
+            {"jfif", "image/pjpeg"},
+            {"png", "image/png"}
+        };
+
         private static readonly String ATOM_CONTENT_TYPE = "application/atom+xml";
-        private static readonly Dictionary<Type, Func<object, LinkItem, SyndicationItem>> _switchOnType = new Dictionary<Type, Func<object, LinkItem, SyndicationItem>>
+        private static readonly Dictionary<Type, Func<object, LinkItem, LinkItem, SyndicationItem>> _switchOnType = new Dictionary<Type, Func<object, LinkItem, LinkItem, SyndicationItem>>
             {
                 {
                     typeof(ArticleSummary),
-                    (object item, LinkItem link) => { return BuildSyndicationItemForArticleSummary((ArticleSummary)item, link); }
+                    (object item, LinkItem link, LinkItem thumbnailImage) => { return BuildSyndicationItemForArticleSummary((ArticleSummary)item, link, thumbnailImage); }
                 },
                 {
                     typeof(Article),
-                    (object item, LinkItem link) => { return BuildSyndicationItemForArticle((Article)item, link); }
+                    (object item, LinkItem link, LinkItem thumbnailImage) => { return BuildSyndicationItemForArticle((Article)item, link, thumbnailImage); }
                 },
                 {
                     typeof(StaticPage),
-                    (object item, LinkItem link) => { return BuildSyndicationItemForStaticPage((StaticPage)item, link); }
+                    (object item, LinkItem link, LinkItem thumbnailImage) => { return BuildSyndicationItemForStaticPage((StaticPage)item, link, thumbnailImage); }
                 }
             };
 
@@ -92,7 +103,7 @@ namespace twg.chk.DataService.FrontOffice
                 if (paginatedFeed.NextLink != null) { navigationLinks.Add(paginatedFeed.NextLink); }
                 if (paginatedFeed.PreviousLink != null) { navigationLinks.Add(paginatedFeed.PreviousLink); }
             }
-
+            
             foreach (var link in navigationLinks)
             {
                 atomFeed.Links.Add(
@@ -104,19 +115,19 @@ namespace twg.chk.DataService.FrontOffice
                     MediaType = ATOM_CONTENT_TYPE
                 });
             }
-
+            
             var items = new List<SyndicationItem>();
             if (feed.FeedContent is IEnumerable)
             {
                 foreach (var item in feed.Entries)
                 {
-                    var syndicationItem = _switchOnType[item.Content.GetType()](item.Content, item.Link);
+                    var syndicationItem = _switchOnType[item.Content.GetType()](item.Content, item.Link, item.ThumbnailImage);
                     items.Add(syndicationItem);
                 }
             }
             else
             {
-                var syndicationItem = _switchOnType[feed.FeedContent.GetType()](feed.FeedContent, feed.Link);
+                var syndicationItem = _switchOnType[feed.FeedContent.GetType()](feed.FeedContent, feed.Link, feed.Entries.First().ThumbnailImage);
                 items.Add(syndicationItem);
             }
             atomFeed.Items = items;
@@ -128,7 +139,7 @@ namespace twg.chk.DataService.FrontOffice
             }
         }
 
-        private static SyndicationItem BuildSyndicationItemForArticleSummary(ArticleSummary articleSummary, LinkItem link)
+        private static SyndicationItem BuildSyndicationItemForArticleSummary(ArticleSummary articleSummary, LinkItem link, LinkItem thumbnailImage)
         {
             var item = new SyndicationItem()
             {
@@ -144,12 +155,18 @@ namespace twg.chk.DataService.FrontOffice
                 Name = articleSummary.Author.Names,
                 Email = articleSummary.Author.Email
             });
-            
+
+            //Thumbnail image
+            if (thumbnailImage != null)
+            {
+                var thumbnailElement = GetThumbnail(thumbnailImage.Href);
+                item.ElementExtensions.Add(thumbnailElement.CreateReader());
+            }
 
             return item;
         }
 
-        private static SyndicationItem BuildSyndicationItemForArticle(Article article, LinkItem link)
+        private static SyndicationItem BuildSyndicationItemForArticle(Article article, LinkItem link, LinkItem thumbnailImage)
         {
             var item = new SyndicationItem()
             {
@@ -167,11 +184,17 @@ namespace twg.chk.DataService.FrontOffice
                 Email = article.Author.Email
             });
 
+            //Thumbnail image
+            if (thumbnailImage != null)
+            {
+                var thumbnailElement = GetThumbnail(thumbnailImage.Href);
+                item.ElementExtensions.Add(thumbnailElement.CreateReader());
+            }
 
             return item;
         }
 
-        private static SyndicationItem BuildSyndicationItemForStaticPage(StaticPage staticPage, LinkItem link)
+        private static SyndicationItem BuildSyndicationItemForStaticPage(StaticPage staticPage, LinkItem link, LinkItem thumbnailImage)
         {
             var item = new SyndicationItem()
             {
@@ -182,7 +205,30 @@ namespace twg.chk.DataService.FrontOffice
             };
             item.Links.Add(new SyndicationLink { Title = link.Title, Uri = new Uri(link.Href), RelationshipType = link.Rel, MediaType = ATOM_CONTENT_TYPE });
 
+            //Thumbnail image
+            if (thumbnailImage != null)
+            {
+                var thumbnailElement = GetThumbnail(thumbnailImage.Href);
+                item.ElementExtensions.Add(thumbnailElement.CreateReader());
+            }
+
             return item;
+        }
+
+        private static XElement GetThumbnail(String imageUrl)
+        {
+            var fileExtension = Path.GetExtension(imageUrl).Replace(".", "").ToLower();
+            if (IMAGE_MIME_TYPES.ContainsKey(fileExtension))
+            {
+                return new XElement("enclosure",
+                    new XAttribute("type", IMAGE_MIME_TYPES[fileExtension]),
+                    new XAttribute("url", imageUrl)
+                   );
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace twg.chk.DataService.Business
 {
-    public class PagedResult<T> : List<T>, IPagination<T>, ITaxonomy where T : IWebIdentifiable
+    public class PagedResult<T> : List<T>, IPagination<T>, ITaxonomy where T : IWebIdentifiable, IMediaAttachment
     {
         private TaxonomyCategories _taxonomySearchItem;
         public PagedResult(TaxonomyCategories taxonomySearchItem, int currentPage, int totalResult, int numberOfResultPerPage)
