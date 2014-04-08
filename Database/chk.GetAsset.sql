@@ -17,6 +17,6 @@ AS
 BEGIN
 	SELECT liAssetID, sAssetName, blobAsset, sFileExt
 	FROM [dbo].[Assets]
-	WHERE liAssetID IN (SELECT CAST(Id AS INT) FROM @AssetIds)
+	WHERE liAssetID IN (SELECT CAST(Name AS INT) AS Id FROM @AssetIds)
 	AND (bDeleted IS NULL OR bDeleted = 0)
 END
