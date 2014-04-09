@@ -17,6 +17,7 @@ namespace twg.chk.DataService.chkData.Repository
         IEnumerable<TaxonomyItem> GetArticleSectionParents(String articleSection);
         IEnumerable<TaxonomyItem> GetSectorParents(String sector);
         IEnumerable<TaxonomyItem> GetTopicParents(String topic);
+        IEnumerable<TaxonomyItem> GetChildrenArticleSection(String articleSectionName);
     }
 
     public class TaxonomyRepository : ITaxonomyRepository
@@ -26,6 +27,8 @@ namespace twg.chk.DataService.chkData.Repository
             var taxonomy = GetTaxonomy(id, null, null, null);
             return taxonomy.SingleOrDefault();
         }
+
+        #region Taxonomy with parents
 
         public IEnumerable<TaxonomyItem> GetArticleSectionSectorAndTopicParents(String articleSection, String sector, String topic)
         {
@@ -85,5 +88,50 @@ namespace twg.chk.DataService.chkData.Repository
 
             return taxonomyItems;
         }
+
+        #endregion
+
+        #region Taxonomy with direct children
+
+        public IEnumerable<TaxonomyItem> GetChildrenArticleSection(String articleSectionName)
+        {
+            return GetChildrenTaxonomy(null, articleSectionName, null, null);
+        }
+
+        private IEnumerable<TaxonomyItem> GetChildrenTaxonomy(int? taxonomyItemId, String articleSectionName, String sectorName, String topicName)
+        {
+            var taxonomyItems = new List<TaxonomyItem>();
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
+            {
+                using (var command = new SqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "chk.GetChildrenTaxonomy";
+                    command.Parameters.Add(new SqlParameter("@CategoryItemId", taxonomyItemId ?? 0));
+                    command.Parameters.Add(new SqlParameter("@ArticleSectionName", articleSectionName));
+                    command.Parameters.Add(new SqlParameter("@SectorName", sectorName));
+                    command.Parameters.Add(new SqlParameter("@TopicName", topicName));
+
+                    var sqlReader = command.ExecuteReader();
+                    while (sqlReader.Read())
+                    {
+                        var taxonmy = new TaxonomyItem
+                        {
+                            Id = Convert.ToInt32(sqlReader["liCategoryItemID"]),
+                            Name = Convert.ToString(sqlReader["sItemName"]),
+                            ParentId = DBNull.Value.Equals(sqlReader["liParentID"]) ? null : (int?)Convert.ToInt32(sqlReader["liParentID"]),
+                            Category = (TaxonomyCategories)Enum.Parse(typeof(TaxonomyCategories), Convert.ToString(sqlReader["liCategoryID"]))
+                        };
+                        taxonomyItems.Add(taxonmy);
+                    }
+                }
+            }
+
+            return taxonomyItems;
+        }
+
+        #endregion
     }
 }

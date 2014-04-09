@@ -23,7 +23,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
-        [Route("topic/{topic:regex(^[a-zA-Z- ]+)}/{page:int?}", Name = "GetArticleByTopic")]
+        [Route("topic/{topic:regex(^[a-zA-Z0-9- ,&]+)}/{page:int?}", Name = "GetArticleByTopic")]
         [Authorize(Roles = "frontofficegroup")]
         public MultipleContentFeed<ArticleSummary> GetTopic(String topic, int page = 1)
         {
@@ -40,13 +40,19 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     "GetArticleById"
                 );
 
-                contentFeed.SetNextLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.NextPage), new { topic, page = paginatedArticleSummaries.NextPage });
-                contentFeed.SetPreviousLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.PreviousPage), new { topic, page = paginatedArticleSummaries.PreviousPage });
-                contentFeed.SetFirstLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.FirstPage), new { topic, page = paginatedArticleSummaries.FirstPage });
-                contentFeed.SetLastLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.LastPage), new { topic, page = paginatedArticleSummaries.LastPage });
-
-                // Add thumbnail image to the feed entries
-
+                if (paginatedArticleSummaries.HasMultiplePage)
+                {
+                    if (paginatedArticleSummaries.HasNextPage)
+                    {
+                        contentFeed.SetNextLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.NextPage), new { topic, page = paginatedArticleSummaries.NextPage });
+                    }
+                    if (paginatedArticleSummaries.HasPreviousPage)
+                    {
+                        contentFeed.SetPreviousLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.PreviousPage), new { topic, page = paginatedArticleSummaries.PreviousPage });
+                    }
+                    contentFeed.SetFirstLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.FirstPage), new { topic, page = paginatedArticleSummaries.FirstPage });
+                    contentFeed.SetLastLink("GetArticleByTopic", String.Format("Topic {0} page {1}", topic, paginatedArticleSummaries.LastPage), new { topic, page = paginatedArticleSummaries.LastPage });
+                }
 
                 return contentFeed;
             }
@@ -57,7 +63,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
-        [Route("sector/{sector:regex(^[a-zA-Z- ]+)}/{page:int?}", Name = "GetArticleBySector")]
+        [Route("sector/{sector:regex(^[a-zA-Z0-9- ,&]+)}/{page:int?}", Name = "GetArticleBySector")]
         [Authorize(Roles = "frontofficegroup")]
         public MultipleContentFeed<ArticleSummary> GetSector(String sector, int page = 1)
         {
@@ -74,10 +80,19 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     "GetArticleById"
                 );
 
-                contentFeed.SetNextLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.NextPage), new { sector, page = paginatedArticleSummaries.NextPage });
-                contentFeed.SetPreviousLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.PreviousPage), new { sector, page = paginatedArticleSummaries.PreviousPage });
-                contentFeed.SetFirstLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.FirstPage), new { sector, page = paginatedArticleSummaries.FirstPage });
-                contentFeed.SetLastLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.LastPage), new { sector, page = paginatedArticleSummaries.LastPage });
+                if (paginatedArticleSummaries.HasMultiplePage)
+                {
+                    if (paginatedArticleSummaries.HasNextPage)
+                    {
+                        contentFeed.SetNextLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.NextPage), new { sector, page = paginatedArticleSummaries.NextPage });
+                    }
+                    if (paginatedArticleSummaries.HasPreviousPage)
+                    {
+                        contentFeed.SetPreviousLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.PreviousPage), new { sector, page = paginatedArticleSummaries.PreviousPage });
+                    }
+                    contentFeed.SetFirstLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.FirstPage), new { sector, page = paginatedArticleSummaries.FirstPage });
+                    contentFeed.SetLastLink("GetArticleBySector", String.Format("Sector {0} page {1}", sector, paginatedArticleSummaries.LastPage), new { sector, page = paginatedArticleSummaries.LastPage });
+                }
 
                 return contentFeed;
             }
@@ -104,10 +119,19 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     "GetArticleById"
                 );
 
-                contentFeed.SetNextLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.NextPage), new { articleSection, page = paginatedArticleSummaries.NextPage });
-                contentFeed.SetPreviousLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.PreviousPage), new { articleSection, page = paginatedArticleSummaries.PreviousPage });
-                contentFeed.SetFirstLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.FirstPage), new { articleSection, page = paginatedArticleSummaries.FirstPage });
-                contentFeed.SetLastLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.LastPage), new { articleSection, page = paginatedArticleSummaries.LastPage });
+                if (paginatedArticleSummaries.HasMultiplePage)
+                {
+                    if (paginatedArticleSummaries.HasNextPage)
+                    {
+                        contentFeed.SetNextLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.NextPage), new { articleSection, page = paginatedArticleSummaries.NextPage });
+                    }
+                    if (paginatedArticleSummaries.HasPreviousPage)
+                    {
+                        contentFeed.SetPreviousLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.PreviousPage), new { articleSection, page = paginatedArticleSummaries.PreviousPage });
+                    }
+                    contentFeed.SetFirstLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.FirstPage), new { articleSection, page = paginatedArticleSummaries.FirstPage });
+                    contentFeed.SetLastLink("GetArticleByArticleSection", String.Format("Article Section {0} page {1}", articleSection, paginatedArticleSummaries.LastPage), new { articleSection, page = paginatedArticleSummaries.LastPage });
+                }
 
                 return contentFeed;
             }
@@ -134,10 +158,19 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     "GetArticleById"
                 );
 
-                contentFeed.SetNextLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.NextPage), new { articleSection, sector, page = paginatedArticleSummaries.NextPage });
-                contentFeed.SetPreviousLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.PreviousPage), new { articleSection, sector, page = paginatedArticleSummaries.PreviousPage });
-                contentFeed.SetFirstLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.FirstPage), new { articleSection, sector, page = paginatedArticleSummaries.FirstPage });
-                contentFeed.SetLastLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.LastPage), new { articleSection, sector, page = paginatedArticleSummaries.LastPage });
+                if (paginatedArticleSummaries.HasMultiplePage)
+                {
+                    if (paginatedArticleSummaries.HasNextPage)
+                    {
+                        contentFeed.SetNextLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.NextPage), new { articleSection, sector, page = paginatedArticleSummaries.NextPage });
+                    }
+                    if (paginatedArticleSummaries.HasPreviousPage)
+                    {
+                        contentFeed.SetPreviousLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.PreviousPage), new { articleSection, sector, page = paginatedArticleSummaries.PreviousPage });
+                    }
+                    contentFeed.SetFirstLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.FirstPage), new { articleSection, sector, page = paginatedArticleSummaries.FirstPage });
+                    contentFeed.SetLastLink("GetArticleByArticleSectionAndSector", String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, paginatedArticleSummaries.LastPage), new { articleSection, sector, page = paginatedArticleSummaries.LastPage });
+                }
 
                 return contentFeed;
             }

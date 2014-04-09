@@ -24,7 +24,7 @@ namespace twg.chk.DataService.FrontOffice.Helpers
                 throw new ArgumentNullException("RouteHelper has not been initialized");
             }
 
-            return RouteHelper.Link(linkRouteName, linkArguments);
+            return RouteHelper.Link(linkRouteName, linkArguments).Replace("&", "%26");
         }
 
         public System.Web.Http.Routing.UrlHelper RouteHelper { set; private get; }

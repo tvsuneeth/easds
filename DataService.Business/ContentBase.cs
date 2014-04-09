@@ -22,8 +22,10 @@ namespace twg.chk.DataService.Business
 
         private List<TaxonomyItem> _taxonomyList;
         public virtual void SetTaxonomyList(List<TaxonomyItem> taxonomyList) { _taxonomyList = taxonomyList; }
+        public List<TaxonomyItem> _childrenArticleSection;
+        public virtual void SetChildrenArticleSection(List<TaxonomyItem> childrenArticleSection) { _childrenArticleSection = childrenArticleSection; }
 
-        public TaxonomyItem GetParent()
+        public TaxonomyItem GetParentArticleSection()
         {
             var sections = GetArticleSections();
             if (sections == null)
@@ -48,6 +50,8 @@ namespace twg.chk.DataService.Business
                 return sections[0];
             }
         }
+
+        public List<TaxonomyItem> GetChildrenArticleSection() { return _childrenArticleSection; }
 
         public List<TaxonomyItem> GetArticleSections()
         {

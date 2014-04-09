@@ -93,6 +93,7 @@ namespace twg.chk.DataService.FrontOffice
             if (feed.Parent != null) { navigationLinks.Add(feed.Parent); }
             if (feed.Related != null) { navigationLinks.AddRange(feed.Related); }
             if (feed.Tags != null) { navigationLinks.AddRange(feed.Tags); }
+            if (feed.Children != null) { navigationLinks.AddRange(feed.Children); }
 
             // Add pagination information if exist
             if (feed is IPaginatedFeed)

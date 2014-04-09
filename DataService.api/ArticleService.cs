@@ -66,6 +66,10 @@ namespace twg.chk.DataService.api
             var articleSections = _taxonomyRepository.GetArticleSectionParents(articleSectionName);
             articleSummaries.SetTaxonomyList(articleSections);
 
+            //fetch children article sections for the given article section
+            var childrenArticleSection = _taxonomyRepository.GetChildrenArticleSection(articleSectionName);
+            articleSummaries.SetChildrenArticleSection(childrenArticleSection);
+
             return articleSummaries;
         }
 
@@ -76,6 +80,10 @@ namespace twg.chk.DataService.api
             //fetch taxonomy for the given article section
             var articleSectionsAndSectors = _taxonomyRepository.GetArticleSectionAndSectorParents(articleSectionName, sectorName);
             articleSummaries.SetTaxonomyList(articleSectionsAndSectors);
+
+            //fetch children article sections for the given article section
+            var childrenArticleSection = _taxonomyRepository.GetChildrenArticleSection(articleSectionName);
+            articleSummaries.SetChildrenArticleSection(childrenArticleSection);
 
             return articleSummaries;
         }

@@ -36,7 +36,10 @@ namespace twg.chk.DataService.Business
 
         public virtual void SetTaxonomyList(IEnumerable<TaxonomyItem> taxonomyList) { _taxonomyList = taxonomyList; }
 
-        public TaxonomyItem GetParent()
+        public IEnumerable<TaxonomyItem> _childrenArticleSection;
+        public virtual void SetChildrenArticleSection(IEnumerable<TaxonomyItem> childrenArticleSection) { _childrenArticleSection = childrenArticleSection; }
+
+        public TaxonomyItem GetParentArticleSection()
         {
             TaxonomyItem parentItem = null;
 
@@ -91,6 +94,17 @@ namespace twg.chk.DataService.Business
 
             return parentItem;
         }
+
+        public List<TaxonomyItem> GetChildrenArticleSection()
+        {
+            if (_childrenArticleSection == null)
+                return null;
+
+            var items = _childrenArticleSection.ToList();
+
+            return items.Count == 0 ? null : items;
+        }
+
 
         public List<TaxonomyItem> GetArticleSections()
         {

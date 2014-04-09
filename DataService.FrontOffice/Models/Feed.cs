@@ -12,6 +12,7 @@ namespace twg.chk.DataService.FrontOffice.Models
     {
         LinkItem Parent { get; }
         List<LinkItem> Parents { get; }
+        List<LinkItem> Children { get; }
         List<LinkItem> Related { get; }
         List<LinkItem> Tags { get; }
         LinkItem Link { get; }
@@ -34,13 +35,14 @@ namespace twg.chk.DataService.FrontOffice.Models
             // Set navigations links based on taxonomy items
             SetParent();
             SetParents();
+            SetChildren();
             SetRelated();
             SetTags();
         }
 
         private void SetParent()
         {
-            var parentItem = _feedContent.GetParent();
+            var parentItem = _feedContent.GetParentArticleSection();
 
             if (parentItem != null)
             {
@@ -102,6 +104,25 @@ namespace twg.chk.DataService.FrontOffice.Models
                 };
             }
         }
+        private void SetChildren()
+        {
+            var childrenArticleSection = _feedContent.GetChildrenArticleSection();
+            if (childrenArticleSection != null )
+            {
+                Children = childrenArticleSection.Select(a =>
+                    new LinkItem
+                    {
+                        Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection = a.Name }),
+                        Title = a.Name,
+                        Rel = "section",
+                        Verb = "GET"
+                    }).ToList();
+            }
+            else
+            {
+                Children = null;
+            }
+        }
         private void SetRelated()
         {
             var sectors = _feedContent.GetSectors();
@@ -143,6 +164,7 @@ namespace twg.chk.DataService.FrontOffice.Models
 
         public LinkItem Parent { get; private set; }
         public List<LinkItem> Parents { get; private set; }
+        public List<LinkItem> Children { get; private set; }
         public List<LinkItem> Related { get; private set; }
         public List<LinkItem> Tags { get; private set; }
 

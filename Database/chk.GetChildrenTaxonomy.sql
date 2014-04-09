@@ -1,15 +1,15 @@
 IF EXISTS
 (
     SELECT * FROM sys.objects
-    WHERE type = 'P' AND SCHEMA_NAME(schema_id) = 'chk' AND name like 'GetTaxonomy'
+    WHERE type = 'P' AND SCHEMA_NAME(schema_id) = 'chk' AND name like 'GetChildrenTaxonomy'
 )
 BEGIN
-    DROP PROCEDURE [chk].[GetTaxonomy]
+    DROP PROCEDURE [chk].[GetChildrenTaxonomy]
 END
 
 GO
 
-CREATE PROCEDURE [chk].[GetTaxonomy]
+CREATE PROCEDURE [chk].[GetChildrenTaxonomy]
 (
 	@CategoryItemId INT = 0,
 	@ArticleSectionName NVARCHAR(255) = NULL,
@@ -37,16 +37,13 @@ BEGIN
 	AND (bRemoved IS NULL OR bRemoved = 0);
 		
 
-	-- fetch taxonom list with parents
+	-- fetch taxonomy list with direct children (only one level down)
 	WITH taxonomyItems (liCategoryItemID, liCategoryID, sItemName, liParentID)
 	AS
 	(
-		SELECT ci.liCategoryItemID, ci.liCategoryID, ci.sItemName, ci.liParentID
+		SELECT ci2.liCategoryItemID, ci2.liCategoryID, ci2.sItemName, ci2.liParentID
 		FROM [dbo].[CategoryItems] ci INNER JOIN @TaxonomyIdTable AS t ON ci.liCategoryItemID = t.Id
-		UNION ALL
-		SELECT ci2.liCategoryItemID, ci2.liCategoryID, ci2.sItemName, ci2.liParentID 
-		FROM [dbo].[CategoryItems] ci2
-		INNER JOIN taxonomyItems ON ci2.liCategoryItemID = taxonomyItems.liParentID
+		INNER JOIN [dbo].[CategoryItems] ci2 ON ci.liCategoryItemID = ci2.liParentID
 		WHERE (ci2.bRemoved IS NULL OR ci2.bRemoved = 0)
 	)
 	SELECT DISTINCT *

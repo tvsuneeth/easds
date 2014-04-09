@@ -48,7 +48,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
-        [Route("{name:regex(^[a-zA-Z-]+)}", Name = "GetStaticPageByName")]
+        [Route("{name:regex(^[a-zA-Z0-9- ,&]+)}", Name = "GetStaticPageByName")]
         [Authorize(Roles = "frontofficegroup")]
         public SingleContentFeed<StaticPage> GetByName(String name)
         {
