@@ -55,6 +55,7 @@ namespace twg.chk.DataService.Business
                             select new { Id = s.Id, ChildId = (int?)(s2 == null ? null : (int?)s2.Id) }
                         )
                         .Where(c => c.ChildId == null)
+                        .Take(1)
                         .Single()
                         .Id;
 
