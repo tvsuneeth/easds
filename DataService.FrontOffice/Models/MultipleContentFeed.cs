@@ -25,7 +25,7 @@ namespace twg.chk.DataService.FrontOffice.Models
                 var entry = new FeedEntry
                 {
                     Content = content,
-                    Link = new LinkItem { Href = link, Title = content.GetIdentificationTitle(), Rel = "alternate", Verb = "GET" }
+                    Link = new LinkItem { Href = link, Title = content.GetIdentificationTitle(), Rel = "via", Verb = "GET" }
                 };
                 if (content.HasAttachedMedia)
                 {
