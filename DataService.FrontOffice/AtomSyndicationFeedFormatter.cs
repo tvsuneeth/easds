@@ -222,7 +222,8 @@ namespace twg.chk.DataService.FrontOffice
             {
                 return new XElement("enclosure",
                     new XAttribute("type", IMAGE_MIME_TYPES[fileExtension]),
-                    new XAttribute("url", imageUrl)
+                    new XAttribute("url", imageUrl),
+                    new XAttribute("xmlns", "http://www.w3.org/2005/Atom")
                    );
             }
             else
