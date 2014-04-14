@@ -114,7 +114,7 @@ namespace twg.chk.DataService.FrontOffice.Models
                     {
                         Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection = a.Name }),
                         Title = a.Name,
-                        Rel = "section",
+                        Rel = "subsection",
                         Verb = "GET"
                     }).ToList();
             }
