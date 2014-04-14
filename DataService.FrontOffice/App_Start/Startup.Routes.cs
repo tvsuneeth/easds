@@ -4,6 +4,8 @@ using Owin;
 using Ninject;
 using WebApiContrib.IoC.Ninject;
 
+using twg.chk.DataService.api;
+
 namespace twg.chk.DataService.FrontOffice
 {
     public partial class Startup
@@ -15,7 +17,7 @@ namespace twg.chk.DataService.FrontOffice
             _config.DependencyResolver = new NinjectResolver(DependencyKernel);
 
             // add specific formatter for contentType application/atom+xml
-            _config.Formatters.Add(new AtomSyndicationFeedFormatter());
+            _config.Formatters.Add(new AtomSyndicationFeedFormatter(DependencyKernel.Get<IStaticContentLinkService>()));
 
             _config.MapHttpAttributeRoutes();
 

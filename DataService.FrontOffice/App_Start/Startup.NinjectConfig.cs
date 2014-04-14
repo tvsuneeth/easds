@@ -7,6 +7,7 @@ using Ninject.Extensions.Conventions;
 using twg.chk.DataService.api;
 using twg.chk.DataService.chkData.Repository;
 using twg.chk.DataService.DbContext.Repository;
+using twg.chk.DataService.DbContext.Intrastructure;
 
 namespace twg.chk.DataService.FrontOffice
 {
@@ -31,9 +32,11 @@ namespace twg.chk.DataService.FrontOffice
                             .BindAllInterfaces());
 
                     kernel.Bind(
-                        x => x.From(typeof(IUserRepository).Assembly)
+                        x => x.From(typeof(IStaticContentLinkRepository).Assembly)
                             .Select(c => c.IsClass && c.Name.EndsWith("Repository"))
                             .BindAllInterfaces());
+
+                    kernel.Bind<IDatabaseFactory>().To<DatabaseFactory>();
 
                     kernel.Bind(
                         x => x.From(typeof(Helpers.IUrlHelper).Assembly)

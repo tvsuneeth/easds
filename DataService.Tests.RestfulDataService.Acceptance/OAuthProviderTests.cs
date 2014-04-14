@@ -59,7 +59,10 @@ namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
         [TestInitialize]
         public void Setup()
         {
-            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(new twg.chk.DataService.DbContext.DataServiceEntities("Datasource=myTestDatabase.mdf")));
+            var db = new twg.chk.DataService.DbContext.DataServiceEntities("Datasource=myTestDatabase.mdf");
+            db.Database.CreateIfNotExists();
+
+            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(db));
 
             _objectUnderTest = new OAuthProvider(_userManager);
         }
@@ -80,8 +83,7 @@ namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
         public void Token_RequestToken()
         {
             //add an user
-            var authService = _userManager;
-            var identityResult = authService.Create<IdentityUser>(new IdentityUser { UserName = "ravi" }, "Passw0rd");
+            var identityResult = _userManager.Create<IdentityUser>(new IdentityUser { UserName = "ravi" }, "Passw0rd");
 
             // Non-Existing Account authentication
             var owinContext = new FakeOwinContext();

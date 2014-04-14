@@ -157,7 +157,9 @@
     <Compile Include="Models\Feed.cs" />
     <Compile Include="Models\FeedEntry.cs" />
     <Compile Include="Models\IPaginatedFeed.cs" />
-    <Compile Include="Models\LinkItem.cs" />
+    <Compile Include="Models\LinkItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\MultipleContentFeed.cs" />
     <Compile Include="Models\SingleContentFeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

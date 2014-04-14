@@ -59,6 +59,7 @@
     <Compile Include="Person.cs" />
     <Compile Include="ContentBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StaticContentLink.cs" />
     <Compile Include="StaticPage.cs" />
     <Compile Include="TaxonomyItem.cs" />
   </ItemGroup>

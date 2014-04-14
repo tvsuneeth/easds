@@ -12,6 +12,7 @@ using Rhino.Mocks;
 
 using twg.chk.DataService.Business;
 using twg.chk.DataService.chkData.Repository;
+using twg.chk.DataService.DbContext.Repository;
 using twg.chk.DataService.api;
 using twg.chk.DataService.FrontOffice.Controllers;
 using twg.chk.DataService.FrontOffice.Models;

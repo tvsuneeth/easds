@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.ServiceModel.Syndication;
 using System.Xml;
 
+using twg.chk.DataService.api;
 using twg.chk.DataService.FrontOffice.Models;
 using twg.chk.DataService.Business;
 using System.Xml.Linq;
@@ -47,8 +48,11 @@ namespace twg.chk.DataService.FrontOffice
                 }
             };
 
-        public AtomSyndicationFeedFormatter()
+        private IStaticContentLinkService _staticContentLinkService;
+
+        public AtomSyndicationFeedFormatter(IStaticContentLinkService staticContentLinkService)
         {
+            _staticContentLinkService = staticContentLinkService;
             SupportedMediaTypes.Add(new MediaTypeHeaderValue(ATOM_CONTENT_TYPE));
         }
 
@@ -76,13 +80,15 @@ namespace twg.chk.DataService.FrontOffice
             {
                 Title = new TextSyndicationContent(feed.Link.Title),
                 Id = feed.Link.Href,
-                LastUpdatedTime = new DateTimeOffset(DateTime.UtcNow),
+                LastUpdatedTime = new DateTimeOffset(DateTime.UtcNow)
             };
+
+            var feedUri = new Uri(feed.Link.Href);
             atomFeed.Links.Add(
             new SyndicationLink
             {
                 Title = feed.Link.Title,
-                Uri = new Uri(feed.Link.Href),
+                Uri = feedUri,
                 RelationshipType = feed.Link.Rel,
                 MediaType = ATOM_CONTENT_TYPE
             });
@@ -94,6 +100,11 @@ namespace twg.chk.DataService.FrontOffice
             if (feed.Related != null) { navigationLinks.AddRange(feed.Related); }
             if (feed.Tags != null) { navigationLinks.AddRange(feed.Tags); }
             if (feed.Children != null) { navigationLinks.AddRange(feed.Children); }
+
+            // Fetch static links
+            var staticItems = _staticContentLinkService.GetStaticContentLinkForSite();
+            var staticLinks = staticItems.Select(s => new LinkItem { Title = s.Title, Href = (new Uri(feedUri, s.PartialUrl)).AbsoluteUri, Rel = s.Rel, Verb = "GET" });
+            navigationLinks.AddRange(staticLinks);
 
             // Add pagination information if exist
             if (feed is IPaginatedFeed)
@@ -148,20 +159,32 @@ namespace twg.chk.DataService.FrontOffice
                 Title = new TextSyndicationContent(articleSummary.Title),
                 LastUpdatedTime = new DateTimeOffset(articleSummary.LastModified),
                 PublishDate = new DateTimeOffset(articleSummary.PublishedDate),
-                Summary = new TextSyndicationContent(articleSummary.Introduction)
+                Summary = new TextSyndicationContent(articleSummary.Introduction),
+                Content = SyndicationContent.CreateUrlContent(new Uri(link.Href), ATOM_CONTENT_TYPE)
             };
-            item.Links.Add(new SyndicationLink { Title = link.Title, Uri = new Uri(link.Href), RelationshipType = link.Rel, MediaType = ATOM_CONTENT_TYPE });
-            item.Authors.Add(new SyndicationPerson
+            //item.Links.Add(new SyndicationLink { Title = link.Title, Uri = new Uri(link.Href), RelationshipType = link.Rel, MediaType =  });
+
+            if (articleSummary.Author == null)
             {
-                Name = articleSummary.Author.Names,
-                Email = articleSummary.Author.Email
-            });
+                item.Authors.Add(new SyndicationPerson { Name = "anonymous" });
+            }
+            else
+            {
+                item.Authors.Add(new SyndicationPerson
+                {
+                    Name = articleSummary.Author.Names,
+                    Email = articleSummary.Author.Email
+                });
+            }
 
             //Thumbnail image
             if (thumbnailImage != null)
             {
-                var thumbnailElement = GetThumbnail(thumbnailImage.Href);
-                item.ElementExtensions.Add(thumbnailElement.CreateReader());
+                var thumbnailLink = GetThumbnail(thumbnailImage.Href);
+                if (thumbnailLink != null)
+                {
+                    item.Links.Add(thumbnailLink);
+                }
             }
 
             return item;
@@ -179,17 +202,28 @@ namespace twg.chk.DataService.FrontOffice
                 Content = SyndicationContent.CreateHtmlContent(article.Body)
             };
             item.Links.Add(new SyndicationLink { Title = link.Title, Uri = new Uri(link.Href), RelationshipType = link.Rel, MediaType = ATOM_CONTENT_TYPE });
-            item.Authors.Add(new SyndicationPerson
+
+            if (article.Author == null)
             {
-                Name = article.Author.Names,
-                Email = article.Author.Email
-            });
+                item.Authors.Add(new SyndicationPerson { Name = "anonymous" });
+            }
+            else
+            {
+                item.Authors.Add(new SyndicationPerson
+                {
+                    Name = article.Author.Names,
+                    Email = article.Author.Email
+                });
+            }
 
             //Thumbnail image
             if (thumbnailImage != null)
             {
-                var thumbnailElement = GetThumbnail(thumbnailImage.Href);
-                item.ElementExtensions.Add(thumbnailElement.CreateReader());
+                var thumbnailLink = GetThumbnail(thumbnailImage.Href);
+                if (thumbnailLink != null)
+                {
+                    item.Links.Add(thumbnailLink);
+                }
             }
 
             return item;
@@ -205,27 +239,26 @@ namespace twg.chk.DataService.FrontOffice
                 Content = SyndicationContent.CreateHtmlContent(staticPage.Body)
             };
             item.Links.Add(new SyndicationLink { Title = link.Title, Uri = new Uri(link.Href), RelationshipType = link.Rel, MediaType = ATOM_CONTENT_TYPE });
-
+            
             //Thumbnail image
             if (thumbnailImage != null)
             {
-                var thumbnailElement = GetThumbnail(thumbnailImage.Href);
-                item.ElementExtensions.Add(thumbnailElement.CreateReader());
+                var thumbnailLink = GetThumbnail(thumbnailImage.Href);
+                if (thumbnailLink != null)
+                {
+                    item.Links.Add(thumbnailLink);
+                }
             }
 
             return item;
         }
 
-        private static XElement GetThumbnail(String imageUrl)
+        private static SyndicationLink GetThumbnail(String imageUrl)
         {
             var fileExtension = Path.GetExtension(imageUrl).Replace(".", "").ToLower();
             if (IMAGE_MIME_TYPES.ContainsKey(fileExtension))
             {
-                return new XElement("enclosure",
-                    new XAttribute("type", IMAGE_MIME_TYPES[fileExtension]),
-                    new XAttribute("url", imageUrl),
-                    new XAttribute("xmlns", "http://www.w3.org/2005/Atom")
-                   );
+                return new SyndicationLink { Uri = new Uri(imageUrl), RelationshipType = "enclosure", MediaType = IMAGE_MIME_TYPES[fileExtension] };
             }
             else
             {

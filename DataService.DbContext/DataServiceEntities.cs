@@ -11,8 +11,15 @@ namespace twg.chk.DataService.DbContext
 {
     public class DataServiceEntities : IdentityDbContext<IdentityUser>, IDisposable
     {
-        public DataServiceEntities() : this("ChkDataServiceContext") { }
-        public DataServiceEntities(String connectionStringOrConnectionName) : base(connectionStringOrConnectionName) { }
+        public IDbSet<StaticContentLink> StaticContentLinks { get; set; }
+
+        static DataServiceEntities()
+        {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<DataServiceEntities, Migrations.Configuration>());
+        }
+
+        public DataServiceEntities() : this("ChkDataServiceContext") {}
+        public DataServiceEntities(String connectionStringOrConnectionName) : base(connectionStringOrConnectionName) {}
 
         public virtual void Commit()
         {
@@ -23,7 +30,7 @@ namespace twg.chk.DataService.DbContext
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Conventions.Remove<IncludeMetadataConvention>();
+            //modelBuilder.Conventions.Remove<IncludeMetadataConvention>();
         }
 
         void IDisposable.Dispose()

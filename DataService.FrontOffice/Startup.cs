@@ -17,7 +17,7 @@ namespace twg.chk.DataService.FrontOffice
             NinjectConfig.CreateKernel(new StandardKernel());
             RegisterAuth();
 
-            var sampleDataInit = new DataServiceSampleData(Startup.DependencyKernel.Get<UserManager<IdentityUser>>());
+            var sampleDataInit = new DataServiceSampleData();
             System.Data.Entity.Database.SetInitializer(sampleDataInit);
         }
         public void Configuration(IAppBuilder app)

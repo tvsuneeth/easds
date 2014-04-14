@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using twg.chk.DataService.api;
 using twg.chk.DataService.Business;
 using twg.chk.DataService.FrontOffice.Helpers;
 

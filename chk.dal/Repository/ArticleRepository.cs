@@ -71,7 +71,7 @@ namespace twg.chk.DataService.chkData.Repository
                             MetaDescription = Convert.ToString(sqlReader["metaDescription"]),
                             MetaKeywords = Convert.ToString(sqlReader["metaKeywords"])
                         };
-                        article.Author = new Person
+                        var author = new Person
                         {
                             Title = DBNull.Value.Equals(sqlReader["sTitle"]) ? String.Empty : Convert.ToString(sqlReader["sTitle"]).Trim(),
                             FirstName = DBNull.Value.Equals(sqlReader["sFirstName"]) ? String.Empty : Convert.ToString(sqlReader["sFirstName"]).Trim(),
@@ -79,6 +79,10 @@ namespace twg.chk.DataService.chkData.Repository
                             Email = DBNull.Value.Equals(sqlReader["sEmailAddress"]) ? String.Empty : Convert.ToString(sqlReader["sEmailAddress"]).Trim(),
 
                         };
+                        if (!String.IsNullOrWhiteSpace(author.Names))
+                        {
+                            article.Author = author;
+                        }
 
                         if (!DBNull.Value.Equals(sqlReader["liAssetID"]))
                         {
@@ -211,13 +215,18 @@ namespace twg.chk.DataService.chkData.Repository
                             LastModified = Convert.ToDateTime(sqlReader["dtLastModified"]),
                         };
 
-                        articleSummary.Author = new Person
+                        var author = new Person
                         {
                             Title = DBNull.Value.Equals(sqlReader["sTitle"]) ? String.Empty : Convert.ToString(sqlReader["sTitle"]).Trim(),
                             FirstName = DBNull.Value.Equals(sqlReader["sFirstName"]) ? String.Empty : Convert.ToString(sqlReader["sFirstName"]).Trim(),
                             LastName = DBNull.Value.Equals(sqlReader["sLastName"]) ? String.Empty : Convert.ToString(sqlReader["sLastName"]).Trim(),
                             Email = DBNull.Value.Equals(sqlReader["sEmailAddress"]) ? String.Empty : Convert.ToString(sqlReader["sEmailAddress"]).Trim(),
                         };
+                        if (!String.IsNullOrWhiteSpace(author.Names))
+                        {
+                            articleSummary.Author = author;
+                        }
+
 
                         if (!DBNull.Value.Equals(sqlReader["liAssetID"]))
                         {

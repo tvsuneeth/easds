@@ -61,6 +61,12 @@
           <AssociatedConnUserName />
           <FullPath>chk.GetAsset.sql</FullPath>
         </FileNode>
+        <FileNode Name="chk.GetChildrenTaxonomy.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:TWEEDEV10\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>TWEEDEV10\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>chk.GetChildrenTaxonomy.sql</FullPath>
+        </FileNode>
         <FileNode Name="chk.GetStaticPage.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:88.208.247.10:False:CatererAndHotelKeeper_dev</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>88.208.247.10</AssociatedConnSrvName>
