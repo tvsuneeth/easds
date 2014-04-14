@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 using twg.chk.DataService.api;
 using twg.chk.DataService.Business;
@@ -25,6 +26,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         [HttpGet]
         [Route("topic/{topic:regex(^[a-zA-Z0-9- ,&]+)}/{page:int?}", Name = "GetArticleByTopic")]
         [Authorize(Roles = "frontofficegroup")]
+        [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 1200, AnonymousOnly = false)]
         public MultipleContentFeed<ArticleSummary> GetTopic(String topic, int page = 1)
         {
             _urlHelper.RouteHelper = Url;
@@ -65,6 +67,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         [HttpGet]
         [Route("sector/{sector:regex(^[a-zA-Z0-9- ,&]+)}/{page:int?}", Name = "GetArticleBySector")]
         [Authorize(Roles = "frontofficegroup")]
+        [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 1200, AnonymousOnly = false)]
         public MultipleContentFeed<ArticleSummary> GetSector(String sector, int page = 1)
         {
             _urlHelper.RouteHelper = Url;
@@ -104,6 +107,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Authorize(Roles = "frontofficegroup")]
+        [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 1200, AnonymousOnly = false)]
         public MultipleContentFeed<ArticleSummary> GetArticleSection(String articleSection, int page = 1)
         {
             _urlHelper.RouteHelper = Url;
@@ -143,6 +147,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Authorize(Roles = "frontofficegroup")]
+        [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 1200, AnonymousOnly = false)]
         public MultipleContentFeed<ArticleSummary> GetArticleSectionAndSector(String articleSection, String sector, int page = 1)
         {
             _urlHelper.RouteHelper = Url;

@@ -63,6 +63,12 @@ namespace twg.chk.DataService.FrontOffice
             return typeof(IFeed).IsAssignableFrom(type);
         }
 
+        //public override void SetDefaultContentHeaders(Type type, HttpContentHeaders headers, MediaTypeHeaderValue mediaType)
+        //{
+        //    headers.Expires = DateTime.Now.AddMinutes(10);
+        //    base.SetDefaultContentHeaders(type, headers, mediaType);
+        //}
+
         public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content, TransportContext transportContext)
         {
             return Task.Factory.StartNew(() =>

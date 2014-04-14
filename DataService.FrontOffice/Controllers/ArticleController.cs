@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.ServiceModel.Syndication;
+using WebApi.OutputCache.V2;
 
 using twg.chk.DataService.api;
 using twg.chk.DataService.Business;
@@ -25,6 +26,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [Route("article/{id:int}", Name = "GetArticleById")]
         [Authorize(Roles = "frontofficegroup")]
+        [CacheOutput(ClientTimeSpan=600, ServerTimeSpan=3600, AnonymousOnly=false)]
         public SingleContentFeed<Article> Get(int id)
         {
             _urlHelper.RouteHelper = Url;
@@ -49,6 +51,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         [HttpGet]
         [Route("{page:int?}", Name = "GetRoot")]
         [Authorize(Roles = "frontofficegroup")]
+        [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 1200, AnonymousOnly = false)]
         public MultipleContentFeed<ArticleSummary> GetAll(int page = 1)
         {
             _urlHelper.RouteHelper = Url;

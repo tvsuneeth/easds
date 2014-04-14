@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.IO;
 using System.Net.Http.Headers;
+using WebApi.OutputCache.V2;
 
 using twg.chk.DataService.Business;
 using twg.chk.DataService.api;
@@ -33,6 +34,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         [HttpGet]
         [Route("media/{id:int}/{fileName}", Name = "GetMedia")]
         [Authorize(Roles = "frontofficegroup")]
+        [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 3600, AnonymousOnly = false)]
         public HttpResponseMessage GetMedia(int id, String fileName)
         {
             HttpResponseMessage message;
