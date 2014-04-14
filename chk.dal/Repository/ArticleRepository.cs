@@ -14,6 +14,8 @@ namespace twg.chk.DataService.chkData.Repository
     {
         IEnumerable<Article> Get(int[] ids);
 
+        PagedResult<ArticleSummary> GetAll(String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize);
+
         PagedResult<ArticleSummary> GetByTopic(String[] topicNames, int page, int pageSize);
         PagedResult<ArticleSummary> GetBySector(String[] sectorNames, int page, int pageSize);
         PagedResult<ArticleSummary> GetByArticleSection(String[] articleSectionNames, int page, int pageSize);
@@ -104,6 +106,87 @@ namespace twg.chk.DataService.chkData.Repository
             return articleList;
         }
 
+        public PagedResult<ArticleSummary> GetAll(String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize)
+        {
+            page--; //pagination in database with 0 as first page
+
+            var articleList = new List<ArticleSummary>();
+            Nullable<int> totalNumberOfResult = null;
+
+            var excludeArticleSectionDataTable = Helpers.ElementTableHelper.BuidTable(excludeArticleSectionNames);
+            var excludeSectorDataTable = Helpers.ElementTableHelper.BuidTable(excludeSectorNames);
+            var excludeTopicDataTable = Helpers.ElementTableHelper.BuidTable(excludeTopicNames);
+
+
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
+            {
+                using (var command = new SqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "chk.GetArticles";
+
+                    command.Parameters.Add(new SqlParameter("@PageNumber", page));
+                    command.Parameters.Add(new SqlParameter("@PageSize", pageSize));
+
+                    var excludeArticleSectionParam = command.Parameters.AddWithValue("@ExcludeArticleSectionNames", excludeArticleSectionDataTable);
+                    excludeArticleSectionParam.SqlDbType = SqlDbType.Structured;
+                    var excludeSectorParam = command.Parameters.AddWithValue("@ExcludeSectorNames", excludeSectorDataTable);
+                    excludeSectorParam.SqlDbType = SqlDbType.Structured;
+                    var excludeTopicParam = command.Parameters.AddWithValue("@ExcludeTopicNames", excludeTopicDataTable);
+                    excludeTopicParam.SqlDbType = SqlDbType.Structured;
+
+                    var sqlReader = command.ExecuteReader();
+                    while (sqlReader.Read())
+                    {
+                        totalNumberOfResult = totalNumberOfResult ?? Convert.ToInt32(sqlReader["TotalNumberOfRow"]);
+                        var articleSummary = new ArticleSummary
+                        {
+                            Id = Convert.ToInt32(sqlReader["liArticleID"]),
+                            Title = Convert.ToString(sqlReader["sHeadline"]),
+                            Introduction = Convert.ToString(sqlReader["sIntro"]),
+                            PublishedDate = Convert.ToDateTime(sqlReader["dtPublicationDate"]),
+                            LastModified = Convert.ToDateTime(sqlReader["dtLastModified"]),
+                        };
+
+                        var author = new Person
+                        {
+                            Title = DBNull.Value.Equals(sqlReader["sTitle"]) ? String.Empty : Convert.ToString(sqlReader["sTitle"]).Trim(),
+                            FirstName = DBNull.Value.Equals(sqlReader["sFirstName"]) ? String.Empty : Convert.ToString(sqlReader["sFirstName"]).Trim(),
+                            LastName = DBNull.Value.Equals(sqlReader["sLastName"]) ? String.Empty : Convert.ToString(sqlReader["sLastName"]).Trim(),
+                            Email = DBNull.Value.Equals(sqlReader["sEmailAddress"]) ? String.Empty : Convert.ToString(sqlReader["sEmailAddress"]).Trim(),
+                        };
+                        if (!String.IsNullOrWhiteSpace(author.Names))
+                        {
+                            articleSummary.Author = author;
+                        }
+
+
+                        if (!DBNull.Value.Equals(sqlReader["liAssetID"]))
+                        {
+                            var image = new MediaContent
+                            {
+                                Id = Convert.ToInt32(sqlReader["liAssetID"]),
+                                FileName = Convert.ToString(sqlReader["sAssetName"]),
+                                Extension = Convert.ToString(sqlReader["sFileExt"])
+                            };
+
+                            articleSummary.AttachedMedia = image;
+                        }
+
+                        articleList.Add(articleSummary);
+                    }
+                }
+            }
+
+            PagedResult<ArticleSummary> paginatedArticleSummaries = new PagedResult<ArticleSummary>((page + 1), totalNumberOfResult ?? 0, pageSize);
+
+            paginatedArticleSummaries.AddRange(articleList);
+
+            return paginatedArticleSummaries;
+        }
+
         #region Taxonomy Search methods
 
         public PagedResult<ArticleSummary> GetByTopic(String[] topicNames, int page, int pageSize)
@@ -183,7 +266,7 @@ namespace twg.chk.DataService.chkData.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetArticles";
+                    command.CommandText = "chk.GetArticlesWithTaxonomy";
 
                     command.Parameters.Add(new SqlParameter("@PageNumber", page));
                     command.Parameters.Add(new SqlParameter("@PageSize", pageSize));

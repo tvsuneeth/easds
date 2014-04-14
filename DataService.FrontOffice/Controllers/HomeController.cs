@@ -15,7 +15,6 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         /// Feed that contains a list of article summaries with a list of links
         /// </summary>
         /// <returns></returns>
-        [Route("", Name="GetRoot")]
         public HttpResponseMessage GetHomePageContent()
         {
             throw new NotImplementedException();

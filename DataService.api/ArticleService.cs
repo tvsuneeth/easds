@@ -10,6 +10,7 @@ namespace twg.chk.DataService.api
     public interface IArticleService
     {
         Article GetById(int id);
+        PagedResult<ArticleSummary> GetAll(int page, int pageSize);
         PagedResult<ArticleSummary> GetByTopic(String topicName, int page, int pageSize);
         PagedResult<ArticleSummary> GetBySector(String sectorName, int page, int pageSize);
         PagedResult<ArticleSummary> GetByArticleSection(String articleSectionName, int page, int pageSize);
@@ -36,6 +37,13 @@ namespace twg.chk.DataService.api
                 article.SetTaxonomyList(_articleTaxonomyRepository.Get(id));
             }
             return article;
+        }
+
+        public PagedResult<ArticleSummary> GetAll(int page, int pageSize)
+        {
+            var articleSummaries = _articleRepository.GetAll(null, null, null, page, pageSize);
+
+            return articleSummaries;
         }
 
         public PagedResult<ArticleSummary> GetByTopic(String topicName, int page, int pageSize)

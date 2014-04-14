@@ -8,10 +8,9 @@ namespace twg.chk.DataService.Business
     public class PagedResult<T> : List<T>, IPagination<T>, ITaxonomy where T : IWebIdentifiable, IMediaAttachment
     {
         private TaxonomyCategories _taxonomySearchItem;
-        public PagedResult(TaxonomyCategories taxonomySearchItem, int currentPage, int totalResult, int numberOfResultPerPage)
+
+        public PagedResult(int currentPage, int totalResult, int numberOfResultPerPage)
         {
-            _taxonomySearchItem = taxonomySearchItem;
-            
             // Setting-up pagination properties
             CurrentPage = currentPage;
             _totalResults = totalResult;
@@ -28,6 +27,12 @@ namespace twg.chk.DataService.Business
             NextPage = HasNextPage ? CurrentPage + 1 : 0;
             HasPreviousPage = CurrentPage > FirstPage;
             PreviousPage = HasPreviousPage ? CurrentPage - 1 : 0;
+        }
+
+        public PagedResult(TaxonomyCategories taxonomySearchItem, int currentPage, int totalResult, int numberOfResultPerPage) 
+            : this(currentPage, totalResult, numberOfResultPerPage)
+        {
+            _taxonomySearchItem = taxonomySearchItem;
         }
 
         private int _numberOfResultPerPage;

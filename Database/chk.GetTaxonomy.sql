@@ -37,7 +37,7 @@ BEGIN
 	AND (bRemoved IS NULL OR bRemoved = 0);
 		
 
-	-- fetch taxonom list with parents
+	-- fetch taxonomy item list with parents items
 	WITH taxonomyItems (liCategoryItemID, liCategoryID, sItemName, liParentID)
 	AS
 	(
