@@ -13,7 +13,7 @@ using System.Web.Http.Description;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 
-namespace RestfulDataService.BackOffice.Areas.HelpPage
+namespace twg.chk.DataService.BackOffice.Areas.HelpPage
 {
     /// <summary>
     /// This class will generate the samples for the help page.

@@ -17,10 +17,12 @@ namespace twg.chk.DataService.FrontOffice.Controllers
     {
         private IArticleService _articleService;
         private IUrlHelper _urlHelper;
-        public TaxonomyController(IArticleService articleService, IUrlHelper urlHelper)
+        private IStaticContentLinkService _staticContentLinkService;
+        public TaxonomyController(IArticleService articleService, IStaticContentLinkService staticContentLinkService, IUrlHelper urlHelper)
         {
             _articleService = articleService;
             _urlHelper = urlHelper;
+            _staticContentLinkService = staticContentLinkService;
         }
 
         [HttpGet]
@@ -39,6 +41,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     String.Format("Topic {0} page {1}", topic, page), 
                     paginatedArticleSummaries,
                     _urlHelper,
+                    _staticContentLinkService,
                     "GetArticleById"
                 );
 
@@ -80,6 +83,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     String.Format("Sector {0} page {1}", sector, page), 
                     paginatedArticleSummaries,
                     _urlHelper,
+                    _staticContentLinkService,
                     "GetArticleById"
                 );
 
@@ -120,6 +124,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     String.Format("Article Section {0} page {1}", articleSection, page), 
                     paginatedArticleSummaries,
                     _urlHelper,
+                    _staticContentLinkService,
                     "GetArticleById"
                 );
 
@@ -160,6 +165,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     String.Format("Article Section {0} and Sector {1} page {2}", articleSection, sector, page), 
                     paginatedArticleSummaries,
                     _urlHelper,
+                    _staticContentLinkService,
                     "GetArticleById"
                 );
 

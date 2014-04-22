@@ -27,6 +27,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         private IArticleRepository _articleRepository;
         private IArticleTaxonomyRepository _articleTaxonomyRepository;
         private IArticleService _articleService;
+        private IStaticContentLinkService _staticContentLinkService;
         private IUrlHelper _urlHelper;
         private ITaxonomyRepository _taxonomyRepository;
 
@@ -35,10 +36,11 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             _articleRepository = MockRepository.GenerateStub<IArticleRepository>();
             _articleTaxonomyRepository = MockRepository.GenerateStub<IArticleTaxonomyRepository>();
+            _staticContentLinkService = MockRepository.GenerateStub<IStaticContentLinkService>();
             _urlHelper = MockRepository.GenerateStub<IUrlHelper>();
             _taxonomyRepository = MockRepository.GenerateStub<ITaxonomyRepository>();
             _articleService = new ArticleService(_articleRepository, _articleTaxonomyRepository, _taxonomyRepository);
-            _objectUnderTest = new ArticleController(_articleService, _urlHelper);
+            _objectUnderTest = new ArticleController(_articleService, _staticContentLinkService, _urlHelper);
 
             _objectUnderTest.Request = new HttpRequestMessage();
             _objectUnderTest.Request.SetConfiguration(new HttpConfiguration());
@@ -54,6 +56,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article());
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem>());
+            _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
             var articleFeed = _objectUnderTest.Get(1);
 
@@ -64,6 +67,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         public void Get_GetNonExistingArticleById()
         {
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(null);
+            _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
             var articleFeed = _objectUnderTest.Get(1);
 
@@ -76,6 +80,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article());
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem> { new TaxonomyItem { Id = 1, Category = TaxonomyCategories.ArticleSection, Name = "sample"}});
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
+            _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
             var articleFeed = _objectUnderTest.Get(1);
 
@@ -89,6 +94,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article { AttachedMedia = new MediaContent { Extension = "jpg", FileName = "imagefile.jpg" } });
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem>());
+            _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
             var articleFeed = _objectUnderTest.Get(1);
 

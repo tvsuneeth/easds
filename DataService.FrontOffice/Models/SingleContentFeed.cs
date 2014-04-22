@@ -10,8 +10,8 @@ namespace twg.chk.DataService.FrontOffice.Models
 {
     public class SingleContentFeed<T> : Feed<T> where T : ITaxonomy, IWebIdentifiable, IMediaAttachment
     {
-        public SingleContentFeed(String feedUrl, T feedData, IUrlHelper urlHelper)
-            : base(feedUrl, feedData, urlHelper)
+        public SingleContentFeed(String feedUrl, T feedData, IUrlHelper urlHelper, IStaticContentLinkService staticContentLinkService)
+            : base(feedUrl, feedData, urlHelper, staticContentLinkService)
         {
             Link = new LinkItem { Href = _feedUrl, Title = _feedContent.GetIdentificationTitle(), Rel = "self", Verb = "GET" };
             var entry = new FeedEntry { Content = feedData, Link = Link };

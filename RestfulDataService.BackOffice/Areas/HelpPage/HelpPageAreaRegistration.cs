@@ -1,7 +1,7 @@
 using System.Web.Http;
 using System.Web.Mvc;
 
-namespace RestfulDataService.BackOffice.Areas.HelpPage
+namespace twg.chk.DataService.BackOffice.Areas.HelpPage
 {
     public class HelpPageAreaRegistration : AreaRegistration
     {

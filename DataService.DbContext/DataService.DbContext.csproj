@@ -63,7 +63,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataServiceSampleData.cs" />
     <Compile Include="Intrastructure\DatabaseFactory.cs" />
     <Compile Include="Intrastructure\Disposable.cs" />
     <Compile Include="Intrastructure\IDatabaseFactory.cs" />
@@ -75,11 +74,16 @@
     <Compile Include="Migrations\201403201438302_InitialCreate.Designer.cs">
       <DependentUpon>201403201438302_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201404101441200_AddStaticContentLink.cs" />
+    <Compile Include="Migrations\201404101441200_AddStaticContentLink.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Migrations\201404101441200_AddStaticContentLink.Designer.cs">
       <DependentUpon>201404101441200_AddStaticContentLink.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\DataServiceSampleData.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Intrastructure\RepositoryBase.cs" />
     <Compile Include="DataServiceEntities.cs" />

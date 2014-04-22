@@ -25,6 +25,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         private StaticPageController _objectUnderTest;
         private IStaticPageRepository _staticPageRepository;
         private IStaticPageService _staticPageService;
+        private IStaticContentLinkService _staticContentLinkService;
         private IUrlHelper _urlHelper;
 
         [TestInitialize]
@@ -32,8 +33,9 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             _staticPageRepository = MockRepository.GenerateStub<IStaticPageRepository>();
             _urlHelper = MockRepository.GenerateStub<IUrlHelper>();
+            _staticContentLinkService = MockRepository.GenerateStub<IStaticContentLinkService>();
             _staticPageService = new StaticPageService(_staticPageRepository);
-            _objectUnderTest = new StaticPageController(_staticPageService, _urlHelper);
+            _objectUnderTest = new StaticPageController(_staticPageService, _staticContentLinkService, _urlHelper);
 
             _objectUnderTest.Request = new HttpRequestMessage();
             _objectUnderTest.Request.SetConfiguration(new HttpConfiguration());
@@ -50,6 +52,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(new StaticPage());
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
+            _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
             var staticPageFeed = _objectUnderTest.GetByName("existing_page_name");
 
@@ -61,6 +64,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(null);
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
+            _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
             var staticPageFeed = _objectUnderTest.GetByName("nonexisting_page_name");
 

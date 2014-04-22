@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using twg.chk.DataService.Business;
+using twg.chk.DataService.api;
 using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace twg.chk.DataService.FrontOffice.Models
@@ -11,8 +12,8 @@ namespace twg.chk.DataService.FrontOffice.Models
     {
         private String _feedEntriesRouteName;
         private String _feedTitle;
-        public MultipleContentFeed(String feedUrl, String feedTitle, PagedResult<T> feedContent, IUrlHelper urlHelper, String feedEntriesRouteName)
-            : base(feedUrl, feedContent, urlHelper)
+        public MultipleContentFeed(String feedUrl, String feedTitle, PagedResult<T> feedContent, IUrlHelper urlHelper, IStaticContentLinkService staticContentLinkService, String feedEntriesRouteName)
+            : base(feedUrl, feedContent, urlHelper, staticContentLinkService)
         {
             _feedTitle = feedTitle;
             _feedEntriesRouteName = feedEntriesRouteName;

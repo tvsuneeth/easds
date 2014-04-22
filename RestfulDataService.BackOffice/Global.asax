@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="RestfulDataService.BackOffice.WebApiApplication" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="twg.chk.DataService.BackOffice.WebApiApplication" Language="C#" %>

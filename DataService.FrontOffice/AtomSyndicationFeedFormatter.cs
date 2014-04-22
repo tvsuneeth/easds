@@ -63,12 +63,6 @@ namespace twg.chk.DataService.FrontOffice
             return typeof(IFeed).IsAssignableFrom(type);
         }
 
-        //public override void SetDefaultContentHeaders(Type type, HttpContentHeaders headers, MediaTypeHeaderValue mediaType)
-        //{
-        //    headers.Expires = DateTime.Now.AddMinutes(10);
-        //    base.SetDefaultContentHeaders(type, headers, mediaType);
-        //}
-
         public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content, TransportContext transportContext)
         {
             return Task.Factory.StartNew(() =>
@@ -106,12 +100,8 @@ namespace twg.chk.DataService.FrontOffice
             if (feed.Related != null) { navigationLinks.AddRange(feed.Related); }
             if (feed.Tags != null) { navigationLinks.AddRange(feed.Tags); }
             if (feed.Children != null) { navigationLinks.AddRange(feed.Children); }
-
-            // Fetch static links
-            var staticItems = _staticContentLinkService.GetStaticContentLinkForSite();
-            var staticLinks = staticItems.Select(s => new LinkItem { Title = s.Title, Href = (new Uri(feedUri, s.PartialUrl)).AbsoluteUri, Rel = s.Rel, Verb = "GET" });
-            navigationLinks.AddRange(staticLinks);
-
+            if (feed.Static != null) { navigationLinks.AddRange(feed.Static); }
+            
             // Add pagination information if exist
             if (feed is IPaginatedFeed)
             {

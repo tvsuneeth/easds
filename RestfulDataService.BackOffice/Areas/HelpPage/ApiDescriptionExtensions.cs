@@ -3,7 +3,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http.Description;
 
-namespace RestfulDataService.BackOffice.Areas.HelpPage
+namespace twg.chk.DataService.BackOffice.Areas.HelpPage
 {
     public static class ApiDescriptionExtensions
     {

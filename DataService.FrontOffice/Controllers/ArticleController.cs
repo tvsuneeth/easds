@@ -18,12 +18,15 @@ namespace twg.chk.DataService.FrontOffice.Controllers
     {
         private IArticleService _articleService;
         private IUrlHelper _urlHelper;
-        public ArticleController(IArticleService articleService, IUrlHelper urlHelper)
+        private IStaticContentLinkService _staticContentLinkService;
+        public ArticleController(IArticleService articleService, IStaticContentLinkService staticContentLinkService, IUrlHelper urlHelper)
         {
             _articleService = articleService;
             _urlHelper = urlHelper;
+            _staticContentLinkService = staticContentLinkService;
         }
 
+        [HttpGet]
         [Route("article/{id:int}", Name = "GetArticleById")]
         [Authorize(Roles = "frontofficegroup")]
         [CacheOutput(ClientTimeSpan=600, ServerTimeSpan=3600, AnonymousOnly=false)]
@@ -37,7 +40,8 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                 var articleFeed = new SingleContentFeed<Article>(
                     _urlHelper.GenerateUrl("GetArticleById", new { id = article.Id }),
                     article,
-                    _urlHelper
+                    _urlHelper,
+                    _staticContentLinkService
                 );
 
                 return articleFeed;
@@ -64,6 +68,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     String.Format("All page {0}", page),
                     paginatedArticleSummaries,
                     _urlHelper,
+                    _staticContentLinkService,
                     "GetArticleById"
                 );
 

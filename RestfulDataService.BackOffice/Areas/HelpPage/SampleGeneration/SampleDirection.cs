@@ -1,4 +1,4 @@
-namespace RestfulDataService.BackOffice.Areas.HelpPage
+namespace twg.chk.DataService.BackOffice.Areas.HelpPage
 {
     /// <summary>
     /// Indicates whether the sample is used for request or response

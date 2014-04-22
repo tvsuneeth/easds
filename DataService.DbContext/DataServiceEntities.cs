@@ -13,11 +13,6 @@ namespace twg.chk.DataService.DbContext
     {
         public IDbSet<StaticContentLink> StaticContentLinks { get; set; }
 
-        static DataServiceEntities()
-        {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<DataServiceEntities, Migrations.Configuration>());
-        }
-
         public DataServiceEntities() : this("ChkDataServiceContext") {}
         public DataServiceEntities(String connectionStringOrConnectionName) : base(connectionStringOrConnectionName) {}
 
@@ -29,8 +24,6 @@ namespace twg.chk.DataService.DbContext
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            //modelBuilder.Conventions.Remove<IncludeMetadataConvention>();
         }
 
         void IDisposable.Dispose()

@@ -5,7 +5,7 @@ using Owin;
 using Microsoft.Owin;
 using Ninject;
 
-using twg.chk.DataService.DbContext;
+using twg.chk.DataService.DbContext.Migrations;
 
 [assembly: OwinStartup(typeof(twg.chk.DataService.FrontOffice.Startup))]
 namespace twg.chk.DataService.FrontOffice
@@ -17,8 +17,7 @@ namespace twg.chk.DataService.FrontOffice
             NinjectConfig.CreateKernel(new StandardKernel());
             RegisterAuth();
 
-            var sampleDataInit = new DataServiceSampleData();
-            System.Data.Entity.Database.SetInitializer(sampleDataInit);
+            System.Data.Entity.Database.SetInitializer(new DataServiceSampleData());
         }
         public void Configuration(IAppBuilder app)
         {

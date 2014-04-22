@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace RestfulDataService.BackOffice.Controllers
+namespace twg.chk.DataService.BackOffice.Controllers
 {
     public class HomeController : Controller
     {

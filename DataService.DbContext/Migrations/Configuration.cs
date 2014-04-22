@@ -5,7 +5,7 @@ namespace twg.chk.DataService.DbContext.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<twg.chk.DataService.DbContext.DataServiceEntities>
+    public class Configuration : DbMigrationsConfiguration<twg.chk.DataService.DbContext.DataServiceEntities>
     {
         public Configuration()
         {

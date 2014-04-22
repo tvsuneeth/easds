@@ -7,9 +7,9 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Description;
-using RestfulDataService.BackOffice.Areas.HelpPage.Models;
+using twg.chk.DataService.BackOffice.Areas.HelpPage.Models;
 
-namespace RestfulDataService.BackOffice.Areas.HelpPage
+namespace twg.chk.DataService.BackOffice.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {

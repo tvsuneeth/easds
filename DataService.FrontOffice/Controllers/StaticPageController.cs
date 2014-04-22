@@ -18,10 +18,12 @@ namespace twg.chk.DataService.FrontOffice.Controllers
     {
         private IStaticPageService _staticPageService;
         private IUrlHelper _urlHelper;
-        public StaticPageController(IStaticPageService staticPageService, IUrlHelper urlHelper)
+        private IStaticContentLinkService _staticContentLinkService;
+        public StaticPageController(IStaticPageService staticPageService, IStaticContentLinkService staticContentLinkService, IUrlHelper urlHelper)
         {
             _staticPageService = staticPageService;
             _urlHelper = urlHelper;
+            _staticContentLinkService = staticContentLinkService;
         }
 
         [HttpGet]
@@ -38,7 +40,8 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                 var contentFeed = new SingleContentFeed<StaticPage>(
                     _urlHelper.GenerateUrl("GetStaticPageById", new { id }),
                     staticPage,
-                    _urlHelper
+                    _urlHelper,
+                    _staticContentLinkService
                 );
 
                 return contentFeed;
@@ -63,7 +66,8 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                 var contentFeed = new SingleContentFeed<StaticPage>(
                     _urlHelper.GenerateUrl("GetStaticPageByName", staticPage.GetIdentificationElement()),
                     staticPage,
-                    _urlHelper
+                    _urlHelper,
+                    _staticContentLinkService
                 );
 
                 return contentFeed;

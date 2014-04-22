@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace RestfulDataService.BackOffice
+namespace twg.chk.DataService.BackOffice
 {
     public class BundleConfig
     {

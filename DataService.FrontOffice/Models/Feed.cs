@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using twg.chk.DataService.Business;
+using twg.chk.DataService.api;
 using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace twg.chk.DataService.FrontOffice.Models
@@ -15,6 +16,7 @@ namespace twg.chk.DataService.FrontOffice.Models
         List<LinkItem> Children { get; }
         List<LinkItem> Related { get; }
         List<LinkItem> Tags { get; }
+        List<LinkItem> Static { get; }
         LinkItem Link { get; }
         Object FeedContent { get; }
         IEnumerable<FeedEntry> Entries { get; }
@@ -25,12 +27,14 @@ namespace twg.chk.DataService.FrontOffice.Models
         protected tEntity _feedContent;
         protected IUrlHelper _urlHelper;
         protected String _feedUrl;
+        private IStaticContentLinkService _staticContentLinkService;
 
-        public Feed(String feedUrl, tEntity data, IUrlHelper urlHelper)
+        public Feed(String feedUrl, tEntity data, IUrlHelper urlHelper, IStaticContentLinkService staticContentLinkService)
         {
             _urlHelper = urlHelper;
             FeedContent =_feedContent = data;
             _feedUrl = feedUrl;
+            _staticContentLinkService = staticContentLinkService;
 
             // Set navigations links based on taxonomy items
             SetParent();
@@ -38,6 +42,7 @@ namespace twg.chk.DataService.FrontOffice.Models
             SetChildren();
             SetRelated();
             SetTags();
+            SetStatics();
         }
 
         private void SetParent()
@@ -161,12 +166,52 @@ namespace twg.chk.DataService.FrontOffice.Models
                 Tags = null;
             }
         }
+        private void SetStatics()
+        {
+            Static = new List<LinkItem>();
+
+            // Fetch static links
+            var staticItems = _staticContentLinkService.GetStaticContentLinkForSite();
+
+            foreach (var staticItem in staticItems)
+            {
+                var href = String.Empty;
+                var rel = String.Empty;
+                switch (staticItem.LinkType)
+                {
+                    case StaticLinkType.Article:
+                        href = _urlHelper.GenerateUrl("GetArticleById", new { id = int.Parse(staticItem.IdentificationValue) });
+                        rel = "item";
+                        break;
+                    case StaticLinkType.StaticPage:
+                        href = _urlHelper.GenerateUrl("GetStaticPageByName", new { name = staticItem.IdentificationValue });
+                        rel = "item";
+                        break;
+                    case StaticLinkType.ArticleSection:
+                        href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection = staticItem.IdentificationValue });
+                        rel = "chapter";
+                        break;
+                    case StaticLinkType.Sector:
+                        href = _urlHelper.GenerateUrl("GetArticleBySector", new { sector = staticItem.IdentificationValue });
+                        rel = "chapter";
+                        break;
+                    case StaticLinkType.Topic:
+                        href = _urlHelper.GenerateUrl("GetArticleByTopic", new { topic = staticItem.IdentificationValue });
+                        rel = "chapter";
+                        break;
+                }
+
+                Static.Add(new LinkItem { Href = href, Title = staticItem.Title, Rel = rel, Verb = "GET" });
+            }
+        }
+
 
         public LinkItem Parent { get; private set; }
         public List<LinkItem> Parents { get; private set; }
         public List<LinkItem> Children { get; private set; }
         public List<LinkItem> Related { get; private set; }
         public List<LinkItem> Tags { get; private set; }
+        public List<LinkItem> Static { get; private set; }
 
         public virtual LinkItem Link { get; protected set; }
 
