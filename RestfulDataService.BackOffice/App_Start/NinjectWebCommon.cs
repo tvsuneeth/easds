@@ -80,10 +80,6 @@ namespace twg.chk.DataService.BackOffice.App_Start
 
             kernel.Bind<IDatabaseFactory>().To<DatabaseFactory>().InRequestScope();
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();
-
-            kernel.Bind<UserManager<IdentityUser>>().ToConstructor<UserManager<IdentityUser>>(c => 
-                new UserManager<IdentityUser>(new UserStore<IdentityUser>(new DataServiceEntities()))
-                ).InRequestScope();
         }
     }
 }

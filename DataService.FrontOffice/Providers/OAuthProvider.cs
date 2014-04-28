@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 using twg.chk.DataService.api;
@@ -14,24 +13,24 @@ namespace twg.chk.DataService.FrontOffice.Providers
     public class OAuthProvider : OAuthAuthorizationServerProvider
     {
         private readonly String _publicClientId;
-        private readonly UserManager<IdentityUser> _userManager;
-        public OAuthProvider(UserManager<IdentityUser> userManager)
+        private readonly UserService _userService;
+        public OAuthProvider(UserService userService)
         {
-            if (userManager == null)
+            if (userService == null)
             {
                 throw new ArgumentNullException("authenticationService");
             }
 
             _publicClientId = "self";
-            _userManager = userManager;
+            _userService = userService;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var user = await _userManager.FindAsync(context.UserName, context.Password);
+            var user = await _userService.FindAsync(context.UserName, context.Password);
             if (user != null)
             {
-                var oAuthIdentity = await _userManager.CreateIdentityAsync(user, context.Options.AuthenticationType);
+                var oAuthIdentity = await _userService.CreateIdentityAsync(user, context.Options.AuthenticationType);
                 AuthenticationProperties properties = CreateProperties(context.UserName);
                 AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
                 context.Validated(ticket);

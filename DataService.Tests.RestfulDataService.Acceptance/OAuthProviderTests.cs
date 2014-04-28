@@ -16,6 +16,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rhino.Mocks;
 using Ninject;
 
+using twg.chk.DataService.DbContext.Repository;
+using twg.chk.DataService.DbContext.Intrastructure;
 using twg.chk.DataService.api;
 using twg.chk.DataService.FrontOffice;
 using twg.chk.DataService.FrontOffice.Providers;
@@ -46,7 +48,7 @@ namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
     public class OAuthProviderTests
     {
         private OAuthProvider _objectUnderTest;
-        private UserManager<IdentityUser> _userManager;
+        private UserService _userService;
 
         #region Setup and Cleanup
 
@@ -62,9 +64,9 @@ namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
             var db = new twg.chk.DataService.DbContext.DataServiceEntities("Datasource=myTestDatabase.mdf");
             db.Database.CreateIfNotExists();
 
-            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(db));
+            _userService = new UserService(new UserRepository(new DatabaseFactory()));
 
-            _objectUnderTest = new OAuthProvider(_userManager);
+            _objectUnderTest = new OAuthProvider(_userService);
         }
 
         [TestCleanup]
@@ -83,7 +85,7 @@ namespace twg.chk.DataService.Tests.FrontOffice.Acceptance
         public void Token_RequestToken()
         {
             //add an user
-            var identityResult = _userManager.Create<IdentityUser>(new IdentityUser { UserName = "ravi" }, "Passw0rd");
+            var identityResult = _userService.Create<IdentityUser>(new IdentityUser { UserName = "ravi" }, "Passw0rd");
 
             // Non-Existing Account authentication
             var owinContext = new FakeOwinContext();
