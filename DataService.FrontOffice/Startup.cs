@@ -14,10 +14,10 @@ namespace twg.chk.DataService.FrontOffice
     {
         static Startup()
         {
+            System.Data.Entity.Database.SetInitializer(new DataServiceSampleData());
+
             NinjectConfig.CreateKernel(new StandardKernel());
             RegisterAuth();
-
-            System.Data.Entity.Database.SetInitializer(new DataServiceSampleData());
         }
         public void Configuration(IAppBuilder app)
         {

@@ -10,11 +10,7 @@ namespace twg.chk.DataService.DbContext.Migrations
 {
     public class DataServiceSampleDataConfiguration : Configuration
     {
-        public DataServiceSampleDataConfiguration()
-        {
-            AutomaticMigrationsEnabled = true;
-            ContextKey = "twg.chk.DataService.DbContext.DataServiceEntities";
-        }
+        public DataServiceSampleDataConfiguration() : base() {}
 
         protected override void Seed(DataServiceEntities context)
         {

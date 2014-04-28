@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Intrastructure\IRepositoryPaged.cs" />
     <Compile Include="Intrastructure\DatabaseFactory.cs" />
     <Compile Include="Intrastructure\Disposable.cs" />
     <Compile Include="Intrastructure\IDatabaseFactory.cs" />

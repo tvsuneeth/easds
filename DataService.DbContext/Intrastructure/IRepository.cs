@@ -5,7 +5,7 @@ using PagedList;
 
 namespace twg.chk.DataService.DbContext.Intrastructure
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> : IRepositoryPaged<T> where T : class
     {
         void Add(T entity);
         void Update(T entity);
@@ -16,6 +16,5 @@ namespace twg.chk.DataService.DbContext.Intrastructure
         T Get(Expression<Func<T, bool>> where);
         IEnumerable<T> GetAll();
         IEnumerable<T> GetMany(Expression<Func<T, bool>> where);
-        IPagedList<T> GetPage<TOrder>(Page page, Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order);
     }
 }
