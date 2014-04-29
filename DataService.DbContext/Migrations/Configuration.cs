@@ -12,7 +12,7 @@ namespace twg.chk.DataService.DbContext.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
             ContextKey = "twg.chk.DataService.DbContext.DataServiceEntities";
         }
 

@@ -17,6 +17,17 @@ namespace twg.chk.DataService.DbContext.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.StaticContentLinks",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        LinkType = c.Int(nullable: false),
+                        IdentificationValue = c.String(),
+                        Title = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.AspNetUsers",
                 c => new
                     {
@@ -62,8 +73,8 @@ namespace twg.chk.DataService.DbContext.Migrations
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
                 .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.RoleId)
-                .Index(t => t.UserId);
+                .Index(t => t.UserId)
+                .Index(t => t.RoleId);
             
         }
         
@@ -73,14 +84,15 @@ namespace twg.chk.DataService.DbContext.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "User_Id", "dbo.AspNetUsers");
-            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
+            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "User_Id" });
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
+            DropTable("dbo.StaticContentLinks");
             DropTable("dbo.AspNetRoles");
         }
     }

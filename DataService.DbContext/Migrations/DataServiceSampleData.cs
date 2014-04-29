@@ -53,6 +53,6 @@ namespace twg.chk.DataService.DbContext.Migrations
 
     public class DataServiceSampleData : MigrateDatabaseToLatestVersion<DataServiceEntities, DataServiceSampleDataConfiguration>
     {
-        public DataServiceSampleData() {}
+        public DataServiceSampleData() : base() {}
     }
 }

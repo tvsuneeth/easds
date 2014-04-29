@@ -73,15 +73,9 @@
     <Compile Include="Intrastructure\IUnitOfWork.cs" />
     <Compile Include="Intrastructure\Page.cs" />
     <Compile Include="Intrastructure\UnitOfWork.cs" />
-    <Compile Include="Migrations\201403201438302_InitialCreate.cs" />
-    <Compile Include="Migrations\201403201438302_InitialCreate.Designer.cs">
-      <DependentUpon>201403201438302_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404101441200_AddStaticContentLink.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Migrations\201404101441200_AddStaticContentLink.Designer.cs">
-      <DependentUpon>201404101441200_AddStaticContentLink.cs</DependentUpon>
+    <Compile Include="Migrations\201404291145514_InitialCreate.cs" />
+    <Compile Include="Migrations\201404291145514_InitialCreate.Designer.cs">
+      <DependentUpon>201404291145514_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataServiceSampleData.cs">
@@ -104,11 +98,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201403201438302_InitialCreate.resx">
-      <DependentUpon>201403201438302_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404101441200_AddStaticContentLink.resx">
-      <DependentUpon>201404101441200_AddStaticContentLink.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201404291145514_InitialCreate.resx">
+      <DependentUpon>201404291145514_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

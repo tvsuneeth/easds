@@ -6,14 +6,14 @@ namespace twg.chk.DataService.DbContext.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    [GeneratedCode("EntityFramework.Migrations", "6.0.2-21211")]
-    public sealed partial class AddStaticContentLink : IMigrationMetadata
+    [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
+    public sealed partial class InitialCreate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddStaticContentLink));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
         
         string IMigrationMetadata.Id
         {
-            get { return "201404101441200_AddStaticContentLink"; }
+            get { return "201404291145514_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source
