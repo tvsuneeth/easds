@@ -53,6 +53,7 @@
     <Compile Include="IMediaAttachment.cs" />
     <Compile Include="IWebIdentifiable.cs" />
     <Compile Include="IPagination.cs" />
+    <Compile Include="ModifiedArticle.cs" />
     <Compile Include="PagedResult.cs" />
     <Compile Include="ITaxonomy.cs" />
     <Compile Include="MediaContent.cs" />

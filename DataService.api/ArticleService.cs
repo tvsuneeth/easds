@@ -15,6 +15,7 @@ namespace twg.chk.DataService.api
         PagedResult<ArticleSummary> GetBySector(String sectorName, int page, int pageSize);
         PagedResult<ArticleSummary> GetByArticleSection(String articleSectionName, int page, int pageSize);
         PagedResult<ArticleSummary> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize);
+        List<ModifiedArticle> GetModifiedArticles(DateTime updatedSince);
     }
 
     public class ArticleService : IArticleService
@@ -27,6 +28,11 @@ namespace twg.chk.DataService.api
             _articleRepository = articleRepository;
             _articleTaxonomyRepository = articleTaxonomyRepository;
             _taxonomyRepository = taxonomyRepository;
+        }
+
+        public List<ModifiedArticle> GetModifiedArticles(DateTime modifiedSince)
+        {
+            return _articleRepository.GetModifiedArticles(null, null, null, modifiedSince);
         }
 
         public Article GetById(int id)
