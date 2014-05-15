@@ -12,8 +12,8 @@ namespace twg.chk.DataService.DbContext.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
+            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationDataLossAllowed = false;
             ContextKey = "twg.chk.DataService.DbContext.DataServiceEntities";
         }
 
