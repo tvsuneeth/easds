@@ -28,7 +28,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("article/{id:int}", Name = "GetArticleById")]
-       // [Authorize(Roles = "frontofficegroup")]
+        [Authorize(Roles = "frontofficegroup")]
        // [CacheOutput(ClientTimeSpan=600, ServerTimeSpan=3600, AnonymousOnly=false)]
         public SingleContentFeed<Article> Get(int id)
         {
@@ -54,7 +54,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("{page:int?}", Name = "GetRoot")]
-       // [Authorize(Roles = "frontofficegroup")]
+        [Authorize(Roles = "frontofficegroup")]
        // [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 1200, AnonymousOnly = false)]
         public MultipleContentFeed<ArticleSummary> GetAll(int page = 1)
         {
@@ -95,19 +95,19 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
-        [Route("articles/modifiedsince/{date:regex(\\d{4}-\\d{2}-\\d{2}_\\d{6})}", Name = "GetArticleModifiedSince")]
-        // [Authorize(Roles = "frontofficegroup")]
+        [Route("articles/modifiedsince/{date:regex(\\d{6}_\\d{6})}", Name = "GetArticleModifiedSince")]
+        [Authorize(Roles = "frontofficegroup")]
         // [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 1200, AnonymousOnly = false)]
         public List<ModifiedArticle> GetModifiedArticles(string date)
         {
             //date format should be yyyymmdd_hhmmss
 
             int year = Convert.ToInt32(date.Substring(0, 4));
-            int month = Convert.ToInt32(date.Substring(5, 2));
-            int day = Convert.ToInt32(date.Substring(8, 2));
-            int hour = Convert.ToInt32(date.Substring(11, 2));
-            int minute = Convert.ToInt32(date.Substring(13, 2));
-            int sec = Convert.ToInt32(date.Substring(15, 2));
+            int month = Convert.ToInt32(date.Substring(4, 2));
+            int day = Convert.ToInt32(date.Substring(6, 2));
+            int hour = Convert.ToInt32(date.Substring(9, 2));
+            int minute = Convert.ToInt32(date.Substring(11, 2));
+            int sec = Convert.ToInt32(date.Substring(13, 2));
             DateTime dt = new DateTime(year, month, day, hour, minute, sec);
 
             return _articleService.GetModifiedArticles(dt);            
