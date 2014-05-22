@@ -28,7 +28,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("article/{id:int}", Name = "GetArticleById")]
-        [Authorize(Roles = "frontofficegroup")]
+        //[Authorize(Roles = "frontofficegroup")]
        // [CacheOutput(ClientTimeSpan=600, ServerTimeSpan=3600, AnonymousOnly=false)]
         public SingleContentFeed<Article> Get(int id)
         {
@@ -54,7 +54,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("{page:int?}", Name = "GetRoot")]
-        [Authorize(Roles = "frontofficegroup")]
+       // [Authorize(Roles = "frontofficegroup")]
        // [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 1200, AnonymousOnly = false)]
         public MultipleContentFeed<ArticleSummary> GetAll(int page = 1)
         {
@@ -96,8 +96,9 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("articles/modifiedsince/{date:regex(\\d{6}_\\d{6})}", Name = "GetArticleModifiedSince")]
-        [Authorize(Roles = "frontofficegroup")]
-        // [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 1200, AnonymousOnly = false)]
+        //[Authorize(Roles = "frontofficegroup")]
+        //
+        [CacheOutput(NoCache=true  )]
         public List<ModifiedArticle> GetModifiedArticles(string date)
         {
             //date format should be yyyymmdd_hhmmss
