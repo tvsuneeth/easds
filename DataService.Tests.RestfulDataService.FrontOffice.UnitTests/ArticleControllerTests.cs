@@ -99,8 +99,14 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             var articleFeed = _objectUnderTest.Get(1);
 
             Assert.IsNotNull(articleFeed);
+            MediaContent content = null;
+            foreach (var item in articleFeed.Entries)
+            {
+                content = ((IMediaAttachment)item.Content).AttachedMedia;
+            }
 
-            Assert.IsNotNull(((Article)articleFeed.Entries).AttachedMedia);
+
+            Assert.IsNotNull(content);
         }
     }
 }
