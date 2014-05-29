@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using twg.chk.DataService.chkData.Repository;
 using twg.chk.DataService.Business;
 using twg.chk.DataService.chkData;
@@ -15,7 +15,9 @@ namespace twg.chk.DataService.api
         PagedResult<ArticleSummary> GetBySector(String sectorName, int page, int pageSize);
         PagedResult<ArticleSummary> GetByArticleSection(String articleSectionName, int page, int pageSize);
         PagedResult<ArticleSummary> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize);
-        List<ModifiedArticle> GetModifiedArticles(DateTime updatedSince);
+        List<ModifiedArticle> GetModifiedArticles(DateTime updatedSince);        
+        ArticleTaxonomy GetArticleTaxonomy(int articleId);
+        List<TaxonomyCategory> GetAllTaxonomyCategories();
     }
 
     public class ArticleService : IArticleService
@@ -30,6 +32,12 @@ namespace twg.chk.DataService.api
             _taxonomyRepository = taxonomyRepository;
         }
 
+        public List<TaxonomyCategory> GetAllTaxonomyCategories()
+        {
+            var rowtaxonomies = _taxonomyRepository.GetAllTaxonomyCategories();
+            return GetTaxonomyfromRowTaxonomyTable(rowtaxonomies);
+        }
+
         public List<ModifiedArticle> GetModifiedArticles(DateTime modifiedSince)
         {
             return _articleRepository.GetModifiedArticles(null, null, null, modifiedSince);
@@ -40,15 +48,62 @@ namespace twg.chk.DataService.api
             var article = _articleRepository.Get(id);
             if (article != null)
             {
+                //ravi
                 article.SetTaxonomyList(_articleTaxonomyRepository.Get(id));
+                
+                //suneeth                
+                article.Taxonomy = GetArticleTaxonomy(id);
             }
             return article;
         }
 
+        public List<TaxonomyCategory> GetTaxonomyfromRowTaxonomyTable(List<RowTaxonomyItem> taxonomy)
+        {
+            List<TaxonomyCategory> categories = taxonomy.GroupBy(i => i.CategoryId)
+                                                        .Select(g => g.First())
+                                                        .ToList()
+                                                        .Select(x => new TaxonomyCategory() { CategoryId = x.CategoryId, CategoryName = x.CategoryName })
+                                                        .ToList();
+
+
+            foreach (var item in categories)
+            {
+                item.CategoryItems = taxonomy.Where(i => i.CategoryId == item.CategoryId && i.CategoryItemId != 0)
+                                             .Select(s => new TaxonomyCategoryItem() { CategoryItemId = s.CategoryItemId, CategoryItemName = s.CategoryItemName, ParentId = s.ParentId })
+                                             .ToList();
+            }
+
+            return categories;
+        }
+
+
+        public ArticleTaxonomy GetArticleTaxonomy(int articleId)
+        {
+            var taxonomy = _articleTaxonomyRepository.GetTaxonomies(articleId);
+            var categories = GetTaxonomyfromRowTaxonomyTable(taxonomy);
+
+            if (categories == null)
+            { return null; }
+
+            var articleTaxonomy = new ArticleTaxonomy();
+            articleTaxonomy.CategoryAssignments = categories;
+            articleTaxonomy.ParentSection = taxonomy.Where(i => i.CategoryId == 1 && i.ParentId != null)
+                                                    .Select(t => new ArticleSection() { SectionId = t.CategoryItemId, SectionName = t.CategoryItemName })
+                                                    .FirstOrDefault();
+
+            return articleTaxonomy;
+        }
+
+               
+        
         public PagedResult<ArticleSummary> GetAll(int page, int pageSize)
         {
             var articleSummaries = _articleRepository.GetAll(null, null, null, page, pageSize);
-
+            
+            foreach (var item in articleSummaries)
+            {
+                item.Taxonomy = GetArticleTaxonomy(item.Id);
+            }
             return articleSummaries;
         }
 

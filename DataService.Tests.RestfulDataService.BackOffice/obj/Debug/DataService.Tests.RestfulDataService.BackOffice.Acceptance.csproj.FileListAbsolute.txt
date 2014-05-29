@@ -1,0 +1,5 @@
+C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.BackOffice\bin\Debug\DataService.Tests.RestfulDataService.BackOffice.dll
+C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.BackOffice\bin\Debug\DataService.Tests.RestfulDataService.BackOffice.pdb
+C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.BackOffice\obj\Debug\DataService.Tests.RestfulDataService.BackOffice.dll
+C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.BackOffice\obj\Debug\DataService.Tests.RestfulDataService.BackOffice.pdb
+C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.BackOffice\obj\Debug\DataService.Tests.RestfulDataService.BackOffice.Acceptance.csprojResolveAssemblyReference.cache

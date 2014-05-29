@@ -5,6 +5,7 @@ using System.Linq;
 using twg.chk.DataService.Business;
 using twg.chk.DataService.api;
 using twg.chk.DataService.FrontOffice.Helpers;
+using twg.chk.DataService.chkData.Repository;
 
 namespace twg.chk.DataService.FrontOffice.Models
 {
@@ -40,7 +41,8 @@ namespace twg.chk.DataService.FrontOffice.Models
                             })
                     };
                 }
-
+              
+                
                 // We add a link property based on the identification element given by the content object (it implement IWebIdentifiable)
                 contentList.Add(entry);
             }

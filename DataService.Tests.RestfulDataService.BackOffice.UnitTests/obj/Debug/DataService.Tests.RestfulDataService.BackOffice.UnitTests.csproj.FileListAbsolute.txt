@@ -1,0 +1,4 @@
+C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.BackOffice.UnitTests\bin\Debug\DataService.Tests.RestfulDataService.BackOffice.UnitTests.dll
+C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.BackOffice.UnitTests\bin\Debug\DataService.Tests.RestfulDataService.BackOffice.UnitTests.pdb
+C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.BackOffice.UnitTests\obj\Debug\DataService.Tests.RestfulDataService.BackOffice.UnitTests.dll
+C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.BackOffice.UnitTests\obj\Debug\DataService.Tests.RestfulDataService.BackOffice.UnitTests.pdb

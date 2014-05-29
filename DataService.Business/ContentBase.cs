@@ -22,6 +22,14 @@ namespace twg.chk.DataService.Business
 
         private List<TaxonomyItem> _taxonomyList;
         public virtual void SetTaxonomyList(List<TaxonomyItem> taxonomyList) { _taxonomyList = taxonomyList; }
+
+        //private List<RowTaxonomyItem> _taxonomy;
+        //public virtual void SetArticleTaxonomy(List<RowTaxonomyItem> taxonomy) 
+       // {
+          //  _taxonomy = taxonomy; 
+
+       // }
+
         public List<TaxonomyItem> _childrenArticleSection;
         public virtual void SetChildrenArticleSection(List<TaxonomyItem> childrenArticleSection) { _childrenArticleSection = childrenArticleSection; }
 
@@ -79,5 +87,37 @@ namespace twg.chk.DataService.Business
             var topic = _taxonomyList.FindAll(t => t.Category == TaxonomyCategories.Topic);
             return topic.Count == 0 ? null : topic;
         }
+
+        /*
+        public ArticleTaxonomy GetTaxonomy()
+        {
+            List<TaxonomyCategory> dlist = (from item in _taxonomy
+                                            select new TaxonomyCategory
+                                            {
+                                                CategoryId = item.CategoryId,
+                                                CategoryName = item.CategoryName
+                                            }).GroupBy(x => x.CategoryId)
+                                                .Select(g => g.First())
+                                                .ToList();
+
+            foreach (var item in dlist)
+            {
+                item.CategoryItems = (from i in _taxonomy
+                                      where i.CategoryId == item.CategoryId
+                                      select new TaxonomyCategoryItem
+                                      {
+                                          CategoryItemId = i.CategoryItemId,
+                                          CategoryItemName = i.CategoryItemName
+                                      }).ToList();
+            }
+            //return dlist;
+
+            ArticleTaxonomy taxonomy = new ArticleTaxonomy();
+            taxonomy.CategoryAssignments = dlist;
+            taxonomy.ParentSection = _taxonomy.Where(i => i.CategoryId == 1 && i.ParentId != null)
+                                                   .Select(t => new ArticleSection() { SectionId = t.CategoryItemId, SectionName = t.CategoryItemName }).FirstOrDefault();
+
+            return taxonomy;
+        }*/
     }
 }

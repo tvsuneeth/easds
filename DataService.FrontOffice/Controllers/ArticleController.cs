@@ -34,15 +34,15 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         {
             _urlHelper.RouteHelper = Url;
             
-            var article = _articleService.GetById(id);
+            var article = _articleService.GetById(id);            
             if (article != null)
             {
                 var articleFeed = new SingleContentFeed<Article>(
                     _urlHelper.GenerateUrl("GetArticleById", new { id = article.Id }),
                     article,
                     _urlHelper,
-                    _staticContentLinkService
-                );
+                    _staticContentLinkService                  
+                );               
 
                 return articleFeed;
             }
@@ -85,6 +85,11 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     contentFeed.SetFirstLink("GetRoot", String.Format("All page {0}", paginatedArticleSummaries.FirstPage), new { page = paginatedArticleSummaries.FirstPage });
                     contentFeed.SetLastLink("GetRoot", String.Format("All page {0}", paginatedArticleSummaries.LastPage), new { page = paginatedArticleSummaries.LastPage });
                 }
+
+                /*foreach (var item in contentFeed.Entries)
+                {
+                    item.Taxonomy = _articleService.GetArticleTaxonomy(((ArticleSummary)item.Content).Id);
+                }*/
 
                 return contentFeed;
             }

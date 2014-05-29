@@ -26,6 +26,14 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         }
 
         [HttpGet]
+        [Route("taxonomy", Name = "GetAlltaxonomyCategories")]
+        public List<TaxonomyCategory> GetAlltaxonomyCategories()
+        {
+            var result = _articleService.GetAllTaxonomyCategories();
+            return result;
+        }
+
+        [HttpGet]
         [Route("topic/{topic:regex(^[a-zA-Z0-9- ,&]+)}/{page:int?}", Name = "GetArticleByTopic")]
         [Authorize(Roles = "frontofficegroup")]
         [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 1200, AnonymousOnly = false)]

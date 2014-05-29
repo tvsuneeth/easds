@@ -6,6 +6,6 @@ namespace twg.chk.DataService.Business
     public interface IWebIdentifiable
     {
         Object GetIdentificationElement();
-        String GetIdentificationTitle();
+        String GetIdentificationTitle();       
     }
 }

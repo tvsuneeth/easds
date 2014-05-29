@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using twg.chk.DataService.api;
 using twg.chk.DataService.Business;
+using twg.chk.DataService.chkData.Repository;
 using twg.chk.DataService.FrontOffice.Helpers;
 
 namespace twg.chk.DataService.FrontOffice.Models
@@ -14,7 +14,13 @@ namespace twg.chk.DataService.FrontOffice.Models
             : base(feedUrl, feedData, urlHelper, staticContentLinkService)
         {
             Link = new LinkItem { Href = _feedUrl, Title = _feedContent.GetIdentificationTitle(), Rel = "self", Verb = "GET" };
-            var entry = new FeedEntry { Content = feedData, Link = Link };
+
+           
+            var entry = new FeedEntry 
+            { 
+                Content = feedData, 
+                Link = Link,               
+            };
             
             // Create thumbnail link item if exist
             if (feedData.HasAttachedMedia)
@@ -29,10 +35,11 @@ namespace twg.chk.DataService.FrontOffice.Models
                         })
                 };
             }
-
+            
             Entries = new List<FeedEntry> { entry };
         }
 
         public override IEnumerable<FeedEntry> Entries { get; protected set; }
+      
     }
 }

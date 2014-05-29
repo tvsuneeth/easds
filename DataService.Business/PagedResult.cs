@@ -40,7 +40,7 @@ namespace twg.chk.DataService.Business
         private IEnumerable<TaxonomyItem> _taxonomyList;
 
         public virtual void SetTaxonomyList(IEnumerable<TaxonomyItem> taxonomyList) { _taxonomyList = taxonomyList; }
-
+        
         public IEnumerable<TaxonomyItem> _childrenArticleSection;
         public virtual void SetChildrenArticleSection(IEnumerable<TaxonomyItem> childrenArticleSection) { _childrenArticleSection = childrenArticleSection; }
 
@@ -139,7 +139,7 @@ namespace twg.chk.DataService.Business
             var topics = _taxonomyList.Where(t => t.Category == TaxonomyCategories.Topic).ToList();
 
             return topics.Count == 0 ? null : topics;
-        }
+        }       
 
         public bool HasMultiplePage { get; private set; }
         public int CurrentPage { get; private set; }

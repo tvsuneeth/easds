@@ -19,5 +19,8 @@ namespace twg.chk.DataService.Business
 
         public object GetIdentificationElement() { return new { Id }; }
         public String GetIdentificationTitle() { return Title; }
+
+        public ArticleTaxonomy Taxonomy { get; set; }
+        public int NavigationId { get; set; }
     }
 }

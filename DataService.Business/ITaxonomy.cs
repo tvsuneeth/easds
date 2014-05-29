@@ -10,5 +10,6 @@ namespace twg.chk.DataService.Business
         List<TaxonomyItem> GetArticleSections();
         List<TaxonomyItem> GetSectors();
         List<TaxonomyItem> GetTopics();
+        //ArticleTaxonomy GetTaxonomy();
     }
 }

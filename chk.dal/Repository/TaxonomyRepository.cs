@@ -18,6 +18,7 @@ namespace twg.chk.DataService.chkData.Repository
         IEnumerable<TaxonomyItem> GetSectorParents(String sector);
         IEnumerable<TaxonomyItem> GetTopicParents(String topic);
         IEnumerable<TaxonomyItem> GetChildrenArticleSection(String articleSectionName);
+        List<RowTaxonomyItem> GetAllTaxonomyCategories();
     }
 
     public class TaxonomyRepository : ITaxonomyRepository
@@ -90,6 +91,39 @@ namespace twg.chk.DataService.chkData.Repository
         }
 
         #endregion
+
+        public List<RowTaxonomyItem> GetAllTaxonomyCategories()
+        {
+            var taxonomyItems = new List<RowTaxonomyItem>();
+            //var list = new List<TaxonomyCategory>();
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
+            {
+                using (var command = new SqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "chk.GetAllTaxonomyCategories";                    
+
+                    var sqlReader = command.ExecuteReader();
+                    while (sqlReader.Read())
+                    {
+                        var taxonmy = new RowTaxonomyItem
+                        {
+                            CategoryId = Convert.ToInt32(sqlReader["liCategoryID"]),
+                            CategoryName = Convert.ToString(sqlReader["scategoryName"]),
+                            CategoryItemId = DBNull.Value.Equals(sqlReader["liCategoryItemID"]) ? 0 : Convert.ToInt32(sqlReader["liCategoryItemID"]),
+                            CategoryItemName = DBNull.Value.Equals(sqlReader["sItemName"]) ? string.Empty : Convert.ToString(sqlReader["sItemName"]),                           
+                            ParentId = DBNull.Value.Equals(sqlReader["liParentID"]) ? null : (int?)Convert.ToInt32(sqlReader["liParentID"])
+                        };
+                        taxonomyItems.Add(taxonmy);
+                    }
+                }
+            }
+
+            return taxonomyItems;
+        }
+
 
         #region Taxonomy with direct children
 

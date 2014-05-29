@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace twg.chk.DataService.FrontOffice.Helpers
@@ -27,7 +26,7 @@ namespace twg.chk.DataService.FrontOffice.Helpers
                 throw new ArgumentNullException("RouteHelper has not been initialized");
             }
 
-            var regex = new Regex(@"^[0-9]+$");                                 
+            /*var regex = new Regex(@"^[0-9]+$");                                 
             if(linkArguments!=null)
             { 
                 Type t = linkArguments.GetType();
@@ -41,9 +40,30 @@ namespace twg.chk.DataService.FrontOffice.Helpers
                         return "";
                     }
                 }
+            }*/
+
+            if (linkArguments != null)
+            {
+                Type t = linkArguments.GetType();
+                var properties = t.GetProperties();
+                foreach (var prop in properties)
+                {
+                    object propVal = prop.GetValue(linkArguments, null);
+                    string val = propVal.ToString();
+
+                  /*  if (!Regex.IsMatch(val, @"^[\w-._~!$&'()* +,;=:@]*$"))
+                    {
+                        return "invalidurl";
+                    }*/
+
+                    if (!Regex.IsMatch(val, @"^[\w-._~$&'()* +,;=:@]*$"))
+                    {
+                        return "invalidurl";
+                    }   
+                }
             }
  
-           return RouteHelper.Link(linkRouteName, linkArguments).Replace("&", "%26");                                         
+            return RouteHelper.Link(linkRouteName, linkArguments).Replace("&", "%26");    
 
         }
 

@@ -74,7 +74,8 @@ namespace twg.chk.DataService.chkData.Repository
                             LastModified = Convert.ToDateTime(sqlReader["dtLastModified"]),
                             ExpiryDate = DBNull.Value.Equals(sqlReader["dtExpiryDate"]) ? null : (DateTime?)Convert.ToDateTime(sqlReader["dtExpiryDate"]),
                             MetaDescription = Convert.ToString(sqlReader["metaDescription"]),
-                            MetaKeywords = Convert.ToString(sqlReader["metaKeywords"])
+                            MetaKeywords = Convert.ToString(sqlReader["metaKeywords"]),
+                            NavigationId = Convert.ToInt32(sqlReader["liNavigationItemID"])
                         };
                         var author = new Person
                         {
@@ -151,6 +152,7 @@ namespace twg.chk.DataService.chkData.Repository
                             Introduction = Convert.ToString(sqlReader["sIntro"]),
                             PublishedDate = Convert.ToDateTime(sqlReader["dtPublicationDate"]),
                             LastModified = Convert.ToDateTime(sqlReader["dtLastModified"]),
+                            NavigationId = Convert.ToInt32(sqlReader["liNavigationItemID"])
                         };
 
                         var author = new Person

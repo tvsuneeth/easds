@@ -11,14 +11,14 @@ namespace twg.chk.DataService.FrontOffice.Models
 {
     public interface IFeed
     {
-        LinkItem Parent { get; }
-        List<LinkItem> Parents { get; }
-        List<LinkItem> Children { get; }
-        List<LinkItem> Related { get; }
-        List<LinkItem> Tags { get; }
-        List<LinkItem> Static { get; }
+        //LinkItem Section { get; }
+        //List<LinkItem> Parents { get; }
+        //List<LinkItem> Children { get; }
+        //List<LinkItem> Related { get; }
+        // List<LinkItem> Tags { get; }
+        //private List<LinkItem> Static { get; }
         LinkItem Link { get; }
-        Object FeedContent { get; }
+        //Object FeedContent { get; }
         IEnumerable<FeedEntry> Entries { get; }
     }
 
@@ -32,26 +32,27 @@ namespace twg.chk.DataService.FrontOffice.Models
         public Feed(String feedUrl, tEntity data, IUrlHelper urlHelper, IStaticContentLinkService staticContentLinkService)
         {
             _urlHelper = urlHelper;
-            FeedContent =_feedContent = data;
+            //FeedContent =_feedContent = data;
+            _feedContent = data;
             _feedUrl = feedUrl;
             _staticContentLinkService = staticContentLinkService;
 
             // Set navigations links based on taxonomy items
-            SetParent();
-            SetParents();
-            SetChildren();
-            SetRelated();
-            SetTags();
-            SetStatics();
+           // SetParent();
+            //SetParents();
+            //SetChildren();
+            //SetRelated();
+            //SetTags();
+           // SetStatics();
         }
 
         private void SetParent()
         {
-            var parentItem = _feedContent.GetParentArticleSection();
+          /*  var parentItem = _feedContent.GetParentArticleSection();
 
             if (parentItem != null)
             {
-                Parent = new LinkItem
+                Section = new LinkItem
                 {
                     Href = _urlHelper.GenerateUrl("GetArticleByArticleSection", new { articleSection = parentItem.Name }),
                     Title = parentItem.Name,
@@ -61,18 +62,18 @@ namespace twg.chk.DataService.FrontOffice.Models
             }
             else
             {
-                Parent = new LinkItem
+                Section = new LinkItem
                 {
                     Href = _urlHelper.GenerateUrl("GetRoot", null),
                     Title = "Home",
                     Rel = "up",
                     Verb = "GET"
                 };
-            }
+            }*/
         }
         private void SetParents()
         {
-            var sections = _feedContent.GetArticleSections();
+            /*var sections = _feedContent.GetArticleSections();
             if (sections != null)
             {
                 var parentList = sections.Select(a =>
@@ -108,10 +109,11 @@ namespace twg.chk.DataService.FrontOffice.Models
                     }
                 };
             }
+             * */
         }
         private void SetChildren()
         {
-            var childrenArticleSection = _feedContent.GetChildrenArticleSection();
+            /*var childrenArticleSection = _feedContent.GetChildrenArticleSection();
             if (childrenArticleSection != null )
             {
                 Children = childrenArticleSection.Select(a =>
@@ -126,11 +128,11 @@ namespace twg.chk.DataService.FrontOffice.Models
             else
             {
                 Children = null;
-            }
+            }*/
         }
         private void SetRelated()
         {
-            var sectors = _feedContent.GetSectors();
+            /*var sectors = _feedContent.GetSectors();
             if (sectors != null)
             {
                 Related = sectors.Select(a =>
@@ -145,11 +147,11 @@ namespace twg.chk.DataService.FrontOffice.Models
             else
             {
                 Related = null;
-            }
+            }*/
         }
         private void SetTags()
         {
-            var topics = _feedContent.GetTopics();
+            /*var topics = _feedContent.GetTopics();
             if (topics != null)
             {
                 Tags = topics.Select(a =>
@@ -164,11 +166,11 @@ namespace twg.chk.DataService.FrontOffice.Models
             else
             {
                 Tags = null;
-            }
+            }*/
         }
         private void SetStatics()
         {
-            Static = new List<LinkItem>();
+            /*Static = new List<LinkItem>();
 
             // Fetch static links
             var staticItems = _staticContentLinkService.GetStaticContentLinkForSite();
@@ -202,20 +204,20 @@ namespace twg.chk.DataService.FrontOffice.Models
                 }
 
                 Static.Add(new LinkItem { Href = href, Title = staticItem.Title, Rel = rel, Verb = "GET" });
-            }
+            }*/
         }
 
 
-        public LinkItem Parent { get; private set; }
-        public List<LinkItem> Parents { get; private set; }
-        public List<LinkItem> Children { get; private set; }
-        public List<LinkItem> Related { get; private set; }
-        public List<LinkItem> Tags { get; private set; }
-        public List<LinkItem> Static { get; private set; }
+      // public LinkItem Section { get; private set; }
+        //public List<LinkItem> Parents { get; private set; }
+        //public List<LinkItem> Children { get; private set; }
+        //public List<LinkItem> Related { get; private set; }
+        //public List<LinkItem> Tags { get; private set; }
+        //public List<LinkItem> Static { get; private set; }
 
         public virtual LinkItem Link { get; protected set; }
 
-        public virtual Object FeedContent { get; protected set; }
+        //public virtual Object FeedContent { get; protected set; }
         public abstract IEnumerable<FeedEntry> Entries { get; protected set; }
     }
 }

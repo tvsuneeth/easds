@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="ArticleService.cs" />
     <Compile Include="MediaService.cs" />
+    <Compile Include="OperatorsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticContentLinkService.cs" />
     <Compile Include="StaticPageService.cs" />

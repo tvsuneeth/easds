@@ -96,11 +96,11 @@ namespace twg.chk.DataService.FrontOffice
             // Add parent, related, tag links to AtomFeed
             var navigationLinks = new List<LinkItem>();
 
-            if (feed.Parent != null) { navigationLinks.Add(feed.Parent); }
-            if (feed.Related != null) { navigationLinks.AddRange(feed.Related); }
-            if (feed.Tags != null) { navigationLinks.AddRange(feed.Tags); }
-            if (feed.Children != null) { navigationLinks.AddRange(feed.Children); }
-            if (feed.Static != null) { navigationLinks.AddRange(feed.Static); }
+           // if (feed.Parent != null) { navigationLinks.Add(feed.Parent); }
+           // if (feed.Related != null) { navigationLinks.AddRange(feed.Related); }
+           // if (feed.Tags != null) { navigationLinks.AddRange(feed.Tags); }
+          //  if (feed.Children != null) { navigationLinks.AddRange(feed.Children); }
+          //  if (feed.Static != null) { navigationLinks.AddRange(feed.Static); }
             
             // Add pagination information if exist
             if (feed is IPaginatedFeed)
@@ -125,7 +125,7 @@ namespace twg.chk.DataService.FrontOffice
             }
             
             var items = new List<SyndicationItem>();
-            if (feed.FeedContent is IEnumerable)
+            if (feed.Entries is IEnumerable)
             {
                 foreach (var item in feed.Entries)
                 {
@@ -135,7 +135,7 @@ namespace twg.chk.DataService.FrontOffice
             }
             else
             {
-                var syndicationItem = _switchOnType[feed.FeedContent.GetType()](feed.FeedContent, feed.Link, feed.Entries.First().ThumbnailImage);
+                var syndicationItem = _switchOnType[feed.Entries.GetType()](feed.Entries, feed.Link, feed.Entries.First().ThumbnailImage);
                 items.Add(syndicationItem);
             }
             atomFeed.Items = items;
