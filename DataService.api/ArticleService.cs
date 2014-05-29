@@ -80,6 +80,10 @@ namespace twg.chk.DataService.api
         public ArticleTaxonomy GetArticleTaxonomy(int articleId)
         {
             var taxonomy = _articleTaxonomyRepository.GetTaxonomies(articleId);
+            if (taxonomy == null)
+            {
+                return null;
+            }
             var categories = GetTaxonomyfromRowTaxonomyTable(taxonomy);
 
             if (categories == null)
