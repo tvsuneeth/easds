@@ -1,22 +1,21 @@
-USE [CatererAndHotelKeeper_dev]
+USE [CatererAndHotelKeeper_systest]
 GO
-
-/****** Object:  StoredProcedure [chk].[GetArticle]    Script Date: 16/05/2014 17:22:32 ******/
+/****** Object:  StoredProcedure [chk].[GetArticle]    Script Date: 05/29/2014 11:35:43 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE PROCEDURE [chk].[GetArticle]
+
+ALTER PROCEDURE [chk].[GetArticle]
 (
 	@ArticleIds AS [chk].[ElementTable] READONLY
 )
 AS
 BEGIN
 
-select * from @ArticleIds
+
 
 	SELECT
 		  a.liArticleID
@@ -32,6 +31,7 @@ select * from @ArticleIds
 		, a.sFirstName
 		, a.sLastName
 		, a.sEmailAddress
+		, a.liNavigationItemID
 		, s.*
 	FROM
 	(
@@ -46,6 +46,7 @@ select * from @ArticleIds
 			, '' AS metaDescription
 			, '' AS metaKeywords
 			, a.liThumbnailID
+			, a.liNavigationItemID
 			, au.sTitle
 			, au.sFirstName
 			, au.sLastName
@@ -62,6 +63,4 @@ select * from @ArticleIds
 		WHERE (bDeleted IS NULL OR bDeleted = 0)
 	) AS s ON a.liThumbnailID = s.liAssetID
 END
-GO
-
 

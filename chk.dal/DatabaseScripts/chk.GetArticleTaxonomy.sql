@@ -1,15 +1,13 @@
-USE [CatererAndHotelKeeper_dev]
+USE [CatererAndHotelKeeper_systest]
 GO
-
-/****** Object:  StoredProcedure [chk].[GetArticleTaxonomy]    Script Date: 16/05/2014 17:24:47 ******/
+/****** Object:  StoredProcedure [chk].[GetArticleTaxonomy]    Script Date: 05/29/2014 11:40:09 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE PROCEDURE [chk].[GetArticleTaxonomy]
+ALTER PROCEDURE [chk].[GetArticleTaxonomy]
 (
 	@ArticleId INT
 )
@@ -37,6 +35,3 @@ BEGIN
 	FROM taxonomyItems
 	ORDER BY liCategoryID, liParentID, liCategoryItemID, sItemName
 END
-GO
-
-

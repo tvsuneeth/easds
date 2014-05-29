@@ -1,15 +1,14 @@
-USE [CatererAndHotelKeeper_dev]
+USE [CatererAndHotelKeeper_systest]
 GO
-
-/****** Object:  StoredProcedure [chk].[GetArticlesWithTaxonomy]    Script Date: 16/05/2014 17:24:21 ******/
+/****** Object:  StoredProcedure [chk].[GetArticlesWithTaxonomy]    Script Date: 05/29/2014 11:37:52 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE PROCEDURE [chk].[GetArticlesWithTaxonomy]
+
+ALTER PROCEDURE [chk].[GetArticlesWithTaxonomy]
 (
 	@IncludeArticleSectionNames AS [chk].[ElementTable] READONLY,
 	@IncludeSectorNames AS [chk].[ElementTable] READONLY,
@@ -154,6 +153,4 @@ BEGIN
 		WHERE (bDeleted IS NULL OR bDeleted = 0)
 	) AS s ON a.liThumbnailID = s.liAssetID
 END
-GO
-
 

@@ -1,17 +1,16 @@
-USE [CatererAndHotelKeeper_dev]
+USE [CatererAndHotelKeeper_systest]
 GO
-
-/****** Object:  StoredProcedure [chk].[GetArticlesModifedSince]    Script Date: 16/05/2014 17:23:52 ******/
+/****** Object:  StoredProcedure [chk].[GetArticlesModifedSince]    Script Date: 05/29/2014 11:37:34 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
 
 
 
 
-CREATE PROCEDURE [chk].[GetArticlesModifedSince]
+
+ALTER PROCEDURE [chk].[GetArticlesModifedSince]
 (
 	@ExcludeArticleSectionNames AS [chk].[ElementTable] READONLY,
 	@ExcludeSectorNames AS [chk].[ElementTable] READONLY,
@@ -96,7 +95,5 @@ BEGIN
 	ORDER BY a.dtLastModified DESC
 END
 
-
-GO
 
 
