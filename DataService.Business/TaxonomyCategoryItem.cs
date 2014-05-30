@@ -10,6 +10,6 @@ namespace twg.chk.DataService.Business
     {
         public int CategoryItemId { get; set; }
         public string CategoryItemName { get; set; }
-        public int? ParentId { get; set; }
+        public int? ParentItemId { get; set; }
     }
 }

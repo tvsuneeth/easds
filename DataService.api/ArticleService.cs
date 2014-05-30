@@ -17,7 +17,7 @@ namespace twg.chk.DataService.api
         PagedResult<ArticleSummary> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize);
         List<ModifiedArticle> GetModifiedArticles(DateTime updatedSince);        
         ArticleTaxonomy GetArticleTaxonomy(int articleId);
-        List<TaxonomyCategory> GetAllTaxonomyCategories();
+        List<TaxonomyCategory> GetAllTaxonomyCategoriesAndItems();
     }
 
     public class ArticleService : IArticleService
@@ -32,10 +32,10 @@ namespace twg.chk.DataService.api
             _taxonomyRepository = taxonomyRepository;
         }
 
-        public List<TaxonomyCategory> GetAllTaxonomyCategories()
+        public List<TaxonomyCategory> GetAllTaxonomyCategoriesAndItems()
         {
-            var rowtaxonomies = _taxonomyRepository.GetAllTaxonomyCategories();
-            return GetTaxonomyfromRowTaxonomyTable(rowtaxonomies);
+            var taxonomies = _taxonomyRepository.GetAllTaxonomyCategoriesAndItems();
+            return taxonomies;
         }
 
         public List<ModifiedArticle> GetModifiedArticles(DateTime modifiedSince)
@@ -48,53 +48,39 @@ namespace twg.chk.DataService.api
             var article = _articleRepository.Get(id);
             if (article != null)
             {
-                //ravi
-                article.SetTaxonomyList(_articleTaxonomyRepository.Get(id));
+                //ravi's taxonomy call
+                //commentign this as we dont require this anymore
+               //article.SetTaxonomyList(_articleTaxonomyRepository.Get(id));
                 
                 //suneeth                
                 article.Taxonomy = GetArticleTaxonomy(id);
             }
             return article;
         }
-
-        public List<TaxonomyCategory> GetTaxonomyfromRowTaxonomyTable(List<RowTaxonomyItem> taxonomy)
-        {
-            List<TaxonomyCategory> categories = taxonomy.GroupBy(i => i.CategoryId)
-                                                        .Select(g => g.First())
-                                                        .ToList()
-                                                        .Select(x => new TaxonomyCategory() { CategoryId = x.CategoryId, CategoryName = x.CategoryName })
-                                                        .ToList();
-
-
-            foreach (var item in categories)
-            {
-                item.CategoryItems = taxonomy.Where(i => i.CategoryId == item.CategoryId && i.CategoryItemId != 0)
-                                             .Select(s => new TaxonomyCategoryItem() { CategoryItemId = s.CategoryItemId, CategoryItemName = s.CategoryItemName, ParentId = s.ParentId })
-                                             .ToList();
-            }
-
-            return categories;
-        }
-
+       
 
         public ArticleTaxonomy GetArticleTaxonomy(int articleId)
         {
-            var taxonomy = _articleTaxonomyRepository.GetTaxonomies(articleId);
-            if (taxonomy == null)
-            {
-                return null;
-            }
-            var categories = GetTaxonomyfromRowTaxonomyTable(taxonomy);
-
-            if (categories == null)
+          
+            var categories = _articleTaxonomyRepository.GetArticleTaxonomies(articleId);
+            if (categories == null || categories.Count==0)
             { return null; }
 
-            var articleTaxonomy = new ArticleTaxonomy();
-            articleTaxonomy.CategoryAssignments = categories;
-            articleTaxonomy.ParentSection = taxonomy.Where(i => i.CategoryId == 1 && i.ParentId != null)
-                                                    .Select(t => new ArticleSection() { SectionId = t.CategoryItemId, SectionName = t.CategoryItemName })
-                                                    .FirstOrDefault();
 
+            var section = categories.Find(i => i.CategoryId == 1);
+            ArticleSection articleSection = null;
+            if (section != null)
+            {
+                articleSection = section.CategoryItems
+                                        .Select(t => new ArticleSection() { SectionId = t.CategoryItemId, SectionName = t.CategoryItemName })
+                                        .FirstOrDefault();           
+            }
+            
+            var articleTaxonomy = new ArticleTaxonomy()
+            {
+                CategoryAssignments = categories,
+                ParentSection = articleSection
+            };                                   
             return articleTaxonomy;
         }
 

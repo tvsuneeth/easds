@@ -38,7 +38,7 @@ namespace twg.chk.DataService.FrontOffice.Models
             _staticContentLinkService = staticContentLinkService;
 
             // Set navigations links based on taxonomy items
-           // SetParent();
+            //SetParent();
             //SetParents();
             //SetChildren();
             //SetRelated();
@@ -48,7 +48,7 @@ namespace twg.chk.DataService.FrontOffice.Models
 
         private void SetParent()
         {
-          /*  var parentItem = _feedContent.GetParentArticleSection();
+            /*var parentItem = _feedContent.GetParentArticleSection();
 
             if (parentItem != null)
             {
@@ -208,7 +208,7 @@ namespace twg.chk.DataService.FrontOffice.Models
         }
 
 
-      // public LinkItem Section { get; private set; }
+       //public LinkItem Section { get; private set; }
         //public List<LinkItem> Parents { get; private set; }
         //public List<LinkItem> Children { get; private set; }
         //public List<LinkItem> Related { get; private set; }

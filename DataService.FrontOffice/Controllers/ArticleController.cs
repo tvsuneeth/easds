@@ -86,11 +86,6 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                     contentFeed.SetLastLink("GetRoot", String.Format("All page {0}", paginatedArticleSummaries.LastPage), new { page = paginatedArticleSummaries.LastPage });
                 }
 
-                /*foreach (var item in contentFeed.Entries)
-                {
-                    item.Taxonomy = _articleService.GetArticleTaxonomy(((ArticleSummary)item.Content).Id);
-                }*/
-
                 return contentFeed;
             }
             else

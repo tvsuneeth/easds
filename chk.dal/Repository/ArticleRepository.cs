@@ -208,7 +208,7 @@ namespace twg.chk.DataService.chkData.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetArticlesModifedSince";
+                    command.CommandText = "chk.GetArticlesModifiedSince";
                     command.Parameters.Add(new SqlParameter("@modifiedDate", modifiedSince));
 
                     var excludeArticleSectionParam = command.Parameters.AddWithValue("@ExcludeArticleSectionNames", excludeArticleSectionDataTable);

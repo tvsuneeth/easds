@@ -18,7 +18,7 @@ namespace twg.chk.DataService.chkData.Repository
         IEnumerable<TaxonomyItem> GetSectorParents(String sector);
         IEnumerable<TaxonomyItem> GetTopicParents(String topic);
         IEnumerable<TaxonomyItem> GetChildrenArticleSection(String articleSectionName);
-        List<RowTaxonomyItem> GetAllTaxonomyCategories();
+        List<TaxonomyCategory> GetAllTaxonomyCategoriesAndItems();
     }
 
     public class TaxonomyRepository : ITaxonomyRepository
@@ -92,9 +92,9 @@ namespace twg.chk.DataService.chkData.Repository
 
         #endregion
 
-        public List<RowTaxonomyItem> GetAllTaxonomyCategories()
+        public List<TaxonomyCategory> GetAllTaxonomyCategoriesAndItems()
         {
-            var taxonomyItems = new List<RowTaxonomyItem>();
+            var categories = new List<TaxonomyCategory>();
             //var list = new List<TaxonomyCategory>();
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
             {
@@ -103,25 +103,37 @@ namespace twg.chk.DataService.chkData.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetAllTaxonomyCategories";                    
+                    command.CommandText = "chk.GetAllTaxonomyCategoriesandItems";                    
 
-                    var sqlReader = command.ExecuteReader();
+                    var sqlReader = command.ExecuteReader();                   
                     while (sqlReader.Read())
                     {
-                        var taxonmy = new RowTaxonomyItem
+                        var category = new TaxonomyCategory
                         {
                             CategoryId = Convert.ToInt32(sqlReader["liCategoryID"]),
-                            CategoryName = Convert.ToString(sqlReader["scategoryName"]),
-                            CategoryItemId = DBNull.Value.Equals(sqlReader["liCategoryItemID"]) ? 0 : Convert.ToInt32(sqlReader["liCategoryItemID"]),
-                            CategoryItemName = DBNull.Value.Equals(sqlReader["sItemName"]) ? string.Empty : Convert.ToString(sqlReader["sItemName"]),                           
-                            ParentId = DBNull.Value.Equals(sqlReader["liParentID"]) ? null : (int?)Convert.ToInt32(sqlReader["liParentID"])
+                            CategoryName = Convert.ToString(sqlReader["sCategoryName"]),
                         };
-                        taxonomyItems.Add(taxonmy);
+                        categories.Add(category);
+                    }
+
+                    sqlReader.NextResult();
+
+                    while (sqlReader.Read())
+                    {
+                        int categoryId = Convert.ToInt32(sqlReader["liCategoryID"]);
+                        var category = categories.Find(i => i.CategoryId == categoryId);
+                        var categoryItem = new TaxonomyCategoryItem()
+                        {
+                            CategoryItemId = Convert.ToInt32(sqlReader["liCategoryItemID"]),
+                            CategoryItemName = Convert.ToString(sqlReader["sItemName"]),
+                            ParentItemId = DBNull.Value.Equals(sqlReader["liParentID"]) ? null : (int?)Convert.ToInt32(sqlReader["liParentID"])
+                        };
+                        category.AddItem(categoryItem);
                     }
                 }
             }
 
-            return taxonomyItems;
+            return categories;
         }
 
 

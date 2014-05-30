@@ -68,14 +68,16 @@
     <Content Include="DatabaseScripts\chk.ElementTable.sql" />
     <Content Include="DatabaseScripts\chk.GetArticle.sql" />
     <Content Include="DatabaseScripts\chk.GetArticles.sql" />
-    <Content Include="DatabaseScripts\chk.GetArticlesByModifiedDate.sql" />
-    <Content Include="DatabaseScripts\chk.GetArticlesModifedSince.sql" />
+    <Content Include="DatabaseScripts\chk.GetArticlesModifiedSince.sql" />
     <Content Include="DatabaseScripts\chk.GetArticlesWithTaxonomy.sql" />
+    <Content Include="DatabaseScripts\chk.GetArticleTaxonomies.sql" />
     <Content Include="DatabaseScripts\chk.GetArticleTaxonomy.sql" />
     <Content Include="DatabaseScripts\chk.GetAsset.sql" />
     <Content Include="DatabaseScripts\chk.GetChildrenTaxonomy.sql" />
+    <Content Include="DatabaseScripts\chk.GetCompaniesPaged.sql" />
     <Content Include="DatabaseScripts\chk.GetStaticPage.sql" />
     <Content Include="DatabaseScripts\chk.GetTaxonomy.sql" />
+    <Content Include="DatabaseScripts\chkGetAllTaxonomyCategoriesandItems.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,10 +8,22 @@ namespace twg.chk.DataService.Business
 {
 
     public class TaxonomyCategory
-    {               
+    {
+        public TaxonomyCategory()
+        {            
+        }
         public int CategoryId { get; set; }
         public String CategoryName { get; set; }
-        public List<TaxonomyCategoryItem> CategoryItems { get; set; }
+        public List<TaxonomyCategoryItem> CategoryItems { get; private set; }
+
+        public void AddItem(TaxonomyCategoryItem item)
+        {
+            if (CategoryItems == null)
+            {
+                CategoryItems = new List<TaxonomyCategoryItem>();
+            }
+            CategoryItems.Add(item);
+        }
     }
    
 }
