@@ -1,5 +1,0 @@
-C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Core\bin\Debug\DataService.Core.dll
-C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Core\bin\Debug\DataService.Core.pdb
-C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Core\obj\Debug\DataService.Core.dll
-C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Core\obj\Debug\DataService.Core.pdb
-C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Core\obj\Debug\DataService.Core.csprojResolveAssemblyReference.cache
