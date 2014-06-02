@@ -1,4 +1,0 @@
-C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.SimpleFrontOffice\bin\Debug\DataService.Tests.RestfulDataService.SimpleFrontOffice.dll
-C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.SimpleFrontOffice\bin\Debug\DataService.Tests.RestfulDataService.SimpleFrontOffice.pdb
-C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.SimpleFrontOffice\obj\Debug\DataService.Tests.RestfulDataService.SimpleFrontOffice.dll
-C:\data\CatererAndHotelKeeperDataService-Latest\trunk\DataService.Tests.RestfulDataService.SimpleFrontOffice\obj\Debug\DataService.Tests.RestfulDataService.SimpleFrontOffice.pdb
