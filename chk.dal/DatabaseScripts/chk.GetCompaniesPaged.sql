@@ -1,6 +1,6 @@
 USE [CatererAndHotelKeeper_systest]
 GO
-/****** Object:  StoredProcedure [chk].[GetCompaniesPaged]    Script Date: 05/29/2014 11:40:55 ******/
+/****** Object:  StoredProcedure [chk].[GetCompaniesPaged]    Script Date: 06/03/2014 10:56:52 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -26,62 +26,62 @@ BEGIN
 	IF (@StartsWith = '')
 	BEGIN
 		SELECT  
- C.liCompanyID,  
- C.sName,  
- C.sDescription,  
- C.sAddress1,  
- C.sAddress2,  
- C.sTown,  
- C.sCounty,  
- C.sCountryCode,  
- C.sPostcode,  
- C.sTelephone,  
- C.sEmail,  
- C.sFax,  
- C.bRelativeURL,  
- C.sURLTarget,  
- C.sURLTitle,  
- C.sURL,  
- C.dAdSpend,  
- C.liLogoID,  
- C.sNotes,  
- C.liCompanyStatusID,  
- CSt.sCompanyStatus,  
- C.uiLastModifiedByID,  
- C.dtLastModified,  
- U1.sWelcomeName as sLastModifiedBy,  
- C.uiPublishedByID,  
- C.dtPublished,  
- U2.sWelcomeName as sPublishedBy,  
- Cxtra.sActivities,  
- Cxtra.sTimeLine,  
- Cxtra.sFinancialSnapshot,  
- Cxtra.sOperatingData,  
- Cxtra.sStrategy,  
- Cxtra.sKeyPeople,  
- Cxtra.sCommentary,  
- Cxtra.sChiefExecutive,  
- -- Get SEO Information  
- CLP.sMetaDescription,  
- CLP.sMetaKeywords,  
- CLP.sPageTitle,  
- CLP.sLinks,  
- CLP.sBlogLinks,  
- CLP.sWebLinks,  
- CLP.sCompanySearchTerm,   
- CLP.sCompanySubHeadline,  
- CLP.sCompanyEndURL,  
- CLP.bIsLandingPage,  
- CLP.sCustomHeaderElement   
-FROM           
- Companies C WITH (NOLOCK)   
- INNER JOIN CompanyStatuses CSt  WITH (NOLOCK) ON C.liCompanyStatusID = CSt.liCompanyStatusID  
- INNER JOIN Users U1  WITH (NOLOCK) on C.uiLastModifiedByID = U1.uiUserID  
- INNER JOIN Users U2  WITH (NOLOCK) on C.uiPublishedByID = U2.uiUserID  
- LEFT OUTER JOIN Caterer_CompanyExtras Cxtra WITH (NOLOCK) ON C.liCompanyID = Cxtra.liCompanyID  
- LEFT JOIN CompanyLandingPage CLP ON C.liCompanyID = CLP.liCompanyID  
-WHERE CSt.liCompanyStatusID=20
-Order BY C.sName
+		 C.liCompanyID,  
+		 C.sName,  
+		 C.sDescription,  
+		 C.sAddress1,  
+		 C.sAddress2,  
+		 C.sTown,  
+		 C.sCounty,  
+		 C.sCountryCode,  
+		 C.sPostcode,  
+		 C.sTelephone,  
+		 C.sEmail,  
+		 C.sFax,  
+		 C.bRelativeURL,  
+		 C.sURLTarget,  
+		 C.sURLTitle,  
+		 C.sURL,  
+		 C.dAdSpend,  
+		 C.liLogoID,  
+		 C.sNotes,  
+		 C.liCompanyStatusID,  
+		 CSt.sCompanyStatus,  
+		 C.uiLastModifiedByID,  
+		 C.dtLastModified,  
+		 U1.sWelcomeName as sLastModifiedBy,  
+		 C.uiPublishedByID,  
+		 C.dtPublished,  
+		 U2.sWelcomeName as sPublishedBy,  
+		 Cxtra.sActivities,  
+		 Cxtra.sTimeLine,  
+		 Cxtra.sFinancialSnapshot,  
+		 Cxtra.sOperatingData,  
+		 Cxtra.sStrategy,  
+		 Cxtra.sKeyPeople,  
+		 Cxtra.sCommentary,  
+		 Cxtra.sChiefExecutive,  
+		 -- Get SEO Information  
+		 CLP.sMetaDescription,  
+		 CLP.sMetaKeywords,  
+		 CLP.sPageTitle,  
+		 CLP.sLinks,  
+		 CLP.sBlogLinks,  
+		 CLP.sWebLinks,  
+		 CLP.sCompanySearchTerm,   
+		CLP.sCompanySubHeadline,  
+		CLP.sCompanyEndURL,  
+		CLP.bIsLandingPage,  
+		CLP.sCustomHeaderElement   
+		FROM           
+		Companies C WITH (NOLOCK)   
+		INNER JOIN CompanyStatuses CSt  WITH (NOLOCK) ON C.liCompanyStatusID = CSt.liCompanyStatusID  
+		INNER JOIN Users U1  WITH (NOLOCK) on C.uiLastModifiedByID = U1.uiUserID  
+		INNER JOIN Users U2  WITH (NOLOCK) on C.uiPublishedByID = U2.uiUserID  
+		LEFT OUTER JOIN Caterer_CompanyExtras Cxtra WITH (NOLOCK) ON C.liCompanyID = Cxtra.liCompanyID  
+		LEFT JOIN CompanyLandingPage CLP ON C.liCompanyID = CLP.liCompanyID  
+		WHERE CSt.liCompanyStatusID=20
+		Order BY C.sName
 	END
 	
 	IF (@StartsWith <> '')

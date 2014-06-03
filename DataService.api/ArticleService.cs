@@ -15,7 +15,7 @@ namespace twg.chk.DataService.api
         PagedResult<ArticleSummary> GetBySector(String sectorName, int page, int pageSize);
         PagedResult<ArticleSummary> GetByArticleSection(String articleSectionName, int page, int pageSize);
         PagedResult<ArticleSummary> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize);
-        List<ModifiedArticle> GetModifiedArticles(DateTime updatedSince);        
+        List<ArticleModificationSummary> GetModifiedArticles(DateTime updatedSince);        
         ArticleTaxonomy GetArticleTaxonomy(int articleId);
         List<TaxonomyCategory> GetAllTaxonomyCategoriesAndItems();
     }
@@ -38,9 +38,9 @@ namespace twg.chk.DataService.api
             return taxonomies;
         }
 
-        public List<ModifiedArticle> GetModifiedArticles(DateTime modifiedSince)
+        public List<ArticleModificationSummary> GetModifiedArticles(DateTime modifiedSince)
         {
-            return _articleRepository.GetModifiedArticles(null, null, null, modifiedSince);
+            return _articleRepository.GetModifiedArticles(modifiedSince);
         }
 
         public Article GetById(int id)
@@ -51,8 +51,7 @@ namespace twg.chk.DataService.api
                 //ravi's taxonomy call
                 //commentign this as we dont require this anymore
                //article.SetTaxonomyList(_articleTaxonomyRepository.Get(id));
-                
-                //suneeth                
+                                          
                 article.Taxonomy = GetArticleTaxonomy(id);
             }
             return article;

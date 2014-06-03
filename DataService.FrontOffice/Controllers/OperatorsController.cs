@@ -26,9 +26,15 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("operators", Name = "GetAllOperators")]
+        [Authorize(Roles = "frontofficegroup")]
         public List<Operator> Index()
         {
-            return _operatorService.GetOperatorsPaged(1, 1, string.Empty, null, string.Empty);
+            var operators = _operatorService.GetAll();
+            if(operators.Count==0)
+            {
+                return null;
+            }
+            return operators;
         }
     }
 }

@@ -8,8 +8,8 @@ using twg.chk.DataService.chkData;
 namespace twg.chk.DataService.api
 {
     public interface IOperatorService
-    {
-        List<Operator> GetOperatorsPaged(int pageNumber, int pageSize, String searchPhrase, List<String> categoryFilterList, String startsWith);
+    {        
+        List<Operator> GetAll();
     }
 
     public class OperatorService : IOperatorService
@@ -20,9 +20,10 @@ namespace twg.chk.DataService.api
             _opetorRepository = operatorRepository;
         }       
 
-        public List<Operator> GetOperatorsPaged(int pageNumber, int pageSize, String searchPhrase, List<String> categoryFilterList, String startsWith)
+       
+        public List<Operator> GetAll()
         {
-            return _opetorRepository.GetOperatorsPaged(1, 1, string.Empty, null, string.Empty);
+            return _opetorRepository.GetAll();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace twg.chk.DataService.chkData.Repository
 {
     public interface IOperatorRepository 
     {
-        List<Operator> GetOperatorsPaged(int pageNumber, int pageSize, String searchPhrase, List<String> categoryFilterList, String startsWith);
+        List<Operator> GetAll();
     }
 
     public class OperatorRepository : IOperatorRepository
@@ -21,11 +21,10 @@ namespace twg.chk.DataService.chkData.Repository
         public OperatorRepository()
         { }
 
-        public List<Operator> GetOperatorsPaged(int pageNumber, int pageSize, String searchPhrase, List<String> categoryFilterList, String startsWith)
+        public List<Operator> GetAll()
         {
-            if (categoryFilterList == null)
-                categoryFilterList = new List<String>();
             
+             List<String> categoryFilterList  = new List<String>();            
              List<Operator> operatorObjs = new List<Operator>();            
 
              using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
@@ -37,12 +36,11 @@ namespace twg.chk.DataService.chkData.Repository
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.CommandText = @"chk.GetCompaniesPaged";
 
-                    cmd.Parameters.Add(new SqlParameter("@StartsWith", startsWith));
-                    cmd.Parameters.Add(new SqlParameter("@SearchPhrase", searchPhrase));
+                    cmd.Parameters.Add(new SqlParameter("@StartsWith", string.Empty));
+                    cmd.Parameters.Add(new SqlParameter("@SearchPhrase", string.Empty));
                     cmd.Parameters.Add(new SqlParameter("@CategoryFilter", String.Join(",", categoryFilterList)));
                    // cmd.Parameters.Add(new SqlParameter("@CurrentPage", pageNumber));
                    // cmd.Parameters.Add(new SqlParameter("@PageSize", pageSize));
-
 
                     IDataReader reader = cmd.ExecuteReader();
 

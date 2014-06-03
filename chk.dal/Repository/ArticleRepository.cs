@@ -30,7 +30,7 @@ namespace twg.chk.DataService.chkData.Repository
         PagedResult<ArticleSummary> GetByArticleSectionSectorAndTopic(String[] includeArticleSectionNames, String[] includeSectorNames,
             String[] includeTopicNames, String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize);
 
-        List<ModifiedArticle> GetModifiedArticles(String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, DateTime modifiedSince);
+        List<ArticleModificationSummary> GetModifiedArticles(DateTime modifiedSince);
 
     }
 
@@ -192,15 +192,9 @@ namespace twg.chk.DataService.chkData.Repository
             return paginatedArticleSummaries;
         }
 
-        public List<ModifiedArticle> GetModifiedArticles(String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, DateTime modifiedSince)
+        public List<ArticleModificationSummary> GetModifiedArticles(DateTime modifiedSince)
         {
-        
-            var articleList = new List<ModifiedArticle>();        
-
-            var excludeArticleSectionDataTable = Helpers.ElementTableHelper.BuidTable(excludeArticleSectionNames);
-            var excludeSectorDataTable = Helpers.ElementTableHelper.BuidTable(excludeSectorNames);
-            var excludeTopicDataTable = Helpers.ElementTableHelper.BuidTable(excludeTopicNames);
-            
+            var articleList = new List<ArticleModificationSummary>();                                
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
             {
                 using (var command = new SqlCommand())
@@ -210,18 +204,11 @@ namespace twg.chk.DataService.chkData.Repository
                     command.CommandType = CommandType.StoredProcedure;
                     command.CommandText = "chk.GetArticlesModifiedSince";
                     command.Parameters.Add(new SqlParameter("@modifiedDate", modifiedSince));
-
-                    var excludeArticleSectionParam = command.Parameters.AddWithValue("@ExcludeArticleSectionNames", excludeArticleSectionDataTable);
-                    excludeArticleSectionParam.SqlDbType = SqlDbType.Structured;
-                    var excludeSectorParam = command.Parameters.AddWithValue("@ExcludeSectorNames", excludeSectorDataTable);
-                    excludeSectorParam.SqlDbType = SqlDbType.Structured;
-                    var excludeTopicParam = command.Parameters.AddWithValue("@ExcludeTopicNames", excludeTopicDataTable);
-                    excludeTopicParam.SqlDbType = SqlDbType.Structured;
-
+                    
                     var sqlReader = command.ExecuteReader();
                     while (sqlReader.Read())
                     {
-                        var modifiedArticle = new ModifiedArticle()
+                        var modifiedArticle = new ArticleModificationSummary()
                         {
                             Id = Convert.ToInt32(sqlReader["liArticleID"]),
                             LastModified = Convert.ToDateTime(sqlReader["dtLastModified"])

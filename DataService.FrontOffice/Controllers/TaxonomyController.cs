@@ -27,7 +27,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("taxonomy", Name = "GetAlltaxonomyCategories")]
-        //[Authorize(Roles = "frontofficegroup")]
+        [Authorize(Roles = "frontofficegroup")]
         public List<TaxonomyCategory> GetAlltaxonomyCategories()
         {
             var result = _articleService.GetAllTaxonomyCategoriesAndItems();
