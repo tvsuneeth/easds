@@ -52,45 +52,97 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         }
 
         [TestMethod]
-        public void Get_GetExistingArticleById()
+        public void  ArticleController_Get_ReturnsFeedWithRequestedArticle()
         {
-            _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article());
+            _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article() { Id=1 });
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem>());
             _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
             var articleFeed = _objectUnderTest.Get(1);
-
-            Assert.IsNotNull(articleFeed);
+            
+            var article = (Article)articleFeed.Entries.FirstOrDefault().Content;           
+            Assert.AreEqual(1, article.Id);
         }
 
         [TestMethod]
-        public void Get_GetNonExistingArticleById()
+        public void ArticleController_GetAll_ReturnsFeedWithTwentyArticles()
         {
-            _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(null);
+            PagedResult<ArticleSummary> paginatedArticleSummaries = new PagedResult<ArticleSummary>(1, 20, 21);
+            List<ArticleSummary> lists = new List<ArticleSummary>() 
+            {
+                { new ArticleSummary(){ Id=1} },
+                { new ArticleSummary(){ Id=2} },
+                { new ArticleSummary(){ Id=3} },
+                { new ArticleSummary(){ Id=4} },
+                { new ArticleSummary(){ Id=5} },
+                { new ArticleSummary(){ Id=6} },
+                { new ArticleSummary(){ Id=7} },
+                { new ArticleSummary(){ Id=8} },
+                { new ArticleSummary(){ Id=9} },
+                { new ArticleSummary(){ Id=10} },
+                { new ArticleSummary(){ Id=11} },
+                { new ArticleSummary(){ Id=12} },
+                { new ArticleSummary(){ Id=13} },
+                { new ArticleSummary(){ Id=14} },
+                { new ArticleSummary(){ Id=15} },
+                { new ArticleSummary(){ Id=16} },
+                { new ArticleSummary(){ Id=17} },
+                { new ArticleSummary(){ Id=18} },
+                { new ArticleSummary(){ Id=19} },
+                { new ArticleSummary(){ Id=20} }
+                
+
+            };
+            paginatedArticleSummaries.AddRange(lists);
+            
+
+            _articleRepository.Stub(r => r.GetAll(null,null,null,1,20)).Return(paginatedArticleSummaries);           
             _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
-            var articleFeed = _objectUnderTest.Get(1);
+            var articleFeed = _objectUnderTest.GetAll(1);
 
-            Assert.IsNull(articleFeed);
+            var articleCount = articleFeed.Entries.Count();
+            Assert.AreEqual(20, articleCount);
         }
 
         [TestMethod]
-        public void Get_ExistingArticleHasTaxonomy()
+        public void ArticleController_GetModifiedArticles_ReturnsListOfModifiedArticles()
         {
-            _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article());
-            _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem> { new TaxonomyItem { Id = 1, Category = TaxonomyCategories.ArticleSection, Name = "sample"}});
+            List<ArticleModificationSummary> modifiedArticleList = new List<ArticleModificationSummary>() 
+            {
+                {new ArticleModificationSummary() { Id = 1, LastModified = DateTime.Now }},
+                {new ArticleModificationSummary() { Id = 2, LastModified = DateTime.Now }}
+            };
+
+            _articleRepository.Stub(r => r.GetModifiedArticles(Arg<DateTime>.Is.Anything)).Return(modifiedArticleList);
+
+            string input = "20140101_000000";
+            var articles = _objectUnderTest.GetModifiedArticles(input);
+
+            Assert.IsNotNull(articles.Count==2);
+        }   
+
+
+        [TestMethod]
+        public void ArticleController_Get_ArticleWithTaxonomy_ReturnedArticleHasTaxonomyInfo()
+        {
+            TaxonomyCategory category =   new TaxonomyCategory() {  CategoryId=1, CategoryName="ArticleSection"  };            
+            category.AddItem(new TaxonomyCategoryItem() { CategoryItemId = 1, CategoryItemName = "test", ParentItemId = null });
+            List<TaxonomyCategory> categories = new List<TaxonomyCategory>() {category };     
+
+            _articleTaxonomyRepository.Stub(r => r.GetArticleTaxonomies(Arg<int>.Is.Anything)).Return(categories);
+            _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article());            
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
             _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
             var articleFeed = _objectUnderTest.Get(1);
 
-            Assert.IsNotNull(articleFeed);
-
-           // Assert.IsNotNull(articleFeed.Parents);
+            var article = (Article)articleFeed.Entries.FirstOrDefault().Content;                        
+            Assert.IsNotNull(article.Taxonomy);
         }
 
         [TestMethod]
-        public void Get_ExistingArticleHasImage()
+        public void ArticleController_Get_ArticleWithImage_ReturnedArticleHasImageInfo()
         {
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article { AttachedMedia = new MediaContent { Extension = "jpg", FileName = "imagefile.jpg" } });
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem>());
@@ -99,13 +151,8 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             var articleFeed = _objectUnderTest.Get(1);
 
             Assert.IsNotNull(articleFeed);
-            MediaContent content = null;
-            foreach (var item in articleFeed.Entries)
-            {
-                content = ((IMediaAttachment)item.Content).AttachedMedia;
-            }
-
-
+            MediaContent content = ((IMediaAttachment)articleFeed.Entries.FirstOrDefault().Content).AttachedMedia;
+            
             Assert.IsNotNull(content);
         }
     }

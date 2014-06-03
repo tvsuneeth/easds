@@ -72,8 +72,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArticleControllerTests.cs" />
+    <Compile Include="OperatorsControllerTests.cs" />
     <Compile Include="StaticPageControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaxonomyControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\chk.dal\chk.dal.csproj">
