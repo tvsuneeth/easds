@@ -12,6 +12,7 @@ namespace  twg.chk.DataService.chkData.Repository
     public interface IStaticPageRepository : IChkRepositoryBase<StaticPage>
     {
         StaticPage Get(String pageName);
+        List<StaticPageSummary> GetAll();
     }
 
     public class StaticPageRepository : IStaticPageRepository
@@ -90,6 +91,36 @@ namespace  twg.chk.DataService.chkData.Repository
             }
 
             return staticPage;
+        }
+
+        public List<StaticPageSummary> GetAll()
+        {
+            var list = new List<StaticPageSummary>();
+
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
+            {
+                using (var command = new SqlCommand())
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "chk.GetListOfStaticPages";                    
+
+                    var sqlReader = command.ExecuteReader();
+                    while (sqlReader.Read())
+                    {
+                        var staticPage = new StaticPageSummary
+                        {
+                            Id = Convert.ToInt32(sqlReader["liStaticPageID"]),
+                            PageName = Convert.ToString(sqlReader["sPageURL"]).Replace(".htm", ""),                            
+                        };
+
+                        list.Add(staticPage);
+                    }
+                }
+            }
+
+            return list;
         }
     }
 }

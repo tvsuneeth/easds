@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using twg.chk.DataService.Business;
 using twg.chk.DataService.chkData.Repository;
 
@@ -9,6 +9,7 @@ namespace twg.chk.DataService.api
     {
         StaticPage GetByName(String staticPageName);
         StaticPage GetById(int staticPageId);
+        List<StaticPageSummary> GetAll();
     }
 
     public class StaticPageService : IStaticPageService
@@ -28,5 +29,11 @@ namespace twg.chk.DataService.api
         {
             return _staticPageRepository.Get(staticPageId);
         }
+
+        public List<StaticPageSummary> GetAll()
+        {
+            return _staticPageRepository.GetAll();
+        }
+
     }
 }

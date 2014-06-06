@@ -46,9 +46,24 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
         }
 
+        [TestMethod]
+        public void GetAllStaticPages_ReturnsAListofStaticPages()
+        {
+            List<StaticPageSummary> list = new List<StaticPageSummary>()
+            {
+                {new StaticPageSummary(){ Id=1, PageName="test1"}},
+                {new StaticPageSummary(){ Id=2, PageName="test2"}}
+            };
+            _staticPageRepository.Stub(r => r.GetAll()).Return(list);
+
+            var staticPages = _objectUnderTest.GetAllStaticPages();
+
+            Assert.IsNotNull(staticPages);
+        }
+
 
         [TestMethod]
-        public void Get_RequestExisting()
+        public void Get_RequestExistingStaticPage()
         {
             _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(new StaticPage());
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
@@ -60,7 +75,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         }
 
         [TestMethod]
-        public void Get_RequestNonExisting()
+        public void Get_RequestNonExistingStaticpage()
         {
             _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(null);
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
