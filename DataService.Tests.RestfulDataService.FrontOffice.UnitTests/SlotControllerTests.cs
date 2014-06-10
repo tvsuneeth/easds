@@ -21,23 +21,6 @@ using System.Web.Http.Hosting;
 
 namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
 {
-
-  //public class Helpers
-  //{
-  //      public HttpContextBase CreateMockHttpContext(string requestedUrl = null, string httpMethod = "GET")
-  //      {
-  //          var httpRequestMock = MockRepository.GenerateMock<HttpRequestBase>();
-  //          httpRequestMock.Stub(m => m.AppRelativeCurrentExecutionFilePath).Return(requestedUrl);
-  //          httpRequestMock.Stub(m => m.HttpMethod).Return(httpMethod);
-  //          var httpResponseMock = MockRepository.GenerateMock<HttpResponseBase>();
-  //          var httpContext = MockRepository.GenerateMock<HttpContextBase>();
-  //          httpContext.Stub(m => m.Request).Return(httpRequestMock);
-  //          httpContext.Stub(m => m.Response).Return(httpResponseMock);
-  //          return httpContext;
-  //      }
-  // }
-
-
     [TestClass]
     public class SlotControllerTests
     {
@@ -52,55 +35,13 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             _slotRepository = MockRepository.GenerateStub<ISlotRepository>();        
             _slotService = new SlotService(_slotRepository);
-
-            HttpConfiguration config = new HttpConfiguration();      
-            var route = config.Routes.MapHttpRoute
-               (
-               name: "GetMediaContentById",
-               routeTemplate: "slotpage/{id:int}",
-               defaults: new { controller = "MediaController", action = "GetMediaContentById" }
-               );
-
-            var routeData = new HttpRouteData(route,
-                   new HttpRouteValueDictionary 
-                     { 
-                        { "id", "1" },
-                        { "controller", "MediaController" } 
-                    }
-                );
-
-
-
-            HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, "http://localhost:8080/slotpage/1");                        
-
-            _urlHelper = new twg.chk.DataService.FrontOffice.Helpers.UrlHelper(new System.Web.Http.Routing.UrlHelper(req));
-
-           
-
+            _urlHelper = MockRepository.GenerateStub<IUrlHelper>();
             _objectUnderTest = new SlotController(_slotService, _urlHelper);
-            _objectUnderTest.Request = req;
-            _objectUnderTest.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, config);
-            _objectUnderTest.Request.Properties.Add(HttpPropertyKeys.HttpRouteDataKey, routeData);
 
-                                   
-
+            _objectUnderTest.Request = new HttpRequestMessage();
+            _objectUnderTest.Request.SetConfiguration(new HttpConfiguration());
         }
-
-        //public void WhenRootPathIsCallThenHomeIndexIsReturned()
-        //{
-        //var routes = new RouteCollection();
-        //MvcApplication.RegisterRoutes(routes); // In MvcApplication we have set up a default route
-        //var help = new Helpers();
-        //const string URL_TO_TEST = @”~/”;
-        //HttpContextBase mockHttpCOntext = help.CreateMockHttpContext(URL_TO_TEST, “GET”);
-        //// is there a route in the collection that matches the route we passed in?
-        //RouteData result = routes.GetRouteData(mockHttpCOntext);
-        //Assert.IsNotNull(result, “The url requested cannot be used to produce a matching route: url =” + URL_TO_TEST);
-        //Assert.IsNotNull(result.Route);
-        //}
-    
-
-
+       
 
         [TestCleanup]
         public void Cleanup()
@@ -129,24 +70,44 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         {
             SlotPage sp = new SlotPage() { Id = 1, PageName = "Test", Slots = { new Slot(){ Id=1, Headline="test slot"}  } };
             _slotRepository.Stub(r => r.GetSlotPageById(Arg<int>.Is.Anything)).Return(sp);
-
             
             var result = _objectUnderTest.GetSlotPageById(1);
 
             Assert.IsNotNull(result);
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void GetSlotPageById_WithSlotHavingAnImage_ReturnedSlotHasImageUrl()
         {
-            //var slot = new Slot() { Id = 1, Headline = "test slot", Image = new Image() { Name = "text", Id = 1000, FileExtension = "jpg" } };
-            //SlotPage sp = new SlotPage() { Id = 1, PageName = "Test", Slots = { slot } };
-            //_slotRepository.Stub(r => r.GetSlotPageById(Arg<int>.Is.Anything)).Return(sp);
+            //Arrange
+            HttpConfiguration config = new HttpConfiguration();
+            var route = config.Routes.MapHttpRoute
+            (
+               name: "GetMediaContentById",
+               routeTemplate: "mediacontent/{id}"
+            );
+
+            var routeData = new HttpRouteData(route, new HttpRouteValueDictionary { { "id", "1" } });
 
             
-            //var result = _objectUnderTest.GetSlotPageById(1);
-            //Image img = result.Slots.FirstOrDefault().Image;
-            //Assert.IsNotNull(img.Url);
+            HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, "http://localhost:80/slotpage/1");
+            req.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, config);
+            req.Properties.Add(HttpPropertyKeys.HttpRouteDataKey, routeData);
+
+            _urlHelper = new twg.chk.DataService.FrontOffice.Helpers.UrlHelper(new System.Web.Http.Routing.UrlHelper(req));
+            _objectUnderTest = new SlotController(_slotService, _urlHelper);
+            _objectUnderTest.Request = req;
+
+            var slot = new Slot() { Id = 1, Headline = "test slot", Image = new Image() { Name = "dummy image", Id = 1000, FileExtension = "jpg" } };
+            SlotPage sp = new SlotPage() { Id = 1, PageName = "Test", Slots = { slot } };
+            _slotRepository.Stub(r => r.GetSlotPageById(Arg<int>.Is.Anything)).Return(sp);
+
+            //Act
+            var result = _objectUnderTest.GetSlotPageById(1);
+
+            //Assert
+            Image img = result.Slots.FirstOrDefault().Image;
+            Assert.AreNotEqual(string.Empty,img.Url);
             
         }
         
