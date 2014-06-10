@@ -60,6 +60,7 @@
     <Compile Include="ArticleSection.cs" />
     <Compile Include="ArticleSummary.cs" />
     <Compile Include="ArticleTaxonomy.cs" />
+    <Compile Include="Image.cs" />
     <Compile Include="IMediaAttachment.cs" />
     <Compile Include="IWebIdentifiable.cs" />
     <Compile Include="IPagination.cs" />
@@ -71,6 +72,9 @@
     <Compile Include="Person.cs" />
     <Compile Include="ContentBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Slot.cs" />
+    <Compile Include="SlotPage.cs" />
+    <Compile Include="SlotPageSummary.cs" />
     <Compile Include="StaticContentLink.cs" />
     <Compile Include="StaticPage.cs" />
     <Compile Include="StaticPageSummary.cs" />

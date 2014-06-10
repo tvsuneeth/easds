@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="ArticleControllerTests.cs" />
     <Compile Include="OperatorsControllerTests.cs" />
+    <Compile Include="SlotControllerTests.cs" />
     <Compile Include="StaticPageControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxonomyControllerTests.cs" />

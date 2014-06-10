@@ -172,6 +172,7 @@
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\OperatorsController.cs" />
+    <Compile Include="Controllers\SlotController.cs" />
     <Compile Include="Controllers\StaticPageController.cs" />
     <Compile Include="Controllers\TaxonomyController.cs" />
     <Compile Include="Helpers\UrlHelper.cs" />

@@ -142,7 +142,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         }
 
         [TestMethod]
-        public void ArticleController_Get_ArticleWithImage_ReturnedArticleHasImageInfo()
+        public void ArticleController_Get_ArticleWithImage_ReturnedArticleHasImage()
         {
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article { AttachedMedia = new MediaContent { Extension = "jpg", FileName = "imagefile.jpg" } });
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem>());
