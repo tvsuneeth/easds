@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace twg.chk.DataService.Business
 {
-    public abstract class ContentBase : ITaxonomy, IWebIdentifiable, IMediaAttachment
+    public abstract class ContentBase : ITaxonomy, IWebIdentifiable
     {
         public virtual int Id { get; set; }
         public virtual String Title { get; set; }
@@ -13,8 +13,8 @@ namespace twg.chk.DataService.Business
         public virtual String MetaDescription { get; set; }
         public virtual String MetaKeywords { get; set; }
         public virtual Person Author { get; set; }
-        public bool HasAttachedMedia { get { return (AttachedMedia != null); } }
-        public MediaContent AttachedMedia { get; set; }
+        //public bool HasAttachedMedia { get { return (AttachedMedia != null); } }
+        //public MediaContent AttachedMedia { get; set; }
 
         public virtual object GetIdentificationElement() { return new { Id }; }
 

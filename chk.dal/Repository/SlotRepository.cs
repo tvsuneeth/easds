@@ -105,9 +105,11 @@ namespace twg.chk.DataService.chkData.Repository
                             {
                                 Id = imageId,
                                 Name = Convert.ToString(reader["sAssetName"]),
-                                width = Convert.ToInt32((reader["iWidth"] != DBNull.Value) ? reader["iWidth"] : 0),
+                                Width = Convert.ToInt32((reader["iWidth"] != DBNull.Value) ? reader["iWidth"] : 0),
                                 Height = Convert.ToInt32((reader["iHeight"] != DBNull.Value) ? reader["iHeight"] : 0),
-                                FileExtension = Convert.ToString(reader["sFileExt"])
+                                Extension = Convert.ToString(reader["sFileExt"]),
+                                CreatedDate = Convert.ToDateTime(reader["imageCreatedDate"]),
+                                LastModifiedDate = Convert.ToDateTime(reader["imageLastModifiedDate"])
                             };
                             slot.Image = img;
                         }

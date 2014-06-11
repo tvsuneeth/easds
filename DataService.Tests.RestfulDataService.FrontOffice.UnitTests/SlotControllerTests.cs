@@ -98,7 +98,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             _objectUnderTest = new SlotController(_slotService, _urlHelper);
             _objectUnderTest.Request = req;
 
-            var slot = new Slot() { Id = 1, Headline = "test slot", Image = new Image() { Name = "dummy image", Id = 1000, FileExtension = "jpg" } };
+            var slot = new Slot() { Id = 1, Headline = "test slot", Image = new Image() { Name = "dummy image", Id = 1000, Extension = "jpg" } };
             SlotPage sp = new SlotPage() { Id = 1, PageName = "Test", Slots = { slot } };
             _slotRepository.Stub(r => r.GetSlotPageById(Arg<int>.Is.Anything)).Return(sp);
 

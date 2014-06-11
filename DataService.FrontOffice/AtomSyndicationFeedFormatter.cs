@@ -129,13 +129,13 @@ namespace twg.chk.DataService.FrontOffice
             {
                 foreach (var item in feed.Entries)
                 {
-                    var syndicationItem = _switchOnType[item.Content.GetType()](item.Content, item.Link, item.ThumbnailImage);
+                    var syndicationItem = _switchOnType[item.Content.GetType()](item.Content, item.Link, null);
                     items.Add(syndicationItem);
                 }
             }
             else
             {
-                var syndicationItem = _switchOnType[feed.Entries.GetType()](feed.Entries, feed.Link, feed.Entries.First().ThumbnailImage);
+                var syndicationItem = _switchOnType[feed.Entries.GetType()](feed.Entries, feed.Link, null);
                 items.Add(syndicationItem);
             }
             atomFeed.Items = items;

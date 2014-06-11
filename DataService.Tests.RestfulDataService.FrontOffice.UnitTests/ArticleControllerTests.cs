@@ -144,16 +144,16 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
         [TestMethod]
         public void ArticleController_Get_ArticleWithImage_ReturnedArticleHasImage()
         {
-            _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article { AttachedMedia = new MediaContent { Extension = "jpg", FileName = "imagefile.jpg" } });
+            _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article { ThumbnailImage = new Image { Extension = "jpg", Name = "imagefile.jpg" } });
             _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem>());
             _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
             var articleFeed = _objectUnderTest.Get(1);
 
             Assert.IsNotNull(articleFeed);
-            MediaContent content = ((IMediaAttachment)articleFeed.Entries.FirstOrDefault().Content).AttachedMedia;
-            
-            Assert.IsNotNull(content);
+            Article article = (Article)articleFeed.Entries.FirstOrDefault().Content;
+
+            Assert.IsNotNull(article.ThumbnailImage);
         }
     }
 }

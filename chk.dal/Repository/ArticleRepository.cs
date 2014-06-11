@@ -92,14 +92,17 @@ namespace twg.chk.DataService.chkData.Repository
 
                         if (!DBNull.Value.Equals(sqlReader["liAssetID"]))
                         {
-                            var image = new MediaContent
+                            var image = new Image
                             {
                                 Id = Convert.ToInt32(sqlReader["liAssetID"]),
-                                FileName = Convert.ToString(sqlReader["sAssetName"]),
-                                Extension = Convert.ToString(sqlReader["sFileExt"])
+                                Name = Convert.ToString(sqlReader["sAssetName"]),
+                                Extension = Convert.ToString(sqlReader["sFileExt"]),
+                                CreatedDate = Convert.ToDateTime(sqlReader["imageCreatedDate"]),
+                                LastModifiedDate = Convert.ToDateTime(sqlReader["imageLastModifiedDate"])
                             };
 
-                            article.AttachedMedia = image;
+                            //article.AttachedMedia = image;
+                            article.ThumbnailImage = image;
                         }
 
                         articleList.Add(article);

@@ -29,18 +29,18 @@ namespace twg.chk.DataService.FrontOffice.Models
                     Content = content,
                     Link = new LinkItem { Href = link, Title = content.GetIdentificationTitle(), Rel = "via", Verb = "GET" }
                 };
-                if (content.HasAttachedMedia)
-                {
-                    entry.ThumbnailImage = new LinkItem
-                    {
-                        Href = _urlHelper.GenerateUrl("GetMedia", 
-                            new
-                            {
-                                id = content.AttachedMedia.Id,
-                                fileName = String.Format("{0}.{1}", content.AttachedMedia.FileName, content.AttachedMedia.Extension)
-                            })
-                    };
-                }
+                //if (content.HasAttachedMedia)
+                //{
+                //    entry.ThumbnailImage = new LinkItem
+                //    {
+                //        Href = _urlHelper.GenerateUrl("GetMedia", 
+                //            new
+                //            {
+                //                id = content.AttachedMedia.Id,
+                //                fileName = String.Format("{0}.{1}", content.AttachedMedia.FileName, content.AttachedMedia.Extension)
+                //            })
+                //    };
+                //}
               
                 
                 // We add a link property based on the identification element given by the content object (it implement IWebIdentifiable)
