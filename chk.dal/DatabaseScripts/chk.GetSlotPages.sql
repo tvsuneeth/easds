@@ -1,6 +1,6 @@
-﻿USE [CatererAndHotelKeeper_systest]
+﻿USE [CatererAndHotelKeeper_dev_latest]
 GO
-/****** Object:  StoredProcedure [chk].[GetSlotPages]    Script Date: 06/10/2014 09:42:59 ******/
+/****** Object:  StoredProcedure [chk].[GetSlotPages]    Script Date: 06/12/2014 10:57:06 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -29,7 +29,7 @@ BEGIN
     --==========
     BEGIN TRY
     --==========
-       select * from SlotPages sp where 
+       select liSlotPageID as 'Id', sPageName as 'PageName' from SlotPages sp where 
        (@slotPageID=-1 or  sp.liSlotPageID = @slotPageID)
 		
 

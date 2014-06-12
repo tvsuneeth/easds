@@ -11,74 +11,41 @@ using twg.chk.DataService.chkData.Infrastructure;
 
 namespace twg.chk.DataService.chkData.Repository
 {
-    public interface ISlotRepository : IChkRepositoryBase<Slot>
+    public interface ISlotRepository :  IChkRepositoryBase<Slot>
     {
         SlotPage GetSlotPageById(int slotPageId);
         List<SlotPageSummary> GetListOfSlotPages();
     }
 
-    public class SlotRepository : ISlotRepository
+    public class SlotRepository : DbRepositoryBase, ISlotRepository
     {
         public Slot Get(int id)
         {
             return null;
         }
-
+        
         public List<SlotPageSummary> GetListOfSlotPages()
-        {
-            var list = new List<SlotPageSummary>();
-           
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
-            {
-                connection.Open();
-                using (var cmd = new SqlCommand())
-                {
-                    cmd.Connection = connection;
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.CommandText = @"[chk].[GetSlotPages]";
-
-                    cmd.Parameters.Add(new SqlParameter("@slotPageId", -1));
-
-                    IDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        var sp = new SlotPageSummary()
-                        {
-                            Id = Convert.ToInt32(reader["liSlotPageID"]),
-                            PageName = Convert.ToString(reader["sPageName"])
-                        };
-                        list.Add(sp);
-                    }                                       
-                }
-            }
-
-            return list;        
+        {            
+            string commandName = @"[chk].[GetSlotPages]";            
+            return FillListWithAutoMapping<SlotPageSummary>(commandName, new { slotPageId=-1 });           
         }
-
+       
         public SlotPage GetSlotPageById(int slotPageId)
         {
             SlotPage sp = null;
-           
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
-            {
-                connection.Open();
-                using (var cmd = new SqlCommand())
+
+            using (var connection = CreateConnection())
+            {                
+                using (var cmd = CreateCommand(connection, @"[chk].[GetSlotPageWithSlots]"))
                 {
-                    cmd.Connection = connection;
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.CommandText = @"[chk].[GetSlotPageWithSlots]";
-
-                    cmd.Parameters.Add(new SqlParameter("@slotPageId", slotPageId));
-
+                    AddCommandParameter(cmd, "@slotPageId", slotPageId);                                        
                     IDataReader reader = cmd.ExecuteReader();
-
                     while (reader.Read())
-                    {
+                    {                        
                         sp = new SlotPage()
                         {
-                            Id = Convert.ToInt32(reader["liSlotPageID"]),
-                            PageName = Convert.ToString(reader["sPageName"])
+                            Id = GetValue<int>(reader["liSlotPageID"]),
+                            PageName = GetValue<string>(reader["sPageName"])
                         };
                     }
 
@@ -86,30 +53,29 @@ namespace twg.chk.DataService.chkData.Repository
 
                     while (reader.Read())
                     {
-
-                        Slot slot = new Slot();
-
-                        slot.Id = Convert.ToInt32(reader["liSlotID"]);
-                        slot.Headline = Convert.ToString(reader["sHeadline"]);
-                        slot.SlotName = Convert.ToString(reader["sSlotName"]);
-                        slot.Content = Convert.ToString(reader["sContent"]);
-                        slot.URL = Convert.ToString(reader["sURL"]);
-                        slot.URLTitle = Convert.ToString(reader["sURLTitle"]);
-                        slot.AccessKey = Convert.ToString(reader["sAccessKey"]);                        
-                        slot.dtLastModified = Convert.ToDateTime(reader["dtLastModified"]);
-
-                        int imageId = Convert.ToInt32((reader["liImageID"] != DBNull.Value) ? reader["liImageID"] : -1);
-                        if(imageId!=-1)
+                        Slot slot = new Slot()
+                        {
+                            Id = GetValue<int>(reader["liSlotID"]),
+                            Headline = GetValue<string>(reader["sHeadline"]),
+                            SlotName = GetValue<string>(reader["sSlotName"]),
+                            Content = GetValue<string>(reader["sContent"]),
+                            URL = GetValue<string>(reader["sURL"]),
+                            URLTitle = GetValue<string>(reader["sURLTitle"]),
+                            AccessKey = GetValue<string>(reader["sAccessKey"]),
+                            LastModifiedDate = GetValue<DateTime>(reader["dtLastModified"]),
+                        };
+                        int imageId = GetValue<int>(reader["liImageID"]);
+                        if(imageId!=0)
                         { 
                             Image img = new Image()
                             {
                                 Id = imageId,
-                                Name = Convert.ToString(reader["sAssetName"]),
-                                Width = Convert.ToInt32((reader["iWidth"] != DBNull.Value) ? reader["iWidth"] : 0),
-                                Height = Convert.ToInt32((reader["iHeight"] != DBNull.Value) ? reader["iHeight"] : 0),
-                                Extension = Convert.ToString(reader["sFileExt"]),
-                                CreatedDate = Convert.ToDateTime(reader["imageCreatedDate"]),
-                                LastModifiedDate = Convert.ToDateTime(reader["imageLastModifiedDate"])
+                                Name = GetValue<string>(reader["sAssetName"]),
+                                Width = GetValue<int>(reader["iWidth"]),
+                                Height = GetValue<int>(reader["iHeight"]),
+                                Extension = GetValue<string>(reader["sFileExt"]),
+                                CreatedDate = GetValue<DateTime>(reader["imageCreatedDate"]),
+                                LastModifiedDate = GetValue<DateTime>(reader["imageLastModifiedDate"])
                             };
                             slot.Image = img;
                         }

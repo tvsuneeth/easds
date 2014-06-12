@@ -15,7 +15,7 @@ namespace twg.chk.DataService.Business
         public string URL { get; set; }
         public string URLTitle { get; set; }
         public string AccessKey { get; set; }        
-        public DateTime dtLastModified { get; set; }
+        public DateTime LastModifiedDate { get; set; }
         public Image Image { get; set; }
     }
 }

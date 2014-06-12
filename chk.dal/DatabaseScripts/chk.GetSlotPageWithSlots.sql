@@ -1,6 +1,6 @@
-﻿USE [CatererAndHotelKeeper_systest]
+﻿USE [CatererAndHotelKeeper_dev_latest]
 GO
-/****** Object:  StoredProcedure [chk].[GetSlotPageWithSlots]    Script Date: 06/10/2014 09:42:15 ******/
+/****** Object:  StoredProcedure [chk].[GetSlotPageWithSlots]    Script Date: 06/12/2014 10:56:38 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -57,7 +57,9 @@ BEGIN
 	        asset.sAssetName,
 	        asset.iHeight,
 	        asset.iWidth,
-	        asset.sFileExt		
+	        asset.sFileExt,
+	        asset.dtEntered as 'imageCreatedDate',
+	        asset.dtLastModified as 'imageLastModifiedDate'		
         FROM         
 	        Slots S WITH (NOLOCK) 
 			INNER JOIN dbo.SlotPages sp ON sp.[liSlotPageID] = S.[liSlotPageID]

@@ -26,8 +26,7 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
     {
         private SlotController _objectUnderTest;
         private ISlotRepository _slotRepository;
-        private ISlotService _slotService;
-        private IStaticContentLinkService _staticContentLinkService;
+        private ISlotService _slotService;        
         private IUrlHelper _urlHelper;
 
         [TestInitialize]
