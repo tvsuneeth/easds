@@ -1,6 +1,6 @@
-USE [CatererAndHotelKeeper_systest]
+USE [CatererAndHotelKeeper_dev_latest]
 GO
-/****** Object:  StoredProcedure [chk].[GetArticle]    Script Date: 05/30/2014 11:50:58 ******/
+/****** Object:  StoredProcedure [chk].[GetArticle]    Script Date: 06/12/2014 11:27:40 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -32,7 +32,13 @@ BEGIN
 		, a.sLastName
 		, a.sEmailAddress
 		, a.liNavigationItemID
-		, s.*
+		, s.liAssetID
+		, s.sAssetName
+		, s.sFileExt 
+		, s.iHeight
+		, s.iWidth
+		, s.ImageCreatedDate
+		, s.imageLastModifiedDate
 	FROM
 	(
 		SELECT
@@ -58,7 +64,7 @@ BEGIN
 	) AS a
 	LEFT OUTER JOIN 
 	(
-		SELECT liAssetID, sAssetName, sFileExt
+		SELECT liAssetID, sAssetName, sFileExt, iHeight,iWidth, dtEntered as 'ImageCreatedDate', dtLastModified as 'imageLastModifiedDate'
 		FROM [dbo].[Assets]
 		WHERE (bDeleted IS NULL OR bDeleted = 0)
 	) AS s ON a.liThumbnailID = s.liAssetID

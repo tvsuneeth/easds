@@ -37,6 +37,10 @@ namespace twg.chk.DataService.FrontOffice.Controllers
             var article = _articleService.GetById(id);            
             if (article != null)
             {
+                if (article.ThumbnailImage != null)
+                {
+                    article.ThumbnailImage.Url = _urlHelper.GenerateUrl("GetMediaContentById", new { id = article.ThumbnailImage.Id });
+                }
                 var articleFeed = new SingleContentFeed<Article>(
                     _urlHelper.GenerateUrl("GetArticleById", new { id = article.Id }),
                     article,
