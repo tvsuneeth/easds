@@ -11,18 +11,17 @@ namespace twg.chk.DataService.Business
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Address1 { get; set; }
-        public string Address2 { get; set; }
-        public string Town { get; set; }
-        public string County { get; set; }
-        public string Postcode { get; set; }
-        public string CountryCode { get; set; }
+        //public string Address1 { get; set; }
+        //public string Address2 { get; set; }
+       // public string Town { get; set; }
+       // public string County { get; set; }
+       // public string Postcode { get; set; }
+       // public string CountryCode { get; set; }
         public string Telephone { get; set; }
         public string Fax { get; set; }
         public string Email { get; set; }
         public string URLTitle { get; set; }
-        public string URL { get; set; }
-        public int LogoID { get; set; }
+        public string URL { get; set; }        
         public string Notes { get; set; }
         public string Activities { get; set; }
         public string TimeLine { get; set; }
@@ -32,6 +31,10 @@ namespace twg.chk.DataService.Business
         public string KeyPeople { get; set; }
         public string Commentary { get; set; }
         public string ChiefExecutive { get; set; }
+        public CompanyTaxonomy Taxonomy { get; set; }
+        public Image LogoImage { get; set; }
+        public Address Address { get; set; }
+
         //public string MetaDescription { get; set; }
         //public string MetaKeywords { get; set; }
         //public string PageTitle { get; set; }

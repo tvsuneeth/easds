@@ -23,7 +23,16 @@ namespace twg.chk.DataService.api
        
         public List<Operator> GetAll()
         {
-            return _opetorRepository.GetAll();
+            var list =  _opetorRepository.GetAll();
+            foreach (var op in list)
+            {
+                var taxonomy = _opetorRepository.GetOperatorTaxonomy(op.Id);
+                if(taxonomy!=null && taxonomy.Count>0)
+                { 
+                    op.Taxonomy = new CompanyTaxonomy() { CategoryAssignments = taxonomy };
+                }
+            }
+            return list;
         }
     }
 }

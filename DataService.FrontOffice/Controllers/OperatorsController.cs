@@ -18,21 +18,33 @@ namespace twg.chk.DataService.FrontOffice.Controllers
     public class OperatorsController : ApiController
     {
         private IOperatorService _operatorService;
-        public OperatorsController(IOperatorService operatorService)
+        private IUrlHelper _urlHelper;
+        public OperatorsController(IOperatorService operatorService, IUrlHelper urlHelper)
         {
             _operatorService = operatorService;
+            _urlHelper = urlHelper;
         }
        
 
         [HttpGet]
         [Route("operators", Name = "GetAllOperators")]
-        [Authorize(Roles = "frontofficegroup")]
+       // [Authorize(Roles = "frontofficegroup")]
         public List<Operator> Index()
         {
+            _urlHelper.RouteHelper = Url;
+
             var operators = _operatorService.GetAll();
             if(operators.Count==0)
             {
                 return null;
+            }
+            foreach (var item in operators)
+            {
+                var image = item.LogoImage;
+                if (image != null)
+                {
+                    image.Url = _urlHelper.GenerateUrl("GetMediaContentById", new { id = image.Id });
+                }
             }
             return operators;
         }

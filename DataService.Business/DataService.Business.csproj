@@ -56,10 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs" />
     <Compile Include="Article.cs" />
     <Compile Include="ArticleSection.cs" />
     <Compile Include="ArticleSummary.cs" />
     <Compile Include="ArticleTaxonomy.cs" />
+    <Compile Include="CompanyTaxonomy.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="IMediaAttachment.cs" />
     <Compile Include="IWebIdentifiable.cs" />

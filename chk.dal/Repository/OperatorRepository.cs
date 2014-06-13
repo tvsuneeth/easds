@@ -11,72 +11,128 @@ using twg.chk.DataService.chkData.Infrastructure;
 
 namespace twg.chk.DataService.chkData.Repository
 {
-    public interface IOperatorRepository 
+    public interface IOperatorRepository
     {
         List<Operator> GetAll();
+        List<TaxonomyCategory> GetOperatorTaxonomy(int companyId);
     }
 
-    public class OperatorRepository : IOperatorRepository
+    public class OperatorRepository : DbRepositoryBase, IOperatorRepository
     {
         public OperatorRepository()
         { }
 
         public List<Operator> GetAll()
         {
-            
-             List<String> categoryFilterList  = new List<String>();            
-             List<Operator> operatorObjs = new List<Operator>();            
+            List<String> categoryFilterList = new List<String>();
+            List<Operator> operatorObjs = new List<Operator>();
 
-             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
-             {
-                using (var cmd = new SqlCommand())
+            using (var connection = CreateConnection())
+            {
+                using (var cmd = CreateCommand(connection, "chk.GetCompaniesPaged"))
                 {
-                    connection.Open();
-                    cmd.Connection = connection;
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.CommandText = @"chk.GetCompaniesPaged";
-
-                    cmd.Parameters.Add(new SqlParameter("@StartsWith", string.Empty));
-                    cmd.Parameters.Add(new SqlParameter("@SearchPhrase", string.Empty));
-                    cmd.Parameters.Add(new SqlParameter("@CategoryFilter", String.Join(",", categoryFilterList)));
-                   // cmd.Parameters.Add(new SqlParameter("@CurrentPage", pageNumber));
-                   // cmd.Parameters.Add(new SqlParameter("@PageSize", pageSize));
+                    AddCommandParameter(cmd, "@StartsWith", string.Empty);
+                    AddCommandParameter(cmd, "@SearchPhrase", string.Empty);
+                    AddCommandParameter(cmd,"@CategoryFilter", String.Join(",", categoryFilterList));
+                                       
 
                     IDataReader reader = cmd.ExecuteReader();
 
-                     while (reader.Read())
-                     {
-                         Operator operatorObj = new Operator();
-                         operatorObj.Id = Convert.ToInt32(reader["liCompanyID"]);
-                         operatorObj.Name = Convert.ToString(reader["sName"]);
-                         operatorObj.Description = Convert.ToString(reader["sDescription"]);
-                         operatorObj.Address1 = Convert.ToString(reader["sAddress1"]);
-                         operatorObj.Address2 = Convert.ToString(reader["sAddress2"]);
-                         operatorObj.Town = Convert.ToString(reader["sTown"]);
-                         operatorObj.County = Convert.ToString(reader["sCounty"]);
-                         operatorObj.Postcode = Convert.ToString(reader["sPostcode"]);
-                         operatorObj.CountryCode = Convert.ToString(reader["sCountryCode"]);
-                         operatorObj.Telephone = Convert.ToString(reader["sTelephone"]);
-                         operatorObj.Fax = Convert.ToString(reader["sFax"]);
-                         operatorObj.Email = Convert.ToString(reader["sEmail"]);
-                         operatorObj.URLTitle = Convert.ToString(reader["sURLTitle"]);
-                         operatorObj.URL = Convert.ToString(reader["sURL"]);
-                         operatorObj.LogoID = Convert.ToInt32((reader["liLogoID"] != DBNull.Value) ? reader["liLogoID"] : 0);
-                         operatorObj.Notes = Convert.ToString(reader["sNotes"]);
-                         operatorObj.Activities = Convert.ToString(reader["sActivities"]);
-                         operatorObj.TimeLine = Convert.ToString(reader["sTimeLine"]);
-                         operatorObj.FinancialSnapshot = Convert.ToString(reader["sFinancialSnapshot"]);
-                         operatorObj.OperatingData = Convert.ToString(reader["sOperatingData"]);
-                         operatorObj.Strategy = Convert.ToString(reader["sStrategy"]);
-                         operatorObj.KeyPeople = Convert.ToString(reader["sKeyPeople"]);
-                         operatorObj.Commentary = Convert.ToString(reader["sCommentary"]);
-                         operatorObj.ChiefExecutive = Convert.ToString(reader["sChiefExecutive"]);
+                    while (reader.Read())
+                    {
+                        Operator operatorObj = new Operator()
+                        {
+                            Id = GetValue<int>(reader["liCompanyID"]),
+                            Name = GetValue<string>(reader["sName"]),
+                            Description = GetValue<string>(reader["sDescription"]),
+                            Telephone = GetValue<string>(reader["sTelephone"]),
+                            Fax = GetValue<string>(reader["sFax"]),
+                            Email = GetValue<string>(reader["sEmail"]),
+                            URLTitle = GetValue<string>(reader["sURLTitle"]),
+                            URL = GetValue<string>(reader["sURL"]),
+                            Notes = GetValue<string>(reader["sNotes"]),
+                            Activities = GetValue<string>(reader["sActivities"]),
+                            TimeLine = GetValue<string>(reader["sTimeLine"]),
+                            FinancialSnapshot = GetValue<string>(reader["sFinancialSnapshot"]),
+                            OperatingData = GetValue<string>(reader["sOperatingData"]),
+                            Strategy = GetValue<string>(reader["sStrategy"]),
+                            KeyPeople = GetValue<string>(reader["sKeyPeople"]),
+                            Commentary = GetValue<string>(reader["sCommentary"]),
+                            ChiefExecutive = GetValue<string>(reader["sChiefExecutive"])
+                        };
+
+                        int imageId = GetValue<int>(reader["liAssetID"]);
+                        if (imageId != 0)
+                        {                           
+                            operatorObj.LogoImage = new Image()
+                            {
+                                Id = imageId,
+                                Name = GetValue<string>(reader["sAssetName"]),
+                                Width = GetValue<int>(reader["iWidth"]),
+                                Height = GetValue<int>(reader["iHeight"]),
+                                Extension = GetValue<string>(reader["sFileExt"]),
+                                CreatedDate = GetValue<DateTime>(reader["imageCreatedDate"]),
+                                LastModifiedDate = GetValue<DateTime>(reader["imageLastModifiedDate"])
+                            };
+                        }
+
+                        operatorObj.Address = new Address()
+                        {
+                            Line1 = GetValue<string>(reader["sAddress1"]),
+                            Line2 = GetValue<string>(reader["sAddress2"]),
+                            Town = GetValue<string>(reader["sTown"]),
+                            County = GetValue<string>(reader["sCounty"]),
+                            PostCode = GetValue<string>(reader["sPostcode"]),
+                            Country = GetValue<string>(reader["sCountry"]),
+                            CountryCode = GetValue<string>(reader["sCountryCode"])
+                        };
+
                         operatorObjs.Add(operatorObj);
                     }
                 }
             }
-             return operatorObjs;
-            
+            return operatorObjs;
+
+        }
+
+        public List<TaxonomyCategory> GetOperatorTaxonomy(int companyId)
+        {
+
+            var categories = new List<TaxonomyCategory>();
+            using (var connection = CreateConnection())
+            {
+                using (var command = CreateCommand(connection, "chk.GetCompanyTaxonomies"))
+                {
+                    command.Parameters.Add(new SqlParameter("@CompanyId", companyId));
+
+                    var sqlReader = command.ExecuteReader();
+                    while (sqlReader.Read())
+                    {
+                        var category = new TaxonomyCategory
+                        {
+                            CategoryId = Convert.ToInt32(sqlReader["liCategoryID"]),
+                            CategoryName = Convert.ToString(sqlReader["sCategoryName"]),
+                        };
+                        categories.Add(category);
+                    }
+
+                    sqlReader.NextResult();
+
+                    while (sqlReader.Read())
+                    {
+                        int categoryId = Convert.ToInt32(sqlReader["liCategoryID"]);
+                        var category = categories.Find(i => i.CategoryId == categoryId);
+                        var categoryItem = new TaxonomyCategoryItem()
+                        {
+                            CategoryItemId = Convert.ToInt32(sqlReader["liCategoryItemID"]),
+                            CategoryItemName = Convert.ToString(sqlReader["sItemName"]),
+                            ParentItemId = DBNull.Value.Equals(sqlReader["liParentID"]) ? null : (int?)Convert.ToInt32(sqlReader["liParentID"])
+                        };
+                        category.AddItem(categoryItem);
+                    }
+                }
+            }
+            return categories;
         }
     }
 }

@@ -85,6 +85,7 @@
     <Content Include="DatabaseScripts\chk.GetAsset.sql" />
     <Content Include="DatabaseScripts\chk.GetChildrenTaxonomy.sql" />
     <Content Include="DatabaseScripts\chk.GetCompaniesPaged.sql" />
+    <Content Include="DatabaseScripts\chk.GetCompanyTaxonomies.sql" />
     <Content Include="DatabaseScripts\chk.GetListOfStaticPages.sql" />
     <Content Include="DatabaseScripts\chk.GetSlotPages.sql" />
     <Content Include="DatabaseScripts\chk.GetSlotPageWithSlots.sql" />

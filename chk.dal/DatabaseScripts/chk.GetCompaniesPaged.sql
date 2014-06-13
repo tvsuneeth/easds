@@ -1,6 +1,6 @@
 USE [CatererAndHotelKeeper_systest]
 GO
-/****** Object:  StoredProcedure [chk].[GetCompaniesPaged]    Script Date: 06/03/2014 10:56:52 ******/
+/****** Object:  StoredProcedure [chk].[GetCompaniesPaged]    Script Date: 06/13/2014 14:56:22 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -30,7 +30,8 @@ BEGIN
 		 C.sName,  
 		 C.sDescription,  
 		 C.sAddress1,  
-		 C.sAddress2,  
+		 C.sAddress2, 
+		 cn.sCountry, 
 		 C.sTown,  
 		 C.sCounty,  
 		 C.sCountryCode,  
@@ -72,14 +73,23 @@ BEGIN
 		CLP.sCompanySubHeadline,  
 		CLP.sCompanyEndURL,  
 		CLP.bIsLandingPage,  
-		CLP.sCustomHeaderElement   
+		CLP.sCustomHeaderElement,
+		asset.liAssetID,
+        asset.sAssetName,
+        asset.iHeight,
+        asset.iWidth,
+        asset.sFileExt,
+        asset.dtEntered as 'imageCreatedDate',
+        asset.dtLastModified as 'imageLastModifiedDate'	  
 		FROM           
-		Companies C WITH (NOLOCK)   
+		Companies C WITH (NOLOCK) 
+		Inner Join Countries cn on C.sCountryCode = cn.sCountryCode  
 		INNER JOIN CompanyStatuses CSt  WITH (NOLOCK) ON C.liCompanyStatusID = CSt.liCompanyStatusID  
 		INNER JOIN Users U1  WITH (NOLOCK) on C.uiLastModifiedByID = U1.uiUserID  
 		INNER JOIN Users U2  WITH (NOLOCK) on C.uiPublishedByID = U2.uiUserID  
 		LEFT OUTER JOIN Caterer_CompanyExtras Cxtra WITH (NOLOCK) ON C.liCompanyID = Cxtra.liCompanyID  
-		LEFT JOIN CompanyLandingPage CLP ON C.liCompanyID = CLP.liCompanyID  
+		LEFT JOIN CompanyLandingPage CLP ON C.liCompanyID = CLP.liCompanyID
+		LEFT JOIN dbo.Assets asset on C.liLogoID = asset.liAssetID		  
 		WHERE CSt.liCompanyStatusID=20
 		Order BY C.sName
 	END

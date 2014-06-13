@@ -24,15 +24,16 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
     {
         private OperatorsController _objectUnderTest;
         private IOperatorRepository _operatorRepository;
-        private IOperatorService _operatorService;        
+        private IOperatorService _operatorService;
+        private IUrlHelper _urlHelper;
 
         [TestInitialize]
         public void Setup()
         {
             _operatorRepository = MockRepository.GenerateStub<IOperatorRepository>();                                                
-            _operatorService = new OperatorService(_operatorRepository);
-            _objectUnderTest = new OperatorsController(_operatorService);
-
+            _operatorService = new OperatorService(_operatorRepository);           
+            _urlHelper = MockRepository.GenerateStub<IUrlHelper>();
+            _objectUnderTest = new OperatorsController(_operatorService,_urlHelper);
             _objectUnderTest.Request = new HttpRequestMessage();
             _objectUnderTest.Request.SetConfiguration(new HttpConfiguration());
         }

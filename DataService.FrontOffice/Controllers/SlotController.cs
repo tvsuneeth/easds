@@ -24,6 +24,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         [Route("slotpage/{id:int}", Name = "GetSlotPageById")]
         public SlotPage GetSlotPageById(int id)
         {
+            
             _urlHelper.RouteHelper = Url;
             var sp = _slotService.GetSlotPageById(id);
 
