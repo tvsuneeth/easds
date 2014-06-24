@@ -29,7 +29,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         [HttpGet]
         [Route("staticpage/{id:int}", Name = "GetStaticPageById")]
        // [Authorize(Roles = "frontofficegroup")]
-        [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 3600, AnonymousOnly = false)]
+       // [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 3600, AnonymousOnly = false)]
         public SingleContentFeed<StaticPage> GetById(int id)
         {
             _urlHelper.RouteHelper = Url;
@@ -55,7 +55,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         [HttpGet]
         [Route("staticpage/byname/{name:regex(^[a-zA-Z0-9- ,&]+)}", Name = "GetStaticPageByName")]
         //[Authorize(Roles = "frontofficegroup")]
-        [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 3600, AnonymousOnly = false)]
+       // [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 3600, AnonymousOnly = false)]
         public SingleContentFeed<StaticPage> GetByName(String name)
         {
             _urlHelper.RouteHelper = Url;
