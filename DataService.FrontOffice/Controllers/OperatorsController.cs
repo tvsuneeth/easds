@@ -28,7 +28,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("operators", Name = "GetAllOperators")]
-       // [Authorize(Roles = "frontofficegroup")]
+        [Authorize(Roles = "frontofficegroup")]
         public List<Operator> Index()
         {
             _urlHelper.RouteHelper = Url;

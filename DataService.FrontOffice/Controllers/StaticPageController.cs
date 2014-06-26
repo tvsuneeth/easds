@@ -28,7 +28,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("staticpage/{id:int}", Name = "GetStaticPageById")]
-       // [Authorize(Roles = "frontofficegroup")]
+        [Authorize(Roles = "frontofficegroup")]
        // [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 3600, AnonymousOnly = false)]
         public SingleContentFeed<StaticPage> GetById(int id)
         {
@@ -54,7 +54,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("staticpage/byname/{name:regex(^[a-zA-Z0-9- ,&]+)}", Name = "GetStaticPageByName")]
-        //[Authorize(Roles = "frontofficegroup")]
+        [Authorize(Roles = "frontofficegroup")]
        // [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 3600, AnonymousOnly = false)]
         public SingleContentFeed<StaticPage> GetByName(String name)
         {
@@ -80,7 +80,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("staticpages", Name = "GetAllStaticPages")]
-        //[Authorize(Roles = "frontofficegroup")]
+        [Authorize(Roles = "frontofficegroup")]
         //[CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 3600, AnonymousOnly = false)]
         public List<StaticPageSummary> GetAllStaticPages()
         {

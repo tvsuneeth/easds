@@ -22,6 +22,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("slotpage/{id:int}", Name = "GetSlotPageById")]
+        [Authorize(Roles = "frontofficegroup")]
         public SlotPage GetSlotPageById(int id)
         {
             
@@ -45,6 +46,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
         [HttpGet]
         [Route("slotpages", Name = "GetLisOfSlotPages")]
+        [Authorize(Roles = "frontofficegroup")]
         public List<SlotPageSummary> GetLisOfSlotPages()
         {
             var list = _slotService.GetListOfSlotPages();
