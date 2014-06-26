@@ -98,6 +98,15 @@ namespace twg.chk.DataService.FrontOffice.Controllers
             }
         }
 
+        
+        [HttpGet]
+        [Route("secret/allarticles/{page:int?}", Name = "Secret-GetAllArticles")]
+        public  MultipleContentFeed<ArticleSummary> GetAllArticlesTest(int page = 1)
+        {
+            return GetAll(page);
+        }
+
+
         [HttpGet]
         [Route("articles/modifiedsince/{date:regex(\\d{6}_\\d{6})}", Name = "GetArticleModifiedSince")]
         [Authorize(Roles = "frontofficegroup")]        
