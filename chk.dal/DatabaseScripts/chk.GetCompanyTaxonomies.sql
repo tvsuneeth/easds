@@ -1,13 +1,13 @@
-﻿USE [CatererAndHotelKeeper_systest]
+﻿USE [CatererAndHotelKeeper_Systest]
 GO
-/****** Object:  StoredProcedure [chk].[GetCompanyTaxonomies]    Script Date: 06/13/2014 14:59:04 ******/
+/****** Object:  StoredProcedure [chk].[GetCompanyTaxonomies]    Script Date: 06/26/2014 12:41:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE PROCEDURE [chk].[GetCompanyTaxonomies]
+ALTER PROCEDURE [chk].[GetCompanyTaxonomies]
 (
 	@CompanyId INT
 )

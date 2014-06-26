@@ -1,6 +1,6 @@
-USE [CatererAndHotelKeeper_systest]
+USE [CatererAndHotelKeeper_Systest]
 GO
-/****** Object:  StoredProcedure [chk].[GetArticlesModifiedSince]    Script Date: 06/03/2014 10:39:16 ******/
+/****** Object:  StoredProcedure [chk].[GetArticlesModifiedSince]    Script Date: 06/26/2014 12:39:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -18,3 +18,6 @@ BEGIN
 	WHERE a.dtApproved IS NOT NULL	AND a.dtLastModified > @modifiedDate		
 	ORDER BY a.dtLastModified DESC
 END
+
+
+

@@ -1,15 +1,14 @@
-USE [CatererAndHotelKeeper_dev]
+USE [CatererAndHotelKeeper_Systest]
 GO
-
-/****** Object:  StoredProcedure [chk].[GetAsset]    Script Date: 16/05/2014 17:25:17 ******/
+/****** Object:  StoredProcedure [chk].[GetAsset]    Script Date: 06/26/2014 12:41:12 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE PROCEDURE [chk].[GetAsset]
+
+ALTER PROCEDURE [chk].[GetAsset]
 (
 	@AssetIds AS [chk].[ElementTable] READONLY
 )
@@ -20,6 +19,4 @@ BEGIN
 	WHERE liAssetID IN (SELECT CAST(Name AS INT) AS Id FROM @AssetIds)
 	AND (bDeleted IS NULL OR bDeleted = 0)
 END
-GO
-
 

@@ -1,6 +1,6 @@
-USE [CatererAndHotelKeeper_systest]
+USE [CatererAndHotelKeeper_Systest]
 GO
-/****** Object:  StoredProcedure [chk].[GetArticles]    Script Date: 05/30/2014 11:51:12 ******/
+/****** Object:  StoredProcedure [chk].[GetArticles]    Script Date: 06/26/2014 12:39:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
