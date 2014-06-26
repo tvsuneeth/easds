@@ -35,6 +35,10 @@ namespace twg.chk.DataService.FrontOffice
                 constraints: new { articleSection = @"^[a-zA-Z0-9- ,&]+", sector = @"^[a-zA-Z0-9- ,&]+", page = @"^\d*" }
             );
 
+
+            //ELMAH.IO  exception logging
+            _config.Filters.Add(new UnhandledExceptionFilter());
+
             app.UseWebApi(_config);
         }
     }
