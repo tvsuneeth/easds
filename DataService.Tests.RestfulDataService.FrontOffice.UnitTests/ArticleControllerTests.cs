@@ -120,6 +120,23 @@ namespace DataService.Tests.RestfulDataService.FrontOffice.UnitTests
             var articles = _objectUnderTest.GetModifiedArticles(input);
 
             Assert.IsNotNull(articles.Count==2);
+        }
+
+        [TestMethod]
+        public void ArticleController_GetDeletedArticles_ReturnsListOfDeletedItems()
+        {
+            var list = new List<DeletedItem>() 
+            {
+                {new DeletedItem() { Id = 1, DeletedDate = DateTime.Now }},
+                {new DeletedItem() { Id = 2, DeletedDate = DateTime.Now }}
+            };
+
+            _articleRepository.Stub(r => r.GetDeletedArticles(Arg<DateTime>.Is.Anything)).Return(list);
+
+            string input = "20140101_000000";
+            var deletedList = _objectUnderTest.GetDeletedArticles(input);
+
+            Assert.IsNotNull(deletedList.Count == 2);
         }   
 
 

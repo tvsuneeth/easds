@@ -18,6 +18,7 @@ namespace twg.chk.DataService.api
         List<ArticleModificationSummary> GetModifiedArticles(DateTime updatedSince);        
         ArticleTaxonomy GetArticleTaxonomy(int articleId);
         List<TaxonomyCategory> GetAllTaxonomyCategoriesAndItems();
+        List<DeletedItem> GetDeletedArticles(DateTime deletedSince);
     }
 
     public class ArticleService : IArticleService
@@ -41,6 +42,11 @@ namespace twg.chk.DataService.api
         public List<ArticleModificationSummary> GetModifiedArticles(DateTime modifiedSince)
         {
             return _articleRepository.GetModifiedArticles(modifiedSince);
+        }
+
+        public List<DeletedItem> GetDeletedArticles(DateTime deletedSince)
+        {
+            return _articleRepository.GetDeletedArticles(deletedSince);
         }
 
         public Article GetById(int id)

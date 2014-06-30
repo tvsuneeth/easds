@@ -31,10 +31,11 @@ namespace twg.chk.DataService.chkData.Repository
             String[] includeTopicNames, String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize);
 
         List<ArticleModificationSummary> GetModifiedArticles(DateTime modifiedSince);
+        List<DeletedItem> GetDeletedArticles(DateTime deletedSince);
 
     }
 
-    public class ArticleRepository : IArticleRepository
+    public class ArticleRepository : DbRepositoryBase, IArticleRepository
     {
         public Article Get(int id)
         {
@@ -224,6 +225,12 @@ namespace twg.chk.DataService.chkData.Repository
             return articleList;
         }
 
+
+        public List<DeletedItem> GetDeletedArticles(DateTime deletedSince)
+        {
+            string commandName = @"[chk].[GetArticlesDeletedSince]";
+            return FillListWithAutoMapping<DeletedItem>(commandName, new { @deletedDate = deletedSince });  
+        }
 
         #region Taxonomy Search methods
 

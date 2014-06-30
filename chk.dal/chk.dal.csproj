@@ -86,6 +86,7 @@
     <Content Include="DatabaseScripts\chk.ElementTable.sql" />
     <Content Include="DatabaseScripts\chk.GetArticle.sql" />
     <Content Include="DatabaseScripts\chk.GetArticles.sql" />
+    <Content Include="DatabaseScripts\chk.GetArticlesDeletedSince.sql" />
     <Content Include="DatabaseScripts\chk.GetArticlesModifiedSince.sql" />
     <Content Include="DatabaseScripts\chk.GetArticlesWithTaxonomy.sql" />
     <Content Include="DatabaseScripts\chk.GetArticleTaxonomies.sql" />

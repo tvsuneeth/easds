@@ -61,6 +61,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         [Authorize(Roles = "frontofficegroup")]
        // [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 1200, AnonymousOnly = false)]
         public MultipleContentFeed<ArticleSummary> GetAll(int page = 1)
+        
         {
             _urlHelper.RouteHelper = Url;
 
@@ -114,16 +115,30 @@ namespace twg.chk.DataService.FrontOffice.Controllers
         public List<ArticleModificationSummary> GetModifiedArticles(string date)
         {
             //date format should be yyyymmdd_hhmmss
+            DateTime dt = CreateDateFromString(date);           
+            return _articleService.GetModifiedArticles(dt);            
+        }
 
+        [HttpGet]
+        [Route("articles/deletedsince/{date:regex(\\d{6}_\\d{6})}", Name = "GetArticleDeletedSince")]
+        [Authorize(Roles = "frontofficegroup")]
+        //[CacheOutput(NoCache=true  )]
+        public List<DeletedItem> GetDeletedArticles(string date)
+        {
+            //date format should be yyyymmdd_hhmmss
+            DateTime dt = CreateDateFromString(date);
+            return _articleService.GetDeletedArticles(dt);
+        }
+
+        public DateTime CreateDateFromString(string date)
+        {
             int year = Convert.ToInt32(date.Substring(0, 4));
             int month = Convert.ToInt32(date.Substring(4, 2));
             int day = Convert.ToInt32(date.Substring(6, 2));
             int hour = Convert.ToInt32(date.Substring(9, 2));
             int minute = Convert.ToInt32(date.Substring(11, 2));
             int sec = Convert.ToInt32(date.Substring(13, 2));
-            DateTime dt = new DateTime(year, month, day, hour, minute, sec);
-
-            return _articleService.GetModifiedArticles(dt);            
+            return new DateTime(year, month, day, hour, minute, sec);
         }
 
     }
