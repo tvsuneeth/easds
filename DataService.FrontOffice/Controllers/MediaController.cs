@@ -7,7 +7,7 @@ using System.Web.Http;
 using System.IO;
 using System.Net.Http.Headers;
 using WebApi.OutputCache.V2;
-
+using twg.chk.DataService.FrontOffice.Models;
 using twg.chk.DataService.Business;
 using twg.chk.DataService.api;
 
@@ -15,14 +15,17 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 {
     public class MediaController : ApiController
     {
-        private static readonly Dictionary<String, String> IMAGE_MIME_TYPES = new Dictionary<String, String>
+        private static readonly Dictionary<String, String> MIME_TYPES = new Dictionary<String, String>
         {
             {"jpg", "image/jpeg"},
             {"jpeg", "image/jpeg"},
             {"bmp", "image/bmp"},
             {"gif", "image/gif"},
             {"jfif", "image/pjpeg"},
-            {"png", "image/png"}
+            {"png", "image/png"},
+            {"pdf", "application/pdf"},
+            {"swf", "application/x-shockwave-flash"},
+            {"doc", "application/msword"}
         };
 
         private IMediaService _mediaService;
@@ -44,7 +47,7 @@ namespace twg.chk.DataService.FrontOffice.Controllers
                 message = Request.CreateResponse(HttpStatusCode.OK);
                 var stream = new MemoryStream(mediaContent.ContentBinary, 0, mediaContent.ContentBinary.Length, false);
                 message.Content = new StreamContent(stream);
-                message.Content.Headers.ContentType = new MediaTypeHeaderValue(IMAGE_MIME_TYPES[mediaContent.Extension]);
+                message.Content.Headers.ContentType = new MediaTypeHeaderValue(MIME_TYPES[mediaContent.Extension]);
             }
             else
             {
@@ -64,10 +67,20 @@ namespace twg.chk.DataService.FrontOffice.Controllers
             var mediaContent = _mediaService.Get(id);
             if (mediaContent != null)
             {
-                message = Request.CreateResponse(HttpStatusCode.OK);
-                var stream = new MemoryStream(mediaContent.ContentBinary, 0, mediaContent.ContentBinary.Length, false);
-                message.Content = new StreamContent(stream);
-                message.Content.Headers.ContentType = new MediaTypeHeaderValue(IMAGE_MIME_TYPES[mediaContent.Extension]);
+                if (mediaContent.Type!=MediaContentType.Image)
+                {
+                    message = Request.CreateResponse(HttpStatusCode.OK);
+                    message.Content = new ByteArrayContent(mediaContent.ContentBinary);                    
+                }
+                else
+                {
+                    message = Request.CreateResponse(HttpStatusCode.OK);
+                    var stream = new MemoryStream(mediaContent.ContentBinary, 0, mediaContent.ContentBinary.Length, false);
+                    message.Content = new StreamContent(stream);
+                    
+                }
+                message.Content.Headers.ContentType = new MediaTypeHeaderValue(MIME_TYPES[mediaContent.Extension]);
+                
             }
             else
             {
@@ -76,5 +89,15 @@ namespace twg.chk.DataService.FrontOffice.Controllers
 
             return message;
         }
+
+        [HttpGet]
+        [Route("mediacontent/{id:int}/info", Name = "GetMediaContentInfo")]
+        [Authorize(Roles = "frontofficegroup")]        
+        public MediaContent GetMediaContentInfo(int id)
+        {
+            var mediaContent = _mediaService.Get(id);
+            return mediaContent;
+        }       
+
     }
 }

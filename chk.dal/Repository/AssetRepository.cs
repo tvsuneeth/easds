@@ -12,17 +12,17 @@ namespace twg.chk.DataService.chkData.Repository
 {
     public interface IAssetRepository : IChkRepositoryBase<MediaContent>
     {
-        IEnumerable<MediaContent> Get(int[] ids);
+        IEnumerable<MediaContent> Get(int[] ids);        
     }
 
-    public class AssetRepository : IAssetRepository
+    public class AssetRepository : DbRepositoryBase, IAssetRepository
     {
         public MediaContent Get(int id)
         {
             var mediaList = Get(new int[] { id });
             return mediaList.SingleOrDefault();
         }
-
+      
         public IEnumerable<MediaContent> Get(int[] ids)
         {
             var mediaList = new List<MediaContent>();
@@ -50,7 +50,13 @@ namespace twg.chk.DataService.chkData.Repository
                             Id = Convert.ToInt32(sqlReader["liAssetID"]),
                             FileName = Convert.ToString(sqlReader["sAssetName"]),
                             Extension = Convert.ToString(sqlReader["sFileExt"]).ToLower(),
-                            ContentBinary = (byte[])sqlReader["blobAsset"] 
+                            ContentBinary = (byte[])sqlReader["blobAsset"],
+                            Type = (MediaContentType)GetValue<int>(sqlReader["liAssetTypeID"]),                            
+                            Description = GetValue<string>(sqlReader["sAssetDescription"]),
+                            Height = GetValue<int>(sqlReader["iHeight"]),
+                            Width = GetValue<int>(sqlReader["iWidth"]),
+                            CreatedDate = GetValue<DateTime>(sqlReader["dtEntered"]),
+                            LastModifiedDate = GetValue<DateTime>(sqlReader["dtLastModified"]),                            
                         };
 
                         mediaList.Add(mediaContent);
