@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04_CommanTools", "04_Comman
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataService.Core", "DataService.Core\DataService.Core.csproj", "{F3328353-C219-4785-881D-8BF051976241}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TW.CHKDataService.ClientApp", "TW.CHKDataService.ClientApp\TW.CHKDataService.ClientApp.csproj", "{6292106B-487F-4BC9-94E2-4C046906ED1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -190,6 +192,16 @@ Global
 		{F3328353-C219-4785-881D-8BF051976241}.SysTest|Any CPU.Build.0 = SysTest|Any CPU
 		{F3328353-C219-4785-881D-8BF051976241}.UAT|Any CPU.ActiveCfg = UAT|Any CPU
 		{F3328353-C219-4785-881D-8BF051976241}.UAT|Any CPU.Build.0 = UAT|Any CPU
+		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6292106B-487F-4BC9-94E2-4C046906ED1D}.SysTest|Any CPU.ActiveCfg = Release|Any CPU
+		{6292106B-487F-4BC9-94E2-4C046906ED1D}.SysTest|Any CPU.Build.0 = Release|Any CPU
+		{6292106B-487F-4BC9-94E2-4C046906ED1D}.UAT|Any CPU.ActiveCfg = Release|Any CPU
+		{6292106B-487F-4BC9-94E2-4C046906ED1D}.UAT|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
