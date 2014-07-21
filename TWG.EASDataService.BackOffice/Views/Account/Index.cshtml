@@ -1,0 +1,47 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using TWG.EASDataService.Business;
+
+@model IPagedList<Microsoft.AspNet.Identity.EntityFramework.IdentityUser>
+@{
+    ViewBag.Title = "Index";
+    var grid = new WebGrid(source: Model, rowsPerPage: Model.PageSize);
+}
+
+<h2>Index</h2>
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+@grid.GetHtml(columns:
+    grid.Columns(
+        grid.Column("Name", format:
+            @<text>
+                <span class="display-mode">@item.UserName</span>
+            </text>, style:"col1Width", canSort: false),
+        grid.Column("Front office Access", format:
+            @<text>
+                <label>Yes/No</label>
+                <button>Revoke/Add</button>
+            </text>, style:"col1Width", canSort: false),
+        grid.Column("Back office Access", format:
+            @<text>
+                <label>Yes/No</label>
+                <button>Revoke/Add</button>
+            </text>, style:"col1Width", canSort: false),
+        grid.Column("Status", format:
+            @<text>
+                <label>Disable/Disable</label>
+                <button>Disable/Activate</button>
+            </text>, style:"col1Width", canSort: false),
+        grid.Column("Action", format:
+            @<text>
+                <button>Reset Password</button>
+                <button>Delete</button>
+            </text>, style:"col1Width", canSort: false)
+    )
+)
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+
+

@@ -1,0 +1,187 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using TWG.EASDataService.Business;
+
+@model IPagedList<StaticContentLink>
+@{
+    ViewBag.Title = "Index";
+    var grid = new WebGrid(source: Model, rowsPerPage: Model.PageSize);
+}
+
+<style type="text/css">
+    .edit-mode {}
+    .edit {}
+    .edit display-mode {}
+    .save edit-mode {}
+    .display-mode {}
+    .cancel {}
+
+    .webgrid-table {
+        font-family: Arial,Helvetica,sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        width: 650px;
+        display: table;
+        border-collapse: collapse;
+        border: solid 1px #C5C5C5;
+        background-color: white;
+    }
+
+    .webgrid-table td, th { border: 1px solid #C5C5C5; padding: 3px 7px 2px; }
+    .webgrid-header, .webgrid-header a { background-color: #E3E3E3; color: black; text-align: left; text-decoration: none; }
+    .webgrid-footer {}
+    .webgrid-row-style { padding: 3px 7px 2px; }
+    .webgrid-alternating-row { background-color: #F5F5F5; padding: 3px 7px 2px; }
+
+    .col1Width { width: 50px; }
+    .col2Width { width: 200px; }
+</style>
+
+<table class="new-mode grid">
+    <thead>
+        <tr class="head">
+            <th>Type</th>
+            <th>Value</th>
+            <th>Title</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>New @Html.DropDownList("StaticLinkTypeNew",
+                        Enum.GetNames(typeof(StaticLinkType)).Select(t => new SelectListItem { Text = t, Value = t }),
+                        new Dictionary<string, object> { { "class", "optStaticLinkType new-mode" } })</td>
+            <td><input type="text" value="" class="txtIdentificationValue new-mode" /></td>
+            <td><input type="text" value="" class="txtTitle new-mode" /></td>
+            <td>
+                <button class="save new-mode">Add</button>
+                <button class="cancel new-mode">Cancel</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+@grid.GetHtml(
+    tableStyle: "grid",
+    headerStyle: "head",
+    alternatingRowStyle: "alt",
+    columns: grid.Columns(
+        grid.Column("Id", format:
+            @<text>
+                <span class="display-mode">@item.Id</span>
+                <label class="ContentLinkID edit-mode">@item.Id</label>
+            </text>, style:"col1Width", canSort: false),
+        grid.Column("Type", format:
+            @<text>
+                <span class="display-mode"><label class="lblStaticLinkType">@Enum.GetName(typeof(StaticLinkType), item.LinkType)</label></span>
+                @Html.DropDownList("StaticLinkType", 
+                    Enum.GetNames(typeof(StaticLinkType))
+                        .Select(t => new SelectListItem { Text = t, Value = t, Selected = t.Equals(Enum.GetName(typeof(StaticLinkType), item.LinkType)) })
+                    , new Dictionary<String, Object> { { "class", "optStaticLinkType edit-mode" } })
+            </text>, style:"col2Width", canSort: false),
+        grid.Column("Value", format: 
+            @<text>
+                <span class="display-mode"><label class="lblIdentificationValue">@item.IdentificationValue</label></span>
+                <input type="text" value="@item.IdentificationValue" class="txtIdentificationValue edit-mode" />
+            </text>, style: "col2Width", canSort: false),
+        grid.Column("Title", "Title", format: 
+            @<text>
+                <span class="display-mode"><label class="lblTitle">@item.Title</label></span>
+                <input type="text" value="@item.Title" class="txtTitle edit-mode" />
+            </text>, style:"col2Width", canSort: false),
+        grid.Column("Action", "Action", format: 
+            @<text>
+                <button class="edit display-mode">Edit</button>
+                <button class="delete display-mode">Delete</button>
+                <button class="save edit-mode">Save</button>
+                <button class="cancel edit-mode">Cancel</button>
+            </text>, style: "col2Width", canSort: false)
+    )
+)
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+@section scripts
+{
+<script type="text/javascript">
+    $(function () {
+        $('.edit-mode').hide();
+        $('.edit, .cancel').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        $('.save.edit-mode').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            var ContentLinkId = tr.find(".ContentLinkID").html();
+            var StaticLinkType = tr.find(".optStaticLinkType").val();
+            var IdentificationValue = tr.find(".txtIdentificationValue").val();
+            var Title = tr.find(".txtTitle").val();
+            
+            tr.find(".lblTitle").text(Title);
+            tr.find(".lblStaticLinkType").text(StaticLinkType);
+            tr.find(".lblIdentificationValue").text(IdentificationValue);
+
+            tr.find('.edit-mode, .display-mode').toggle();
+
+            var StaticContentLinkModel =
+            {
+                "Id": ContentLinkId,
+                "Title": Title,
+                "LinkType": StaticLinkType,
+                "IdentificationValue": IdentificationValue
+            };
+
+            $.ajax({
+                accepts: 'application/json',
+                url: '/staticlink/' + ContentLinkId,
+                data: JSON.stringify(StaticContentLinkModel),
+                type: 'PUT',
+                contentType: 'application/json; charset=UTF-8',
+                success: function (data) {
+                }
+            });
+        });
+
+        $('.save.new-mode').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            var StaticLinkType = tr.find(".optStaticLinkType").val();
+            var IdentificationValue = tr.find(".txtIdentificationValue").val();
+            var Title = tr.find(".txtTitle").val();
+
+            var StaticContentLinkModel =
+            {
+                "Title": Title,
+                "LinkType": StaticLinkType,
+                "IdentificationValue": IdentificationValue
+            };
+
+            $.ajax({
+                accepts: 'application/json',
+                url: '/staticlink/',
+                data: JSON.stringify(StaticContentLinkModel),
+                type: 'POST',
+                contentType: 'application/json; charset=UTF-8',
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        });
+
+        $('.delete').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            var ContentLinkId = tr.find(".ContentLinkID").html();
+            $.ajax({
+                accepts: 'application/json',
+                url: '/staticlink/' + ContentLinkId,
+                type: 'DELETE',
+                success: function (data) {
+                    tr.remove();
+                }
+            });
+        });
+    });
+</script>
+}
