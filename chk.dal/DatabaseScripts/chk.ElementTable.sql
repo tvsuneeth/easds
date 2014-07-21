@@ -1,1 +1,0 @@
-CREATE TYPE [chk].[ElementTable] AS TABLE ( NAME nvarchar(501) NOT NULL) 
