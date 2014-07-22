@@ -26,23 +26,27 @@ namespace TWG.EASDataService.ClientApp.Controllers
         public JsonResult GetService(string param)
         {
             //If the request is for token, return generate a new token
+            object result = null;
             if (param == "token")
             {
-                return Json(GenerateNewTokenFromService(), JsonRequestBehavior.AllowGet);
+                result = GenerateNewTokenFromService();               
             }
-
-            var token = GetToken();
-            if (token == null || String.IsNullOrEmpty(token.Token))           
+            else
             {
-                return Json("Error!!!! unable to get a valid token, try again and if it fails, see generating a new token works ", JsonRequestBehavior.AllowGet);
+                var token = GetToken();
+                if (token == null || String.IsNullOrEmpty(token.Token))
+                {
+                    return Json("Error!!!! unable to get a valid token, try again and if it fails, see generating a new token works ", JsonRequestBehavior.AllowGet);
+                }
+
+                string serviceUrl = baseUrl + param;
+                var headers = new Dictionary<string, string>() { { "Authorization", "Bearer " + token.Token } };
+
+                result = MakeWebRequestAndReturnJasonObject(serviceUrl, "GET", headers, string.Empty);
             }
 
-            string serviceUrl = baseUrl + param;
-            var headers = new Dictionary<string, string>() { { "Authorization", "Bearer " + token.Token } };
-
-            var obj = MakeWebRequestAndReturnJasonObject(serviceUrl, "GET", headers, string.Empty);
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            return Json(serializer.Deserialize<object>(obj.ToString()), JsonRequestBehavior.AllowGet);
+            return Json(serializer.Deserialize<object>(result.ToString()), JsonRequestBehavior.AllowGet);
            
         }
 
