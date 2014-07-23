@@ -36,7 +36,7 @@ namespace TWG.EASDataService.ClientApp.Controllers
                 var token = GetToken();
                 if (token == null || String.IsNullOrEmpty(token.Token))
                 {
-                    return Json("Error!!!! unable to get a valid token, try again and if it fails, see generating a new token works ", JsonRequestBehavior.AllowGet);
+                    return Json("Error!!!! unable to get a valid token, try again and if it fails, see generating a new token works by requesting the tocken service ", JsonRequestBehavior.AllowGet);
                 }
 
                 string serviceUrl = baseUrl + param;
