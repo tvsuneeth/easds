@@ -55,7 +55,7 @@ namespace TWG.EASDataService.Api.UnitTests
         public void  ArticleController_Get_ReturnsFeedWithRequestedArticle()
         {
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article() { Id=1 });
-            _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem>());
+            _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyCategory>());
             _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
             var articleFeed = _objectUnderTest.Get(1);
@@ -114,30 +114,14 @@ namespace TWG.EASDataService.Api.UnitTests
                 {new ArticleModificationSummary() { Id = 2, LastModified = DateTime.Now }}
             };
 
-            _articleRepository.Stub(r => r.GetModifiedArticles(Arg<DateTime>.Is.Anything)).Return(modifiedArticleList);
+            _articleRepository.Stub(r => r.GetChangedArticles(Arg<DateTime>.Is.Anything)).Return(modifiedArticleList);
 
             string input = "20140101_000000";
-            var articles = _objectUnderTest.GetModifiedArticles(input);
+            var articles = _objectUnderTest.GetChangedArticles(input);
 
             Assert.IsNotNull(articles.Count==2);
         }
-
-        [TestMethod]
-        public void ArticleController_GetDeletedArticles_ReturnsListOfDeletedItems()
-        {
-            var list = new List<DeletedItem>() 
-            {
-                {new DeletedItem() { Id = 1, DeletedDate = DateTime.Now }},
-                {new DeletedItem() { Id = 2, DeletedDate = DateTime.Now }}
-            };
-
-            _articleRepository.Stub(r => r.GetDeletedArticles(Arg<DateTime>.Is.Anything)).Return(list);
-
-            string input = "20140101_000000";
-            var deletedList = _objectUnderTest.GetDeletedArticles(input);
-
-            Assert.IsNotNull(deletedList.Count == 2);
-        }   
+       
 
 
         [TestMethod]
@@ -147,7 +131,7 @@ namespace TWG.EASDataService.Api.UnitTests
             category.AddItem(new TaxonomyCategoryItem() { CategoryItemId = 1, CategoryItemName = "test", ParentItemId = null });
             List<TaxonomyCategory> categories = new List<TaxonomyCategory>() {category };     
 
-            _articleTaxonomyRepository.Stub(r => r.GetArticleTaxonomies(Arg<int>.Is.Anything)).Return(categories);
+            _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(categories);
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article());            
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
             _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
@@ -162,7 +146,7 @@ namespace TWG.EASDataService.Api.UnitTests
         public void ArticleController_Get_ArticleWithImage_ReturnedArticleHasImage()
         {
             _articleRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new Article { ThumbnailImage = new Image { Extension = "jpg", Name = "imagefile.jpg" } });
-            _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyItem>());
+            _articleTaxonomyRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new List<TaxonomyCategory>());
             _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
             var articleFeed = _objectUnderTest.Get(1);

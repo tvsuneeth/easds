@@ -15,10 +15,9 @@ namespace TWG.EASDataService.Services
         PagedResult<ArticleSummary> GetBySector(String sectorName, int page, int pageSize);
         PagedResult<ArticleSummary> GetByArticleSection(String articleSectionName, int page, int pageSize);
         PagedResult<ArticleSummary> GetByArticleSectionAndSector(String articleSectionName, String sectorName, int page, int pageSize);
-        List<ArticleModificationSummary> GetModifiedArticles(DateTime updatedSince);        
+        List<ArticleModificationSummary> GetChangedArticles(DateTime changedSince);        
         ArticleTaxonomy GetArticleTaxonomy(int articleId);
-        List<TaxonomyCategory> GetAllTaxonomyCategoriesAndItems();
-        List<DeletedItem> GetDeletedArticles(DateTime deletedSince);
+        List<TaxonomyCategory> GetAllTaxonomyCategoriesAndItems();        
     }
 
     public class ArticleService : IArticleService
@@ -39,25 +38,17 @@ namespace TWG.EASDataService.Services
             return taxonomies;
         }
 
-        public List<ArticleModificationSummary> GetModifiedArticles(DateTime modifiedSince)
+        public List<ArticleModificationSummary> GetChangedArticles(DateTime changedSince)
         {
-            return _articleRepository.GetModifiedArticles(modifiedSince);
+            return _articleRepository.GetChangedArticles(changedSince);
         }
-
-        public List<DeletedItem> GetDeletedArticles(DateTime deletedSince)
-        {
-            return _articleRepository.GetDeletedArticles(deletedSince);
-        }
+      
 
         public Article GetById(int id)
         {
             var article = _articleRepository.Get(id);
             if (article != null)
-            {
-                //ravi's taxonomy call
-                //commentign this as we dont require this anymore
-               //article.SetTaxonomyList(_articleTaxonomyRepository.Get(id));
-                                          
+            {               
                 article.Taxonomy = GetArticleTaxonomy(id);
             }
             return article;
@@ -67,7 +58,7 @@ namespace TWG.EASDataService.Services
         public ArticleTaxonomy GetArticleTaxonomy(int articleId)
         {
           
-            var categories = _articleTaxonomyRepository.GetArticleTaxonomies(articleId);
+            var categories = _articleTaxonomyRepository.Get(articleId);
             if (categories == null || categories.Count==0)
             { return null; }
 

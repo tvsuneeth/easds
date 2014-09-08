@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.ServiceModel.Syndication;
 using WebApi.OutputCache.V2;
-
+using TWG.EASDataService.Api.Extensions;
 using TWG.EASDataService.Services;
 using TWG.EASDataService.Business;
 using TWG.EASDataService.Api.Models;
@@ -28,10 +28,11 @@ namespace TWG.EASDataService.Api.Controllers
 
         [HttpGet]
         [Route("article/{id:int}", Name = "GetArticleById")]
-        [Authorize(Roles = "frontofficegroup")]
+       // [Authorize(Roles = "frontofficegroup")]
        // [CacheOutput(ClientTimeSpan=600, ServerTimeSpan=3600, AnonymousOnly=false)]
         public SingleContentFeed<Article> Get(int id)
         {
+            
             _urlHelper.RouteHelper = Url;
             
             var article = _articleService.GetById(id);            
@@ -46,7 +47,7 @@ namespace TWG.EASDataService.Api.Controllers
                     article,
                     _urlHelper,
                     _staticContentLinkService                  
-                );               
+                );
 
                 return articleFeed;
             }
@@ -109,37 +110,16 @@ namespace TWG.EASDataService.Api.Controllers
 
 
         [HttpGet]
-        [Route("articles/modifiedsince/{date:regex(\\d{6}_\\d{6})}", Name = "GetArticleModifiedSince")]
-        [Authorize(Roles = "frontofficegroup")]        
+        [Route("articles/changedsince/{dateString:regex(\\d{6}_\\d{6})}", Name = "GetArticlesChangedSince")]
+       // [Authorize(Roles = "frontofficegroup")]        
         //[CacheOutput(NoCache=true  )]
-        public List<ArticleModificationSummary> GetModifiedArticles(string date)
+        public List<ArticleModificationSummary> GetChangedArticles(string dateString)
         {
             //date format should be yyyymmdd_hhmmss
-            DateTime dt = CreateDateFromString(date);           
-            return _articleService.GetModifiedArticles(dt);            
+            DateTime dt = dateString.GetDateFromString();
+            return _articleService.GetChangedArticles(dt);            
         }
-
-        [HttpGet]
-        [Route("articles/deletedsince/{date:regex(\\d{6}_\\d{6})}", Name = "GetArticleDeletedSince")]
-        [Authorize(Roles = "frontofficegroup")]
-        //[CacheOutput(NoCache=true  )]
-        public List<DeletedItem> GetDeletedArticles(string date)
-        {
-            //date format should be yyyymmdd_hhmmss
-            DateTime dt = CreateDateFromString(date);
-            return _articleService.GetDeletedArticles(dt);
-        }
-
-        public DateTime CreateDateFromString(string date)
-        {
-            int year = Convert.ToInt32(date.Substring(0, 4));
-            int month = Convert.ToInt32(date.Substring(4, 2));
-            int day = Convert.ToInt32(date.Substring(6, 2));
-            int hour = Convert.ToInt32(date.Substring(9, 2));
-            int minute = Convert.ToInt32(date.Substring(11, 2));
-            int sec = Convert.ToInt32(date.Substring(13, 2));
-            return new DateTime(year, month, day, hour, minute, sec);
-        }
+            
 
     }
 }

@@ -6,6 +6,8 @@ namespace TWG.EASDataService.Business
     public class Article : ContentBase
     {
         public String Introduction { get; set; }
+        public String AbbreviatedHeadline { get; set; }
+        public String SubHeadline { get; set; }
         public DateTime PublishedDate { get; set; }
         public DateTime? ExpiryDate { get; set; }        
         public int NavigationId { get; set; }

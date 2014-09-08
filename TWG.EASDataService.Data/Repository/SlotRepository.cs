@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TWG.EASDataService.Business;
 using TWG.EASDataService.Data.Infrastructure;
+using TWG.EASDataService.Data.Extensions;
 
 namespace TWG.EASDataService.Data.Repository
 {
@@ -35,10 +36,9 @@ namespace TWG.EASDataService.Data.Repository
             SlotPage sp = null;
 
             using (var connection = CreateConnection())
-            {                
-                using (var cmd = CreateCommand(connection, @"[chk].[GetSlotPageWithSlots]"))
-                {
-                    AddCommandParameter(cmd, "@slotPageId", slotPageId);                                        
+            {
+                using (var cmd = CreateCommand(connection, @"[chk].[GetSlotPageWithSlots]", new { @slotPageId = slotPageId }))
+                {                    
                     IDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {                        

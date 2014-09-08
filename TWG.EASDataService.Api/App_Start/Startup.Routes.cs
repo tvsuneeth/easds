@@ -3,8 +3,10 @@ using System.Web.Http;
 using Owin;
 using Ninject;
 using WebApiContrib.IoC.Ninject;
+using System.Linq;
 
 using TWG.EASDataService.Services;
+using Newtonsoft.Json;
 
 namespace TWG.EASDataService.Api
 {
@@ -38,6 +40,13 @@ namespace TWG.EASDataService.Api
 
             //ELMAH.IO  exception logging
             _config.Filters.Add(new UnhandledExceptionFilter());
+
+            var formatters = _config.Formatters;
+            formatters.Remove(formatters.XmlFormatter);
+
+            JsonSerializerSettings jsonSetting = new JsonSerializerSettings();
+            jsonSetting.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+            _config.Formatters.JsonFormatter.SerializerSettings = jsonSetting;
 
             app.UseWebApi(_config);
         }

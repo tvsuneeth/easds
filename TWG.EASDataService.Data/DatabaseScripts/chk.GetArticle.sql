@@ -1,11 +1,10 @@
-USE [CatererAndHotelKeeper_Systest]
+USE [Caterer_Live]
 GO
-/****** Object:  StoredProcedure [chk].[GetArticle]    Script Date: 06/26/2014 12:39:04 ******/
+/****** Object:  StoredProcedure [chk].[GetArticle]    Script Date: 09/05/2014 09:33:58 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
 
 
 ALTER PROCEDURE [chk].[GetArticle]
@@ -15,11 +14,11 @@ ALTER PROCEDURE [chk].[GetArticle]
 AS
 BEGIN
 
-
-
 	SELECT
 		  a.liArticleID
 		, a.sHeadline
+		, a.sAbbreviatedHeadline
+		, a.sArticleSubHeadline
 		, a.sIntro
 		, a.sBody
 		, a.dtPublicationDate
@@ -44,6 +43,8 @@ BEGIN
 		SELECT
 			  a.liArticleID
 			, a.sHeadline
+			, a.sAbbreviatedHeadline
+			, alp.sArticleSubHeadline
 			, a.sIntro
 			, a.sBody
 			, a.dtPublicationDate
@@ -59,7 +60,8 @@ BEGIN
 			, au.sEmailAddress
 		FROM [dbo].[Articles] a
 		LEFT OUTER JOIN [dbo].[Authors] au ON a.liAuthorID = au.liAuthorID
-		WHERE a.dtApproved IS NOT NULL
+		LEFT OUTER JOIN [dbo].[ArticleLandingPage] alp ON a.liArticleID = alp.liArticleID
+		WHERE a.liArticleStatusID=30 AND (a.dtReleaseDate IS NULL OR a.dtReleaseDate <= getdate()) AND ( a.dtExpiryDate IS NULL OR a.dtExpiryDate > getdate() )
 		AND a.liArticleID IN (SELECT CAST(Name AS INT) AS Id  FROM @ArticleIds)
 	) AS a
 	LEFT OUTER JOIN 
@@ -69,4 +71,5 @@ BEGIN
 		WHERE (bDeleted IS NULL OR bDeleted = 0)
 	) AS s ON a.liThumbnailID = s.liAssetID
 END
+
 

@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using TWG.EASDataService.Data.Extensions;
 
 namespace TWG.EASDataService.Data.Repository
-{
+{   
     public abstract class DbRepositoryBase
     {
-
         public SqlConnection CreateConnection()
         {
             SqlConnection conn =  new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString);
@@ -20,7 +20,7 @@ namespace TWG.EASDataService.Data.Repository
             return conn;
         }
 
-        public SqlCommand CreateCommand(SqlConnection conn, string commandName)
+        private SqlCommand CreateCommand(SqlConnection conn, string commandName)
         {
             var command = new SqlCommand(commandName);
             command.CommandType = CommandType.StoredProcedure;
@@ -28,13 +28,29 @@ namespace TWG.EASDataService.Data.Repository
             return command;
         }
 
-        public static void AddCommandParameter(SqlCommand command, string name, object value)
-        {           
-            var p = command.CreateParameter();
-            p.ParameterName = name;
-            p.Value = value ?? DBNull.Value;
-            command.Parameters.Add(p);
+        public SqlCommand CreateCommand(SqlConnection connection, string commandName, object parameters)
+        {
+            SqlCommand cmd = CreateCommand(connection, commandName);
+            if (parameters != null)
+            {
+                Type t = parameters.GetType();
+                var properties = t.GetProperties();
+                foreach (var prop in properties)
+                {
+                    object propVal = prop.GetValue(parameters, null);
+                    string propName = prop.Name;
+                    if (!propName.StartsWith("@"))
+                    {
+                        propName = "@" + propName;
+                    }                    
+                    cmd.AddParameter(propName, propVal);
+                }
+
+            }
+            return cmd;
         }
+
+       
 
         public T GetValue<T>(object value)
         {
@@ -57,7 +73,9 @@ namespace TWG.EASDataService.Data.Repository
                     return default(T);
                 }
             }                     
-        }                        
+        }
+
+        
 
         /// <summary>
         /// checks a column exists in a data reader
@@ -130,6 +148,7 @@ namespace TWG.EASDataService.Data.Repository
             return list;
         }
 
+
         public T FillObjectWithAutoMapping<T>(string commandName, object parameters)
         {
             T obj = default(T);
@@ -143,7 +162,7 @@ namespace TWG.EASDataService.Data.Repository
                         matchingColumns = GetMatchingColumnsForType(typeof(T), dr);
                         while (dr.Read())
                         {
-                            obj = CreateObject<T>(dr, matchingColumns);                            
+                            obj = CreateObject<T>(dr, matchingColumns);
                         }
 
                     }
@@ -151,6 +170,107 @@ namespace TWG.EASDataService.Data.Repository
             }
             return obj;
         }
+ 
+ /// <summary>
+ /// get a List of Objects 
+ /// </summary>
+ /// <typeparam name="T"></typeparam>
+ /// <param name="commandName"></param>
+ /// <param name="commandParameters"></param>
+ /// <param name="mapperFunction"></param>
+ /// <returns></returns>
+        public List<T> GetListWithCustomMapping<T>(string commandName, object commandParameters, Func<IDataRecord,T> mapperFunction)
+        {
+            List<T> list = new List<T>();
+            using (var connection = CreateConnection())
+            {
+                using (var cmd = CreateCommand(connection, commandName, commandParameters))
+                {
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            T obj = mapperFunction(dr);
+                            list.Add(obj);
+                        }
+
+                    }
+                }
+            }
+            return list;
+        }
+
+        public List<T> GetListWithCustomMapping<T>(string commandName, List<SqlParameter> commandParameters, Func<IDataRecord, T> mapperFunction)
+        {
+            List<T> list = new List<T>();
+            using (var connection = CreateConnection())
+            {
+                using (var cmd = CreateCommand(connection, commandName))
+                {
+                    cmd.Parameters.AddRange(commandParameters.ToArray());
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            T obj = mapperFunction(dr);
+                            list.Add(obj);
+                        }
+
+                    }
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Get a Single Object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="commandName"></param>
+        /// <param name="parameters"></param>
+        /// <param name="mapperFunction"></param>
+        /// <returns></returns>
+        public T GetObjectWithCustomMapping<T>(string commandName, object parameters, Func<IDataReader, T> mapperFunction)
+        {
+            T obj = default(T);           
+            using (var connection = CreateConnection())
+            {
+                using (var cmd = CreateCommand(connection, commandName, parameters))
+                {
+                    using (var dr = cmd.ExecuteReader())
+                    {                        
+                        while (dr.Read())
+                        {
+                            obj = mapperFunction(dr);
+                        }
+
+                    }
+                }
+            }
+            return obj;
+        }
+
+        public T GetObjectWithCustomMapping<T>(string commandName, List<SqlParameter> commandParameters, Func<IDataReader, T> mapperFunction)
+        {
+            T obj = default(T);
+            using (var connection = CreateConnection())
+            {
+                using (var cmd = CreateCommand(connection, commandName))
+                {
+                    cmd.Parameters.AddRange(commandParameters.ToArray());
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            obj = mapperFunction(dr);
+                        }
+
+                    }
+                }
+            }
+            return obj;
+        }
+
 
         private static T CreateObject<T>(IDataRecord dr, List<string> matchingColumns)
         {
@@ -169,26 +289,7 @@ namespace TWG.EASDataService.Data.Repository
             return obj;
         }
 
-        public SqlCommand CreateCommand(SqlConnection connection, string commandName, object parameters)        
-        {
-            SqlCommand cmd = CreateCommand(connection, commandName);
-            if (parameters != null)
-            {
-                Type t = parameters.GetType();
-                var properties = t.GetProperties();
-                foreach (var prop in properties)
-                {
-                    object propVal = prop.GetValue(parameters, null);
-                    string propName = prop.Name;
-                    if (!propName.StartsWith("@"))
-                    {
-                        propName = "@" + propName;
-                    }
-                    AddCommandParameter(cmd, propName, propVal);
-                }
-            }
-            return cmd;
-        }
+       
         
                            
    }

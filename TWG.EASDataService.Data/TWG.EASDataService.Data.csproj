@@ -64,6 +64,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\DataReaderExtensions.cs" />
+    <Compile Include="Extensions\DataRecordExtensions.cs" />
+    <Compile Include="Extensions\SqlCommandExtensions.cs" />
     <Compile Include="Helpers\ElementTableHelper.cs" />
     <Compile Include="Infrastructure\IChkRepositoryBase.cs" />
     <Compile Include="Repository\ArticleRepository.cs" />

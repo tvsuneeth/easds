@@ -4,7 +4,7 @@ using System.Linq;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
-
+using TWG.EASDataService.Data.Extensions;
 using TWG.EASDataService.Data.Infrastructure;
 using TWG.EASDataService.Business;
 
@@ -24,46 +24,33 @@ namespace TWG.EASDataService.Data.Repository
         }
       
         public IEnumerable<MediaContent> Get(int[] ids)
-        {
-            var mediaList = new List<MediaContent>();
-
+        {           
             var mediaIdsArray = ids.Select(id => id.ToString()).ToArray();
             var mediaIdsDataTable = Helpers.ElementTableHelper.BuidTable(mediaIdsArray);
+            var assetIdsParam = new SqlParameter("@AssetIds", mediaIdsDataTable);
+            assetIdsParam.SqlDbType = SqlDbType.Structured;
+            var parameterColl = new List<SqlParameter>(){ assetIdsParam };
 
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
-            {
-                using (var command = new SqlCommand())
-                {
-                    connection.Open();
-                    command.Connection = connection;
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetAsset";
-
-                    var assetIdsParam = command.Parameters.AddWithValue("@AssetIds", mediaIdsDataTable);
-                    assetIdsParam.SqlDbType = SqlDbType.Structured;
-
-                    var sqlReader = command.ExecuteReader();
-                    while (sqlReader.Read())
-                    {
-                        var mediaContent = new MediaContent
+            Func<IDataRecord,MediaContent> mapperFunc = (record) =>
+                (
+                        new MediaContent()
                         {
-                            Id = Convert.ToInt32(sqlReader["liAssetID"]),
-                            FileName = Convert.ToString(sqlReader["sAssetName"]),
-                            Extension = Convert.ToString(sqlReader["sFileExt"]).ToLower(),
-                            ContentBinary = (byte[])sqlReader["blobAsset"],
-                            Type = (MediaContentType)GetValue<int>(sqlReader["liAssetTypeID"]),                            
-                            Description = GetValue<string>(sqlReader["sAssetDescription"]),
-                            Height = GetValue<int>(sqlReader["iHeight"]),
-                            Width = GetValue<int>(sqlReader["iWidth"]),
-                            CreatedDate = GetValue<DateTime>(sqlReader["dtEntered"]),
-                            LastModifiedDate = GetValue<DateTime>(sqlReader["dtLastModified"]),                            
-                        };
+                            Id = record.GetValue<int>("liAssetID"),
+                            FileName = record.GetValue<String>("sAssetName"),
+                            Extension =  record.GetValue<String>("sFileExt").ToLower(),
+                            ContentBinary = record.GetValue<byte[]>("blobAsset"),
+                            Type = (MediaContentType)record.GetValue<int>("liAssetTypeID"),                            
+                            Description = record.GetValue<String>("sAssetDescription"),
+                            Height = record.GetValue<int>("iHeight"),
+                            Width = record.GetValue<int>("iWidth"),
+                            CreatedDate = record.GetValue<DateTime>("dtEntered"),
+                            LastModifiedDate = record.GetValue<DateTime>("dtLastModified")                            
+                        }
 
-                        mediaList.Add(mediaContent);
-                    }
-                }
-            }
+                );
 
+            var mediaList = new List<MediaContent>();
+            mediaList = GetListWithCustomMapping("chk.GetAsset", parameterColl, mapperFunc);
             return mediaList;
         }
     }

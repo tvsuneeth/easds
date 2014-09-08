@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TWG.EASDataService.Business;
 using TWG.EASDataService.Data.Infrastructure;
+using TWG.EASDataService.Data.Extensions;
 
 namespace TWG.EASDataService.Data.Repository
 {
@@ -23,76 +24,64 @@ namespace TWG.EASDataService.Data.Repository
         { }
 
         public List<Operator> GetAll()
-        {
-            List<String> categoryFilterList = new List<String>();
+        {            
             List<Operator> operatorObjs = new List<Operator>();
 
-            using (var connection = CreateConnection())
+            var list = GetListWithCustomMapping<Operator>(@"chk.GetCompaniesPaged", new { @StartsWith = String.Empty, @SearchPhrase = String.Empty, @CategoryFilter = String.Empty }, MapDataRrowToOperator);
+            return list;                  
+        }
+
+
+        public Operator MapDataRrowToOperator(IDataRecord record)
+        {
+            Operator operatorObj = new Operator()
             {
-                using (var cmd = CreateCommand(connection, "chk.GetCompaniesPaged"))
+                Id = record.GetValue<int>("liCompanyID"),
+                Name = record.GetValue<string>("sName"),
+                Description = record.GetValue<string>("sDescription"),
+                Telephone = record.GetValue<string>("sTelephone"),
+                Fax = record.GetValue<string>("sFax"),
+                Email = record.GetValue<string>("sEmail"),
+                URLTitle = record.GetValue<string>("sURLTitle"),
+                URL = record.GetValue<string>("sURL"),
+                Notes = record.GetValue<string>("sNotes"),
+                Activities = record.GetValue<string>("sActivities"),
+                TimeLine = record.GetValue<string>("sTimeLine"),
+                FinancialSnapshot = record.GetValue<string>("sFinancialSnapshot"),
+                OperatingData = record.GetValue<string>("sOperatingData"),
+                Strategy = record.GetValue<string>("sStrategy"),
+                KeyPeople = record.GetValue<string>("sKeyPeople"),
+                Commentary = record.GetValue<string>("sCommentary"),
+                ChiefExecutive = record.GetValue<string>("sChiefExecutive")
+            };
+
+            int imageId = record.GetValue<int>("liAssetID");
+            if (imageId != 0)
+            {
+                operatorObj.LogoImage = new Image()
                 {
-                    AddCommandParameter(cmd, "@StartsWith", string.Empty);
-                    AddCommandParameter(cmd, "@SearchPhrase", string.Empty);
-                    AddCommandParameter(cmd,"@CategoryFilter", String.Join(",", categoryFilterList));
-                                       
-
-                    IDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Operator operatorObj = new Operator()
-                        {
-                            Id = GetValue<int>(reader["liCompanyID"]),
-                            Name = GetValue<string>(reader["sName"]),
-                            Description = GetValue<string>(reader["sDescription"]),
-                            Telephone = GetValue<string>(reader["sTelephone"]),
-                            Fax = GetValue<string>(reader["sFax"]),
-                            Email = GetValue<string>(reader["sEmail"]),
-                            URLTitle = GetValue<string>(reader["sURLTitle"]),
-                            URL = GetValue<string>(reader["sURL"]),
-                            Notes = GetValue<string>(reader["sNotes"]),
-                            Activities = GetValue<string>(reader["sActivities"]),
-                            TimeLine = GetValue<string>(reader["sTimeLine"]),
-                            FinancialSnapshot = GetValue<string>(reader["sFinancialSnapshot"]),
-                            OperatingData = GetValue<string>(reader["sOperatingData"]),
-                            Strategy = GetValue<string>(reader["sStrategy"]),
-                            KeyPeople = GetValue<string>(reader["sKeyPeople"]),
-                            Commentary = GetValue<string>(reader["sCommentary"]),
-                            ChiefExecutive = GetValue<string>(reader["sChiefExecutive"])
-                        };
-
-                        int imageId = GetValue<int>(reader["liAssetID"]);
-                        if (imageId != 0)
-                        {                           
-                            operatorObj.LogoImage = new Image()
-                            {
-                                Id = imageId,
-                                Name = GetValue<string>(reader["sAssetName"]),
-                                Width = GetValue<int>(reader["iWidth"]),
-                                Height = GetValue<int>(reader["iHeight"]),
-                                Extension = GetValue<string>(reader["sFileExt"]),
-                                CreatedDate = GetValue<DateTime>(reader["imageCreatedDate"]),
-                                LastModifiedDate = GetValue<DateTime>(reader["imageLastModifiedDate"])
-                            };
-                        }
-
-                        operatorObj.Address = new Address()
-                        {
-                            Line1 = GetValue<string>(reader["sAddress1"]),
-                            Line2 = GetValue<string>(reader["sAddress2"]),
-                            Town = GetValue<string>(reader["sTown"]),
-                            County = GetValue<string>(reader["sCounty"]),
-                            PostCode = GetValue<string>(reader["sPostcode"]),
-                            Country = GetValue<string>(reader["sCountry"]),
-                            CountryCode = GetValue<string>(reader["sCountryCode"])
-                        };
-
-                        operatorObjs.Add(operatorObj);
-                    }
-                }
+                    Id = imageId,
+                    Name = record.GetValue<string>("sAssetName"),
+                    Width = record.GetValue<int>("iWidth"),
+                    Height = record.GetValue<int>("iHeight"),
+                    Extension = record.GetValue<string>("sFileExt"),
+                    CreatedDate = record.GetValue<DateTime>("imageCreatedDate"),
+                    LastModifiedDate = record.GetValue<DateTime>("imageLastModifiedDate")
+                };
             }
-            return operatorObjs;
 
+            operatorObj.Address = new Address()
+            {
+                Line1 = record.GetValue<string>("sAddress1"),
+                Line2 = record.GetValue<string>("sAddress2"),
+                Town = record.GetValue<string>("sTown"),
+                County = record.GetValue<string>("sCounty"),
+                PostCode = record.GetValue<string>("sPostcode"),
+                Country = record.GetValue<string>("sCountry"),
+                CountryCode = record.GetValue<string>("sCountryCode")
+            };
+
+            return operatorObj;
         }
 
         public List<TaxonomyCategory> GetOperatorTaxonomy(int companyId)
@@ -101,17 +90,15 @@ namespace TWG.EASDataService.Data.Repository
             var categories = new List<TaxonomyCategory>();
             using (var connection = CreateConnection())
             {
-                using (var command = CreateCommand(connection, "chk.GetCompanyTaxonomies"))
-                {
-                    command.Parameters.Add(new SqlParameter("@CompanyId", companyId));
-
+                using (var command = CreateCommand(connection, "chk.GetCompanyTaxonomies", new { @CompanyId = companyId  }))
+                {                    
                     var sqlReader = command.ExecuteReader();
                     while (sqlReader.Read())
                     {
                         var category = new TaxonomyCategory
                         {
-                            CategoryId = Convert.ToInt32(sqlReader["liCategoryID"]),
-                            CategoryName = Convert.ToString(sqlReader["sCategoryName"]),
+                            CategoryId = sqlReader.GetValue<int>("liCategoryID"),
+                            CategoryName = sqlReader.GetValue<string>("sCategoryName")
                         };
                         categories.Add(category);
                     }
@@ -120,13 +107,13 @@ namespace TWG.EASDataService.Data.Repository
 
                     while (sqlReader.Read())
                     {
-                        int categoryId = Convert.ToInt32(sqlReader["liCategoryID"]);
+                        int categoryId = sqlReader.GetValue<int>("liCategoryID");
                         var category = categories.Find(i => i.CategoryId == categoryId);
                         var categoryItem = new TaxonomyCategoryItem()
                         {
-                            CategoryItemId = Convert.ToInt32(sqlReader["liCategoryItemID"]),
-                            CategoryItemName = Convert.ToString(sqlReader["sItemName"]),
-                            ParentItemId = DBNull.Value.Equals(sqlReader["liParentID"]) ? null : (int?)Convert.ToInt32(sqlReader["liParentID"])
+                            CategoryItemId =sqlReader.GetValue<int>("liCategoryItemID"),
+                            CategoryItemName = sqlReader.GetValue<string>("sItemName"),
+                            ParentItemId = sqlReader.GetValue<int>("liParentID") 
                         };
                         category.AddItem(categoryItem);
                     }

@@ -4,16 +4,15 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Linq;
-
+using TWG.EASDataService.Data.Extensions;
 using TWG.EASDataService.Data.Infrastructure;
 using TWG.EASDataService.Business;
+using Microsoft.SqlServer.Server;
 
 namespace TWG.EASDataService.Data.Repository
 {
-    public interface IArticleRepository : IChkRepositoryBase<Article>
-    {
-        IEnumerable<Article> Get(int[] ids);
-
+    public interface IArticleRepository :  IChkRepositoryBase<Article>
+    {        
         PagedResult<ArticleSummary> GetAll(String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize);
 
         PagedResult<ArticleSummary> GetByTopic(String[] topicNames, int page, int pageSize);
@@ -30,8 +29,7 @@ namespace TWG.EASDataService.Data.Repository
         PagedResult<ArticleSummary> GetByArticleSectionSectorAndTopic(String[] includeArticleSectionNames, String[] includeSectorNames,
             String[] includeTopicNames, String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize);
 
-        List<ArticleModificationSummary> GetModifiedArticles(DateTime modifiedSince);
-        List<DeletedItem> GetDeletedArticles(DateTime deletedSince);
+        List<ArticleModificationSummary> GetChangedArticles(DateTime changedSince);        
 
     }
 
@@ -39,79 +37,63 @@ namespace TWG.EASDataService.Data.Repository
     {
         public Article Get(int id)
         {
-            var article = Get(new int[] { id });
-            return article.SingleOrDefault();
-        }
-
-        public IEnumerable<Article> Get(int[] ids)
+            return GetArticle(id);
+        } 
+    
+        
+        public Article MapDataRrowToArticle(IDataRecord record)
         {
-            var articleList = new List<Article>();
-
-            var articleIdsArray = ids.Select(id => id.ToString()).ToArray();
-            var articleIdsDataTable = Helpers.ElementTableHelper.BuidTable(articleIdsArray);
-
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
+            var article = new Article
             {
-                using (var command = new SqlCommand())
-                {
-                    connection.Open();
-                    command.Connection = connection;
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetArticle";
+                Id = record.GetValue<int>("liArticleID"),
+                Title = record.GetValue<string>("sHeadline"),
+                Introduction = record.GetValue<string>("sIntro"),
+                Body = record.GetValue<string>("sBody"),
+                PublishedDate = record.GetValue<DateTime>("dtPublicationDate"),
+                LastModified = record.GetValue<DateTime>("dtLastModified"),
+                ExpiryDate = record.GetValue<DateTime>("dtExpiryDate"),
+                MetaDescription = record.GetValue<string>("metaDescription"),
+                MetaKeywords = record.GetValue<string>("metaKeywords"),
+                NavigationId = record.GetValue<int>("liNavigationItemID"),
+                AbbreviatedHeadline = record.GetValue<string>("sAbbreviatedHeadline"),
+                SubHeadline = record.GetValue<string>("sArticleSubHeadline")                
 
-                    var articleIdsParam = command.Parameters.AddWithValue("@ArticleIds", articleIdsDataTable);
-                    articleIdsParam.SqlDbType = SqlDbType.Structured;
+            };
+            var author = new Person
+            {
+                Title = record.GetValue<string>("sTitle") == null ? string.Empty: record.GetValue<string>("sTitle").Trim(),
+                FirstName = record.GetValue<string>("sFirstName") == null ? string.Empty: record.GetValue<string>("sFirstName").Trim(),
+                LastName = record.GetValue<string>("sLastName") == null ? string.Empty: record.GetValue<string>("sLastName").Trim(),
+                Email = record.GetValue<string>("sEmailAddress") == null ? string.Empty: record.GetValue<string>("sEmailAddress").Trim(),
+                
+            };
 
-                    var sqlReader = command.ExecuteReader();
-                    while (sqlReader.Read())
-                    {
-                        var article = new Article
-                        {
-                            Id = Convert.ToInt32(sqlReader["liArticleID"]),
-                            Title = Convert.ToString(sqlReader["sHeadline"]),
-                            Introduction = Convert.ToString(sqlReader["sIntro"]),
-                            Body = Convert.ToString(sqlReader["sBody"]),
-                            PublishedDate = Convert.ToDateTime(sqlReader["dtPublicationDate"]),
-                            LastModified = Convert.ToDateTime(sqlReader["dtLastModified"]),
-                            ExpiryDate = DBNull.Value.Equals(sqlReader["dtExpiryDate"]) ? null : (DateTime?)Convert.ToDateTime(sqlReader["dtExpiryDate"]),
-                            MetaDescription = Convert.ToString(sqlReader["metaDescription"]),
-                            MetaKeywords = Convert.ToString(sqlReader["metaKeywords"]),
-                            NavigationId = Convert.ToInt32(sqlReader["liNavigationItemID"])
-                        };
-                        var author = new Person
-                        {
-                            Title = DBNull.Value.Equals(sqlReader["sTitle"]) ? String.Empty : Convert.ToString(sqlReader["sTitle"]).Trim(),
-                            FirstName = DBNull.Value.Equals(sqlReader["sFirstName"]) ? String.Empty : Convert.ToString(sqlReader["sFirstName"]).Trim(),
-                            LastName = DBNull.Value.Equals(sqlReader["sLastName"]) ? String.Empty : Convert.ToString(sqlReader["sLastName"]).Trim(),
-                            Email = DBNull.Value.Equals(sqlReader["sEmailAddress"]) ? String.Empty : Convert.ToString(sqlReader["sEmailAddress"]).Trim(),
-
-                        };
-                        if (!String.IsNullOrWhiteSpace(author.Names))
-                        {
-                            article.Author = author;
-                        }
-
-                        if (!DBNull.Value.Equals(sqlReader["liAssetID"]))
-                        {
-                            var image = new Image
-                            {
-                                Id = Convert.ToInt32(sqlReader["liAssetID"]),
-                                Name = Convert.ToString(sqlReader["sAssetName"]),
-                                Extension = Convert.ToString(sqlReader["sFileExt"]),
-                                CreatedDate = Convert.ToDateTime(sqlReader["imageCreatedDate"]),
-                                LastModifiedDate = Convert.ToDateTime(sqlReader["imageLastModifiedDate"])
-                            };
-
-                            //article.AttachedMedia = image;
-                            article.ThumbnailImage = image;
-                        }
-
-                        articleList.Add(article);
-                    }
-                }
+            if (!String.IsNullOrWhiteSpace(author.Names))
+            {
+                article.Author = author;
             }
 
-            return articleList;
+            if (record.GetValue<int>("liAssetID")!=0)
+            {
+                var image = new Image
+                {
+                    Id = record.GetValue<int>("liAssetID"),
+                    Name = record.GetValue<string>("sAssetName"),
+                    Extension = record.GetValue<string>("sFileExt"),
+                    CreatedDate = record.GetValue<DateTime>("imageCreatedDate"),
+                    LastModifiedDate = record.GetValue<DateTime>("imageLastModifiedDate")
+                };
+                
+                article.ThumbnailImage = image;
+            }
+            return article;
+        }
+
+        public Article GetArticle(int id)
+        {            
+            string commandText = "chk.GetArticle";            
+            var obj = GetObjectWithCustomMapping<Article>(commandText, new { @ArticleId = id }, MapDataRrowToArticle);
+            return obj;           
         }
 
         public PagedResult<ArticleSummary> GetAll(String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize)
@@ -123,8 +105,7 @@ namespace TWG.EASDataService.Data.Repository
 
             var excludeArticleSectionDataTable = Helpers.ElementTableHelper.BuidTable(excludeArticleSectionNames);
             var excludeSectorDataTable = Helpers.ElementTableHelper.BuidTable(excludeSectorNames);
-            var excludeTopicDataTable = Helpers.ElementTableHelper.BuidTable(excludeTopicNames);
-
+            var excludeTopicDataTable = Helpers.ElementTableHelper.BuidTable(excludeTopicNames);            
 
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
             {
@@ -137,7 +118,7 @@ namespace TWG.EASDataService.Data.Repository
 
                     command.Parameters.Add(new SqlParameter("@PageNumber", page));
                     command.Parameters.Add(new SqlParameter("@PageSize", pageSize));
-
+                    
                     var excludeArticleSectionParam = command.Parameters.AddWithValue("@ExcludeArticleSectionNames", excludeArticleSectionDataTable);
                     excludeArticleSectionParam.SqlDbType = SqlDbType.Structured;
                     var excludeSectorParam = command.Parameters.AddWithValue("@ExcludeSectorNames", excludeSectorDataTable);
@@ -196,42 +177,23 @@ namespace TWG.EASDataService.Data.Repository
             return paginatedArticleSummaries;
         }
 
-        public List<ArticleModificationSummary> GetModifiedArticles(DateTime modifiedSince)
-        {
-            var articleList = new List<ArticleModificationSummary>();                                
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
-            {
-                using (var command = new SqlCommand())
-                {
-                    connection.Open();
-                    command.Connection = connection;
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetArticlesModifiedSince";
-                    command.Parameters.Add(new SqlParameter("@modifiedDate", modifiedSince));
-                    
-                    var sqlReader = command.ExecuteReader();
-                    while (sqlReader.Read())
+
+        public List<ArticleModificationSummary> GetChangedArticles(DateTime changedSince)
+        {            
+            Func<IDataRecord, ArticleModificationSummary> mapperFunc = (record) =>
+                (
+                    new ArticleModificationSummary()
                     {
-                        var modifiedArticle = new ArticleModificationSummary()
-                        {
-                            Id = Convert.ToInt32(sqlReader["liArticleID"]),
-                            LastModified = Convert.ToDateTime(sqlReader["dtLastModified"])
-                        };
-
-                        articleList.Add(modifiedArticle);
+                        Id = record.GetValue<int>("liArticleID"),
+                        LastModified = record.GetValue<DateTime>("dtLastModified"),
+                        CurrentStatus = (ArticleStatus)Enum.Parse(typeof(ArticleStatus), record.GetValue<string>("Status"), true)
                     }
-                }
-            }
-            return articleList;
+                );
+
+            var list = GetListWithCustomMapping<ArticleModificationSummary>(@"[chk].[GetArticlesChangedSince]", new { @changedDate = changedSince }, mapperFunc);
+            return list;
         }
-
-
-        public List<DeletedItem> GetDeletedArticles(DateTime deletedSince)
-        {
-            string commandName = @"[chk].[GetArticlesDeletedSince]";
-            return FillListWithAutoMapping<DeletedItem>(commandName, new { @deletedDate = deletedSince });  
-        }
-
+      
         #region Taxonomy Search methods
 
         public PagedResult<ArticleSummary> GetByTopic(String[] topicNames, int page, int pageSize)
@@ -382,4 +344,6 @@ namespace TWG.EASDataService.Data.Repository
 
         #endregion
     }
+   
+
 }

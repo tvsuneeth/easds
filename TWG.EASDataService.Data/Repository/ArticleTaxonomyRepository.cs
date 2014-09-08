@@ -5,87 +5,47 @@ using System.Linq;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
-
+using TWG.EASDataService.Data.Extensions;
 using TWG.EASDataService.Data.Infrastructure;
 using TWG.EASDataService.Business;
 
 namespace TWG.EASDataService.Data.Repository
 {
-    public interface IArticleTaxonomyRepository : IChkRepositoryBase<List<TaxonomyItem>>
-    {
-        List<TaxonomyCategory> GetArticleTaxonomies(int articleId);
+    public interface IArticleTaxonomyRepository : IChkRepositoryBase<List<TaxonomyCategory>>
+    {        
     }
 
-    public class ArticleTaxonomyRepository : IArticleTaxonomyRepository
+    public class ArticleTaxonomyRepository : DbRepositoryBase, IArticleTaxonomyRepository
     {
-        public List<TaxonomyItem> Get(int id)
-        {
-            var taxonomyItems = new List<TaxonomyItem>();
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
-            {
-                using (var command = new SqlCommand())
-                {
-                    connection.Open();
-                    command.Connection = connection;
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetArticleTaxonomy";
-                    command.Parameters.Add(new SqlParameter("@ArticleId", id));
-
-                    var sqlReader = command.ExecuteReader();
-                    while (sqlReader.Read())
-                    {
-                        var taxonmy = new TaxonomyItem
-                        {
-                            Id = Convert.ToInt32(sqlReader["liCategoryItemID"]),
-                            Name = Convert.ToString(sqlReader["sItemName"]),
-                            ParentId = DBNull.Value.Equals(sqlReader["liParentID"]) ? null : (int?)Convert.ToInt32(sqlReader["liParentID"]),
-                            Category = (TaxonomyCategories)Enum.Parse(typeof(TaxonomyCategories), Convert.ToString(sqlReader["liCategoryID"]))
-                        };
-                        taxonomyItems.Add(taxonmy);
-                    }
-                }
-            }
-
-            return taxonomyItems;
-        }
-
-
-        public List<TaxonomyCategory> GetArticleTaxonomies(int articleId)
-        {
-                                   
+        public List<TaxonomyCategory> Get(int id)
+        {          
             var categories = new List<TaxonomyCategory>();
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
+            using (var connection = CreateConnection())
             {
-                using (var command = new SqlCommand())
+                using (var command = CreateCommand(connection,"chk.GetArticleTaxonomies", new { @ArticleId = id } ))
                 {
-                    connection.Open();
-                    command.Connection = connection;
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetArticleTaxonomies";
-                    command.Parameters.Add(new SqlParameter("@ArticleId", articleId));
-
-                    var sqlReader = command.ExecuteReader();                    
+                    var sqlReader = command.ExecuteReader();
                     while (sqlReader.Read())
                     {
                         var category = new TaxonomyCategory
                         {
-                            CategoryId = Convert.ToInt32(sqlReader["liCategoryID"]),
-                            CategoryName = Convert.ToString(sqlReader["sCategoryName"]),                          
+                            CategoryId = sqlReader.GetValue<int>("liCategoryID"),
+                            CategoryName =  sqlReader.GetValue<string>("sCategoryName"),
                         };
                         categories.Add(category);
                     }
 
                     sqlReader.NextResult();
 
-                    while(sqlReader.Read())
+                    while (sqlReader.Read())
                     {
-                        int categoryId = Convert.ToInt32(sqlReader["liCategoryID"]);
-                        var category  = categories.Find(i=>i.CategoryId==categoryId);
+                        int categoryId = sqlReader.GetValue<int>("liCategoryID");
+                        var category = categories.Find(i => i.CategoryId == categoryId);
                         var categoryItem = new TaxonomyCategoryItem()
                         {
-                             CategoryItemId  = Convert.ToInt32(sqlReader["liCategoryItemID"]),
-                             CategoryItemName = Convert.ToString(sqlReader["sItemName"]),
-                             ParentItemId = DBNull.Value.Equals(sqlReader["liParentID"]) ? null : (int?)Convert.ToInt32(sqlReader["liParentID"])
+                            CategoryItemId = sqlReader.GetValue<int>("liCategoryItemID"),
+                            CategoryItemName = sqlReader.GetValue<string>("sItemName"),
+                            ParentItemId =  sqlReader.GetValue<int>("liParentID")
                         };
                         category.AddItem(categoryItem);
                     }
@@ -93,6 +53,7 @@ namespace TWG.EASDataService.Data.Repository
             }
             return categories;            
         }
+      
 
     }
 
