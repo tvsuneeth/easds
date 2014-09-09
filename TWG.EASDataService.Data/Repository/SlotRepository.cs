@@ -28,7 +28,7 @@ namespace TWG.EASDataService.Data.Repository
         public List<SlotPageSummary> GetListOfSlotPages()
         {            
             string commandName = @"[chk].[GetSlotPages]";            
-            return FillListWithAutoMapping<SlotPageSummary>(commandName, new { slotPageId=-1 });           
+            return GetListWithAutoMapping<SlotPageSummary>(commandName, new { slotPageId=-1 });           
         }
        
         public SlotPage GetSlotPageById(int slotPageId)

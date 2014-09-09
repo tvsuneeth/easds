@@ -20,7 +20,7 @@ namespace TWG.EASDataService.Data.Repository
             return conn;
         }
 
-        private SqlCommand CreateCommand(SqlConnection conn, string commandName)
+        public SqlCommand CreateCommand(SqlConnection conn, string commandName)
         {
             var command = new SqlCommand(commandName);
             command.CommandType = CommandType.StoredProcedure;
@@ -125,7 +125,7 @@ namespace TWG.EASDataService.Data.Repository
         /// <param name="commandName">stored procedure name</param>
         /// <param name="parameters">stored procedure parameters</param>
         /// <returns></returns>
-        public List<T> FillListWithAutoMapping<T>(string commandName, object parameters)
+        public List<T> GetListWithAutoMapping<T>(string commandName, object parameters)
         {
             List<T> list = new List<T>();
             List<string> matchingColumns = new List<string>();
@@ -149,7 +149,7 @@ namespace TWG.EASDataService.Data.Repository
         }
 
 
-        public T FillObjectWithAutoMapping<T>(string commandName, object parameters)
+        public T GetObjectWithAutoMapping<T>(string commandName, object parameters)
         {
             T obj = default(T);
             List<string> matchingColumns = new List<string>();
@@ -282,16 +282,22 @@ namespace TWG.EASDataService.Data.Repository
                 PropertyInfo pi = obj.GetType().GetProperty(column);
                 if (!object.Equals(dr[pi.Name], DBNull.Value))
                 {
-                    pi.SetValue(obj, dr[pi.Name], null);
+                    if(pi.PropertyType.IsEnum)
+                    {
+                        //creating the enum from string value
+                        object EnumValue = Enum.Parse(pi.PropertyType, dr[pi.Name].ToString());
+                        pi.SetValue(obj, EnumValue, null);                        
+                    }
+                    else
+                    { 
+                        pi.SetValue(obj, dr[pi.Name], null);
+                    }
                 }
             }            
             
             return obj;
         }
-
-       
-        
-                           
+                                          
    }
     
 }

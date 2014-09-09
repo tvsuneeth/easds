@@ -71,12 +71,12 @@
     <Compile Include="ArticleSummary.cs" />
     <Compile Include="ArticleTaxonomy.cs" />
     <Compile Include="CompanyTaxonomy.cs" />
-    <Compile Include="DeletedItem.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="IMediaAttachment.cs" />
     <Compile Include="IWebIdentifiable.cs" />
     <Compile Include="IPagination.cs" />
     <Compile Include="ArticleModificationSummary.cs" />
+    <Compile Include="ModifiedItem.cs" />
     <Compile Include="Operator.cs" />
     <Compile Include="PagedResult.cs" />
     <Compile Include="ITaxonomy.cs" />

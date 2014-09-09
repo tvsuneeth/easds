@@ -12,7 +12,8 @@ namespace TWG.EASDataService.Data.Repository
 {
     public interface IAssetRepository : IChkRepositoryBase<MediaContent>
     {
-        IEnumerable<MediaContent> Get(int[] ids);        
+        IEnumerable<MediaContent> Get(int[] ids);
+        List<ModifiedItem> GetMediaContentItemsModifiedSince(DateTime modifiedSince);
     }
 
     public class AssetRepository : DbRepositoryBase, IAssetRepository
@@ -53,5 +54,13 @@ namespace TWG.EASDataService.Data.Repository
             mediaList = GetListWithCustomMapping("chk.GetAsset", parameterColl, mapperFunc);
             return mediaList;
         }
+
+        public List<ModifiedItem> GetMediaContentItemsModifiedSince(DateTime modifiedSince)
+        {
+            var list = GetListWithAutoMapping<ModifiedItem>("[chk].[GetAssetsModifiedSince]", new { @modifiedDate = modifiedSince });
+            return list;
+        }
+
+
     }
 }
