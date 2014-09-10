@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWG.EASDataService.BackOffi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWG.EASDataService.BackOffice.Tests.Acceptance", "TWG.EASDataService.BackOffice.Tests.Acceptance\TWG.EASDataService.BackOffice.Tests.Acceptance.csproj", "{3EB2C2FB-8E48-45CA-9BAC-7E32E68AF0AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWG.EASDataService.BackOffice.Tests", "TWG.EASDataService.BackOffice.UnitTests\TWG.EASDataService.BackOffice.Tests.csproj", "{6320CF03-8DD1-4CEF-9554-5AD557069AF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWG.EASDataService.BackOffice.UnitTests", "TWG.EASDataService.BackOffice.UnitTests\TWG.EASDataService.BackOffice.UnitTests.csproj", "{6320CF03-8DD1-4CEF-9554-5AD557069AF5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWG.EASDataService.Api.Tests", "TWG.EASDataService.Api.Tests\TWG.EASDataService.Api.Tests.csproj", "{265B00E6-D6F3-46AB-BF21-91C1622B51D9}"
 EndProject
