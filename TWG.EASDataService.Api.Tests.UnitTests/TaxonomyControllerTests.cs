@@ -16,7 +16,7 @@ using TWG.EASDataService.Services;
 using TWG.EASDataService.Api.Controllers;
 using TWG.EASDataService.Api.Helpers;
 
-namespace TWG.EASDataService.Api.Tests
+namespace TWG.EASDataService.Api.Tests.UnitTests
 {
     [TestClass]
     public class TaxonomyControllerTests

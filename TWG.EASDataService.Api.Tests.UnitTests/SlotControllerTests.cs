@@ -19,7 +19,7 @@ using TWG.EASDataService.Api.Helpers;
 using System.Web.Http.Routing;
 using System.Web.Http.Hosting;
 
-namespace TWG.EASDataService.Api.Tests
+namespace TWG.EASDataService.Api.Tests.UnitTests
 {
     [TestClass]
     public class SlotControllerTests

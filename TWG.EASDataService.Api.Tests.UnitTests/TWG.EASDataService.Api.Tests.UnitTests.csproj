@@ -7,8 +7,8 @@
     <ProjectGuid>{265B00E6-D6F3-46AB-BF21-91C1622B51D9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TWG.EASDataService.Api.Tests</RootNamespace>
-    <AssemblyName>TWG.EASDataService.Api.Tests</AssemblyName>
+    <RootNamespace>TWG.EASDataService.Api.Tests.UnitTests</RootNamespace>
+    <AssemblyName>TWG.EASDataService.Api.Tests.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
