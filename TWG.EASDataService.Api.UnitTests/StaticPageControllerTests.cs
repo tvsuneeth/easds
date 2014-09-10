@@ -65,11 +65,11 @@ namespace TWG.EASDataService.Api.UnitTests
         [TestMethod]
         public void Get_RequestExistingStaticPage()
         {
-            _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(new StaticPage());
+            _staticPageRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(new StaticPage());
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
             _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
-            var staticPageFeed = _objectUnderTest.GetByName("existing_page_name");
+            var staticPageFeed = _objectUnderTest.GetById(100);
 
             Assert.IsNotNull(staticPageFeed);
         }
@@ -77,11 +77,11 @@ namespace TWG.EASDataService.Api.UnitTests
         [TestMethod]
         public void Get_RequestNonExistingStaticpage()
         {
-            _staticPageRepository.Stub(r => r.Get(Arg<String>.Is.Anything)).Return(null);
+            _staticPageRepository.Stub(r => r.Get(Arg<int>.Is.Anything)).Return(null);
             _urlHelper.Stub(h => h.GenerateUrl(Arg<String>.Is.Anything, Arg<Object>.Is.Anything)).Return("http://dummylink.co.uk");
             _staticContentLinkService.Stub(s => s.GetStaticContentLinkForSite()).Return(new List<StaticContentLink>());
 
-            var staticPageFeed = _objectUnderTest.GetByName("nonexisting_page_name");
+            var staticPageFeed = _objectUnderTest.GetById(-1);
 
             Assert.IsNull(staticPageFeed);
         }

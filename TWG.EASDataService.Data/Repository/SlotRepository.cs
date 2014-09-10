@@ -44,8 +44,8 @@ namespace TWG.EASDataService.Data.Repository
                     {                        
                         sp = new SlotPage()
                         {
-                            Id = GetValue<int>(reader["liSlotPageID"]),
-                            PageName = GetValue<string>(reader["sPageName"])
+                            Id = reader.GetValue<int>("liSlotPageID"),
+                            PageName = reader.GetValue<string>("sPageName")
                         };
                     }
 
@@ -55,27 +55,27 @@ namespace TWG.EASDataService.Data.Repository
                     {
                         Slot slot = new Slot()
                         {
-                            Id = GetValue<int>(reader["liSlotID"]),
-                            Headline = GetValue<string>(reader["sHeadline"]),
-                            SlotName = GetValue<string>(reader["sSlotName"]),
-                            Content = GetValue<string>(reader["sContent"]),
-                            URL = GetValue<string>(reader["sURL"]),
-                            URLTitle = GetValue<string>(reader["sURLTitle"]),
-                            AccessKey = GetValue<string>(reader["sAccessKey"]),
-                            LastModifiedDate = GetValue<DateTime>(reader["dtLastModified"]),
+                            Id = reader.GetValue<int>("liSlotID"),
+                            Headline = reader.GetValue<string>("sHeadline"),
+                            SlotName = reader.GetValue<string>("sSlotName"),
+                            Content = reader.GetValue<string>("sContent"),
+                            URL = reader.GetValue<string>("sURL"),
+                            URLTitle = reader.GetValue<string>("sURLTitle"),
+                            AccessKey = reader.GetValue<string>("sAccessKey"),
+                            LastModifiedDate = reader.GetValue<DateTime>("dtLastModified")
                         };
-                        int imageId = GetValue<int>(reader["liImageID"]);
+                        int imageId = reader.GetValue<int>("liImageID");
                         if(imageId!=0)
                         { 
                             Image img = new Image()
                             {
                                 Id = imageId,
-                                Name = GetValue<string>(reader["sAssetName"]),
-                                Width = GetValue<int>(reader["iWidth"]),
-                                Height = GetValue<int>(reader["iHeight"]),
-                                Extension = GetValue<string>(reader["sFileExt"]),
-                                CreatedDate = GetValue<DateTime>(reader["imageCreatedDate"]),
-                                LastModifiedDate = GetValue<DateTime>(reader["imageLastModifiedDate"])
+                                Name = reader.GetValue<string>("sAssetName"),
+                                Width = reader.GetValue<int>("iWidth"),
+                                Height = reader.GetValue<int>("iHeight"),
+                                Extension = reader.GetValue<string>("sFileExt"),
+                                CreatedDate = reader.GetValue<DateTime>("imageCreatedDate"),
+                                LastModifiedDate = reader.GetValue<DateTime>("imageLastModifiedDate")
                             };
                             slot.Image = img;
                         }

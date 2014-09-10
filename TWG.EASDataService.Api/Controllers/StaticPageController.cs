@@ -53,32 +53,6 @@ namespace TWG.EASDataService.Api.Controllers
         }
 
         [HttpGet]
-        [Route("staticpage/byname/{name:regex(^[a-zA-Z0-9- ,&]+)}", Name = "GetStaticPageByName")]
-        [Authorize(Roles = "frontofficegroup")]
-       // [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 3600, AnonymousOnly = false)]
-        public SingleContentFeed<StaticPage> GetByName(String name)
-        {
-            _urlHelper.RouteHelper = Url;
-
-            var staticPage = _staticPageService.GetByName(name);
-            if (staticPage != null)
-            {
-                var contentFeed = new SingleContentFeed<StaticPage>(
-                    _urlHelper.GenerateUrl("GetStaticPageByName", staticPage.GetIdentificationElement()),
-                    staticPage,
-                    _urlHelper,
-                    _staticContentLinkService
-                );
-
-                return contentFeed;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        [HttpGet]
         [Route("staticpages", Name = "GetAllStaticPages")]
         [Authorize(Roles = "frontofficegroup")]
         //[CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 3600, AnonymousOnly = false)]

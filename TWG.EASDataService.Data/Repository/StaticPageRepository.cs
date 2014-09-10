@@ -3,124 +3,55 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
-
+using TWG.EASDataService.Data.Extensions;
 using TWG.EASDataService.Data.Infrastructure;
 using TWG.EASDataService.Business;
 
 namespace  TWG.EASDataService.Data.Repository
 {
-    public interface IStaticPageRepository : IChkRepositoryBase<StaticPage>
-    {
-        StaticPage Get(String pageName);
+    public interface IStaticPageRepository :  IChkRepositoryBase<StaticPage>
+    {       
         List<StaticPageSummary> GetAll();
     }
 
-    public class StaticPageRepository : IStaticPageRepository
-    {
-        public StaticPage Get(String pageName)
+    public class StaticPageRepository : DbRepositoryBase, IStaticPageRepository
+    {            
+        public List<StaticPageSummary> GetAll()
         {
-            if (String.IsNullOrWhiteSpace(pageName))
-            {
-                throw new ArgumentNullException("Argument pageName is null or empty");
-            }
-
-            pageName = pageName + ".htm";
-
-            StaticPage staticPage = null;
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
-            {
-                using (var command = new SqlCommand())
-                {
-                    connection.Open();
-                    command.Connection = connection;
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetStaticPage";
-                    command.Parameters.Add(new SqlParameter("@StaticPageName", pageName));
-
-                    var sqlReader = command.ExecuteReader();
-                    if (sqlReader.Read())
+            Func<IDataRecord, StaticPageSummary> mapperFunc = (record) =>
+               (
+                    new StaticPageSummary()
                     {
-                        staticPage = new StaticPage
-                        {
-                            Id = Convert.ToInt32(sqlReader["liStaticPageID"]),
-                            PageName = Convert.ToString(sqlReader["sPageURL"]).Replace(".htm", ""),
-                            Title = Convert.ToString(sqlReader["sTitle"]),
-                            Body = Convert.ToString(sqlReader["sBody"]),
-                            TitleForHtmlPage = Convert.ToString(sqlReader["sPageTitle"]),
-                            MetaDescription = Convert.ToString(sqlReader["sMetaDescription"]),
-                            MetaKeywords = Convert.ToString(sqlReader["sMetaKeywords"]),
-                            LastModified = Convert.ToDateTime(sqlReader["dtLastModified"])
-                        };
+                        Id =record.GetValue<int>("liStaticPageID"),
+                        PageName = record.GetValue<string>("sPageURL").Replace(".htm", ""),   
                     }
-                }
-            }
+               );
 
-            return staticPage;
+            var list = GetListWithCustomMapping("chk.GetListOfStaticPages", null, mapperFunc);
+            return list;           
         }
 
         public StaticPage Get(int id)
         {
-            StaticPage staticPage = null;
+            var obj = GetObjectWithCustomMapping("chk.GetStaticPage", new { @StaticPageId = id }, MapDataRrowToStaticPage);
+            return obj;
+        }
 
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
+        private StaticPage MapDataRrowToStaticPage(IDataRecord record)
+        {
+            var staticPage = new StaticPage
             {
-                using (var command = new SqlCommand())
-                {
-                    connection.Open();
-                    command.Connection = connection;
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetStaticPage";
-                    command.Parameters.Add(new SqlParameter("@StaticPageId", id));
-
-                    var sqlReader = command.ExecuteReader();
-                    if (sqlReader.Read())
-                    {
-                        staticPage = new StaticPage
-                        {
-                            Id = Convert.ToInt32(sqlReader["liStaticPageID"]),
-                            PageName = Convert.ToString(sqlReader["sPageURL"]).Replace(".htm", ""),
-                            Title = Convert.ToString(sqlReader["sTitle"]),
-                            Body = Convert.ToString(sqlReader["sBody"]),
-                            TitleForHtmlPage = Convert.ToString(sqlReader["sPageTitle"]),
-                            MetaDescription = Convert.ToString(sqlReader["sMetaDescription"]),
-                            MetaKeywords = Convert.ToString(sqlReader["sMetaKeywords"]),
-                            LastModified = Convert.ToDateTime(sqlReader["dtLastModified"])
-                        };
-                    }
-                }
-            }
-
+                Id = record.GetValue<int>("liStaticPageID"),
+                PageName = record.GetValue<string>("sPageURL").Replace(".htm", ""),
+                Title = record.GetValue<string>("sTitle"),
+                Body = record.GetValue<string>("sBody"),
+                TitleForHtmlPage = record.GetValue<string>("sPageTitle"),
+                MetaDescription = record.GetValue<string>("sMetaDescription"),
+                MetaKeywords = record.GetValue<string>("sMetaKeywords"),
+                LastModified = record.GetValue<DateTime>("dtLastModified")
+            };
             return staticPage;
         }
 
-        public List<StaticPageSummary> GetAll()
-        {
-            var list = new List<StaticPageSummary>();
-
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
-            {
-                using (var command = new SqlCommand())
-                {
-                    connection.Open();
-                    command.Connection = connection;
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetListOfStaticPages";                    
-
-                    var sqlReader = command.ExecuteReader();
-                    while (sqlReader.Read())
-                    {
-                        var staticPage = new StaticPageSummary
-                        {
-                            Id = Convert.ToInt32(sqlReader["liStaticPageID"]),
-                            PageName = Convert.ToString(sqlReader["sPageURL"]).Replace(".htm", ""),                            
-                        };
-
-                        list.Add(staticPage);
-                    }
-                }
-            }
-
-            return list;
-        }
     }
 }

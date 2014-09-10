@@ -6,8 +6,7 @@ using TWG.EASDataService.Data.Repository;
 namespace TWG.EASDataService.Services
 {
     public interface IStaticPageService
-    {
-        StaticPage GetByName(String staticPageName);
+    {       
         StaticPage GetById(int staticPageId);
         List<StaticPageSummary> GetAll();
     }
@@ -18,12 +17,7 @@ namespace TWG.EASDataService.Services
         public StaticPageService(IStaticPageRepository staticPageRepository)
         {
             _staticPageRepository = staticPageRepository;
-        }
-
-        public StaticPage GetByName(string staticPageName)
-        {
-            return _staticPageRepository.Get(staticPageName);
-        }
+        }     
 
         public StaticPage GetById(int staticPageId)
         {

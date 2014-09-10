@@ -48,35 +48,8 @@ namespace TWG.EASDataService.Data.Repository
 
             }
             return cmd;
-        }
-
-       
-
-        public T GetValue<T>(object value)
-        {
-            if (value == DBNull.Value)
-            {
-                return default(T);
-            }
-            if (value is T)
-            {
-                return (T)value;
-            }
-            else
-            {
-                try
-                {
-                    return (T)Convert.ChangeType(value, typeof(T));
-                }
-                catch (InvalidCastException)
-                {
-                    return default(T);
-                }
-            }                     
-        }
-
+        }           
         
-
         /// <summary>
         /// checks a column exists in a data reader
         /// </summary>
@@ -207,7 +180,10 @@ namespace TWG.EASDataService.Data.Repository
             {
                 using (var cmd = CreateCommand(connection, commandName))
                 {
-                    cmd.Parameters.AddRange(commandParameters.ToArray());
+                    if(commandParameters!=null && commandParameters.Count>0)
+                    { 
+                        cmd.Parameters.AddRange(commandParameters.ToArray());
+                    }
                     using (var dr = cmd.ExecuteReader())
                     {
                         while (dr.Read())
