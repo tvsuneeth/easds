@@ -69,7 +69,7 @@ namespace TWG.EASDataService.Data.Repository
             return false;
         }
 
-        private static List<string> GetMatchingColumnsForType(Type T, IDataReader dr)
+        private static List<string> GetMatchingFieldsFromResultSet(Type T, IDataReader dr)
         {
             List<string> matchingColumns = new List<string>();
             foreach (var prop in T.GetProperties())
@@ -85,7 +85,6 @@ namespace TWG.EASDataService.Data.Repository
                         matchingColumns.Add(prop.Name);
                         break;
                     }
-
                 }
             }
             return matchingColumns;
@@ -108,13 +107,12 @@ namespace TWG.EASDataService.Data.Repository
                 {                   
                     using (var dr = cmd.ExecuteReader())
                     {
-                        matchingColumns = GetMatchingColumnsForType(typeof(T), dr);
+                        matchingColumns = GetMatchingFieldsFromResultSet(typeof(T), dr);
                         while (dr.Read())
                         {
                             T obj = CreateObject<T>(dr,matchingColumns);
                             list.Add(obj);
-                        }
-                        
+                        }                        
                     }
                 }
             }
@@ -132,12 +130,11 @@ namespace TWG.EASDataService.Data.Repository
                 {
                     using (var dr = cmd.ExecuteReader())
                     {
-                        matchingColumns = GetMatchingColumnsForType(typeof(T), dr);
+                        matchingColumns = GetMatchingFieldsFromResultSet(typeof(T), dr);
                         while (dr.Read())
                         {
                             obj = CreateObject<T>(dr, matchingColumns);
                         }
-
                     }
                 }
             }
@@ -166,7 +163,6 @@ namespace TWG.EASDataService.Data.Repository
                             T obj = mapperFunction(dr);
                             list.Add(obj);
                         }
-
                     }
                 }
             }
@@ -191,7 +187,6 @@ namespace TWG.EASDataService.Data.Repository
                             T obj = mapperFunction(dr);
                             list.Add(obj);
                         }
-
                     }
                 }
             }
@@ -219,7 +214,6 @@ namespace TWG.EASDataService.Data.Repository
                         {
                             obj = mapperFunction(dr);
                         }
-
                     }
                 }
             }
@@ -240,7 +234,6 @@ namespace TWG.EASDataService.Data.Repository
                         {
                             obj = mapperFunction(dr);
                         }
-
                     }
                 }
             }
@@ -248,12 +241,12 @@ namespace TWG.EASDataService.Data.Repository
         }
 
 
-        private static T CreateObject<T>(IDataRecord dr, List<string> matchingColumns)
+        private static T CreateObject<T>(IDataRecord dr, List<string> fieldstoPopulate)
         {
             T obj = default(T);
             obj = Activator.CreateInstance<T>();
 
-            foreach (string column in matchingColumns)
+            foreach (string column in fieldstoPopulate)
             {
                 PropertyInfo pi = obj.GetType().GetProperty(column);
                 if (!object.Equals(dr[pi.Name], DBNull.Value))
