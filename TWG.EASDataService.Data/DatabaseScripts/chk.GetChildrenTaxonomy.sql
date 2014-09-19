@@ -1,15 +1,13 @@
-USE [CatererAndHotelKeeper_dev]
+USE [CatererAndHotelKeeper_Systest]
 GO
-
-/****** Object:  StoredProcedure [chk].[GetChildrenTaxonomy]    Script Date: 16/05/2014 17:25:43 ******/
+/****** Object:  StoredProcedure [chk].[GetChildrenTaxonomy]    Script Date: 09/19/2014 12:21:14 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE PROCEDURE [chk].[GetChildrenTaxonomy]
+ALTER PROCEDURE [chk].[GetChildrenTaxonomy]
 (
 	@CategoryItemId INT = 0,
 	@ArticleSectionName NVARCHAR(255) = NULL,
@@ -51,6 +49,3 @@ BEGIN
 	WHERE liCategoryItemID NOT IN (SELECT Id FROM @TaxonomyIdTable)
 	ORDER BY liCategoryID, liParentID, liCategoryItemID, sItemName
 END
-GO
-
-

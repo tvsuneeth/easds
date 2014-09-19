@@ -1,6 +1,6 @@
 ﻿USE [CatererAndHotelKeeper_Systest]
 GO
-/****** Object:  StoredProcedure [chk].[GetAssetsModifiedSince]    Script Date: 09/09/2014 15:59:03 ******/
+/****** Object:  StoredProcedure [chk].[GetAssetsModifiedSince]    Script Date: 09/19/2014 12:20:28 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

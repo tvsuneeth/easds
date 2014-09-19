@@ -1,6 +1,6 @@
 ﻿USE [CatererAndHotelKeeper_Systest]
 GO
-/****** Object:  StoredProcedure [chk].[GetListOfStaticPages]    Script Date: 06/26/2014 12:42:00 ******/
+/****** Object:  StoredProcedure [chk].[GetListOfStaticPages]    Script Date: 09/19/2014 12:21:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

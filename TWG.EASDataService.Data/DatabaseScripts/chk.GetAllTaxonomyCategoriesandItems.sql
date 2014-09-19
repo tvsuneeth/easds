@@ -1,6 +1,6 @@
 USE [CatererAndHotelKeeper_Systest]
 GO
-/****** Object:  StoredProcedure [chk].[GetAllTaxonomyCategoriesandItems]    Script Date: 06/26/2014 12:38:09 ******/
+/****** Object:  StoredProcedure [chk].[GetAllTaxonomyCategoriesandItems]    Script Date: 09/19/2014 12:17:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

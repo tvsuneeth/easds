@@ -1,18 +1,21 @@
-USE [Caterer_Live]
+USE [CatererAndHotelKeeper_Systest]
 GO
-/****** Object:  StoredProcedure [chk].[GetArticle]    Script Date: 09/05/2014 09:33:58 ******/
+/****** Object:  StoredProcedure [chk].[GetArticle]    Script Date: 09/19/2014 12:17:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
 
+
 ALTER PROCEDURE [chk].[GetArticle]
 (
-	@ArticleIds AS [chk].[ElementTable] READONLY
+	@ArticleId int
 )
 AS
 BEGIN
+
+
 
 	SELECT
 		  a.liArticleID
@@ -62,7 +65,7 @@ BEGIN
 		LEFT OUTER JOIN [dbo].[Authors] au ON a.liAuthorID = au.liAuthorID
 		LEFT OUTER JOIN [dbo].[ArticleLandingPage] alp ON a.liArticleID = alp.liArticleID
 		WHERE a.liArticleStatusID=30 AND (a.dtReleaseDate IS NULL OR a.dtReleaseDate <= getdate()) AND ( a.dtExpiryDate IS NULL OR a.dtExpiryDate > getdate() )
-		AND a.liArticleID IN (SELECT CAST(Name AS INT) AS Id  FROM @ArticleIds)
+		AND a.liArticleID =@ArticleId
 	) AS a
 	LEFT OUTER JOIN 
 	(
@@ -71,5 +74,4 @@ BEGIN
 		WHERE (bDeleted IS NULL OR bDeleted = 0)
 	) AS s ON a.liThumbnailID = s.liAssetID
 END
-
 

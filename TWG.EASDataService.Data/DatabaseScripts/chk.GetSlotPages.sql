@@ -1,6 +1,6 @@
-﻿USE [Caterer_Live]
+﻿USE [CatererAndHotelKeeper_Systest]
 GO
-/****** Object:  StoredProcedure [chk].[GetSlotPages]    Script Date: 06/27/2014 09:32:59 ******/
+/****** Object:  StoredProcedure [chk].[GetSlotPages]    Script Date: 09/19/2014 12:22:12 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
