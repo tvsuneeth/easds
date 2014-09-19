@@ -60,7 +60,7 @@ namespace TWG.EASDataService.Api.Controllers
 
         [HttpGet]
         [Route("mediacontent/{id:int}", Name = "GetMediaContentById")]
-       // [Authorize(Roles = "frontofficegroup")]
+        [Authorize(Roles = "frontofficegroup")]
         // [CacheOutput(ClientTimeSpan = 600, ServerTimeSpan = 3600, AnonymousOnly = false)]
         public HttpResponseMessage GetMediaContentById(int id)
         {
@@ -93,7 +93,7 @@ namespace TWG.EASDataService.Api.Controllers
 
         [HttpGet]
         [Route("mediacontent/{id:int}/info", Name = "GetMediaContentInfo")]
-       // [Authorize(Roles = "frontofficegroup")]        
+        [Authorize(Roles = "frontofficegroup")]        
         public MediaContent GetMediaContentInfo(int id)
         {
             
@@ -104,7 +104,7 @@ namespace TWG.EASDataService.Api.Controllers
 
         [HttpGet]
         [Route("mediacontent/modifiedsince/{dateString:regex(\\d{6}_\\d{6})}", Name = "GetMediaContentChangedSince")]
-        // [Authorize(Roles = "frontofficegroup")]        
+        [Authorize(Roles = "frontofficegroup")]        
         //[CacheOutput(NoCache=true  )]
         public List<ModifiedItem>  GetModifiedMediaContentItems (string dateString)
         {

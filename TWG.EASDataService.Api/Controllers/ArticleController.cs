@@ -28,7 +28,7 @@ namespace TWG.EASDataService.Api.Controllers
 
         [HttpGet]
         [Route("article/{id:int}", Name = "GetArticleById")]
-       // [Authorize(Roles = "frontofficegroup")]
+        [Authorize(Roles = "frontofficegroup")]
        // [CacheOutput(ClientTimeSpan=600, ServerTimeSpan=3600, AnonymousOnly=false)]
         public SingleContentFeed<Article> Get(int id)
         {
@@ -111,7 +111,7 @@ namespace TWG.EASDataService.Api.Controllers
 
         [HttpGet]
         [Route("articles/changedsince/{dateString:regex(\\d{6}_\\d{6})}", Name = "GetArticlesChangedSince")]
-       // [Authorize(Roles = "frontofficegroup")]        
+        [Authorize(Roles = "frontofficegroup")]        
         //[CacheOutput(NoCache=true  )]
         public List<ArticleModificationSummary> GetChangedArticles(string dateString)
         {
