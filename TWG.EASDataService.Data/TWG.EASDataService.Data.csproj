@@ -102,7 +102,10 @@
     <Content Include="DatabaseScripts\chk.GetSlotPageWithSlots.sql" />
     <Content Include="DatabaseScripts\chk.GetStaticPage.sql" />
     <Content Include="DatabaseScripts\chk.GetTaxonomy.sql" />
-    <Content Include="DatabaseScripts\chkGetAllTaxonomyCategoriesandItems.sql" />
+    <Content Include="DatabaseScripts\chk.GetAllTaxonomyCategoriesandItems.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DatabaseScripts\chk.GetArticleChangedSince.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
