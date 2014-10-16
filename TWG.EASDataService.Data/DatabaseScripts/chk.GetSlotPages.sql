@@ -1,11 +1,11 @@
-﻿USE [CatererAndHotelKeeper_Systest]
+﻿USE [DBNameHere]
 GO
-/****** Object:  StoredProcedure [chk].[GetSlotPages]    Script Date: 09/19/2014 12:22:12 ******/
+/****** Object:  StoredProcedure [easds].[GetSlotPages]    Script Date: 09/19/2014 12:22:12 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-ALTER PROCEDURE [chk].[GetSlotPages] 
+ALTER PROCEDURE [easds].[GetSlotPages] 
 	@slotPageID int
 
 AS

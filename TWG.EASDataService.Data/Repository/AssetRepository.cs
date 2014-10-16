@@ -51,13 +51,13 @@ namespace TWG.EASDataService.Data.Repository
                 );
 
             var mediaList = new List<MediaContent>();
-            mediaList = GetListWithCustomMapping("chk.GetAsset", parameterColl, mapperFunc);
+            mediaList = GetListWithCustomMapping("[easds].GetAsset", parameterColl, mapperFunc);
             return mediaList;
         }
 
         public List<ModifiedItem> GetMediaContentItemsModifiedSince(DateTime modifiedSince)
         {
-            var list = GetListWithAutoMapping<ModifiedItem>("[chk].[GetAssetsModifiedSince]", new { @modifiedDate = modifiedSince });
+            var list = GetListWithAutoMapping<ModifiedItem>("[easds].[GetAssetsModifiedSince]", new { @modifiedDate = modifiedSince });
             return list;
         }
 

@@ -1,13 +1,13 @@
-USE [CatererAndHotelKeeper_Systest]
+USE [DBNameHere]
 GO
-/****** Object:  StoredProcedure [chk].[GetChildrenTaxonomy]    Script Date: 09/19/2014 12:21:14 ******/
+/****** Object:  StoredProcedure [easds].[GetChildrenTaxonomy]    Script Date: 09/19/2014 12:21:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
 
-ALTER PROCEDURE [chk].[GetChildrenTaxonomy]
+ALTER PROCEDURE [easds].[GetChildrenTaxonomy]
 (
 	@CategoryItemId INT = 0,
 	@ArticleSectionName NVARCHAR(255) = NULL,

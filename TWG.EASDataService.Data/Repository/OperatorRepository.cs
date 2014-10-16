@@ -27,7 +27,7 @@ namespace TWG.EASDataService.Data.Repository
         {            
             List<Operator> operatorObjs = new List<Operator>();
 
-            var list = GetListWithCustomMapping<Operator>(@"chk.GetCompaniesPaged", new { @StartsWith = String.Empty, @SearchPhrase = String.Empty, @CategoryFilter = String.Empty }, MapDataRrowToOperator);
+            var list = GetListWithCustomMapping<Operator>(@"[easds].GetCompaniesPaged", new { @StartsWith = String.Empty, @SearchPhrase = String.Empty, @CategoryFilter = String.Empty }, MapDataRrowToOperator);
             return list;                  
         }
 
@@ -90,7 +90,7 @@ namespace TWG.EASDataService.Data.Repository
             var categories = new List<TaxonomyCategory>();
             using (var connection = CreateConnection())
             {
-                using (var command = CreateCommand(connection, "chk.GetCompanyTaxonomies", new { @CompanyId = companyId  }))
+                using (var command = CreateCommand(connection, "[easds].GetCompanyTaxonomies", new { @CompanyId = companyId }))
                 {                    
                     var sqlReader = command.ExecuteReader();
                     while (sqlReader.Read())

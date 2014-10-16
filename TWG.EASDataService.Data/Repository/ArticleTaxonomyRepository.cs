@@ -22,7 +22,7 @@ namespace TWG.EASDataService.Data.Repository
             var categories = new List<TaxonomyCategory>();
             using (var connection = CreateConnection())
             {
-                using (var command = CreateCommand(connection,"chk.GetArticleTaxonomies", new { @ArticleId = id } ))
+                using (var command = CreateCommand(connection, "[easds].GetArticleTaxonomies", new { @ArticleId = id }))
                 {
                     var sqlReader = command.ExecuteReader();
                     while (sqlReader.Read())

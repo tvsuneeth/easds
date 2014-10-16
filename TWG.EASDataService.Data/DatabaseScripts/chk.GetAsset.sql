@@ -1,6 +1,6 @@
-USE [CatererAndHotelKeeper_Systest]
+USE [DBNameHere]
 GO
-/****** Object:  StoredProcedure [chk].[GetAsset]    Script Date: 09/19/2014 12:20:10 ******/
+/****** Object:  StoredProcedure [easds].[GetAsset]    Script Date: 09/19/2014 12:20:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8,9 +8,9 @@ GO
 
 
 
-ALTER PROCEDURE [chk].[GetAsset]
+ALTER PROCEDURE [easds].[GetAsset]
 (
-	@AssetIds AS [chk].[ElementTable] READONLY
+	@AssetIds AS [easds].[ElementTable] READONLY
 )
 AS
 BEGIN

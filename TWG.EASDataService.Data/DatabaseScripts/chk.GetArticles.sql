@@ -1,6 +1,6 @@
-USE [CatererAndHotelKeeper_Systest]
+USE [DBNameHere]
 GO
-/****** Object:  StoredProcedure [chk].[GetArticles]    Script Date: 09/19/2014 12:17:45 ******/
+/****** Object:  StoredProcedure [easds].[GetArticles]    Script Date: 09/19/2014 12:17:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8,11 +8,11 @@ GO
 
 
 
-ALTER PROCEDURE [chk].[GetArticles]
+ALTER PROCEDURE [easds].[GetArticles]
 (
-	@ExcludeArticleSectionNames AS [chk].[ElementTable] READONLY,
-	@ExcludeSectorNames AS [chk].[ElementTable] READONLY,
-	@ExcludeTopicNames AS [chk].[ElementTable] READONLY,
+	@ExcludeArticleSectionNames AS [easds].[ElementTable] READONLY,
+	@ExcludeSectorNames AS [easds].[ElementTable] READONLY,
+	@ExcludeTopicNames AS [easds].[ElementTable] READONLY,
 	@PageNumber INT,
 	@PageSize INT
 )

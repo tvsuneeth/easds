@@ -27,13 +27,13 @@ namespace  TWG.EASDataService.Data.Repository
                     }
                );
 
-            var list = GetListWithCustomMapping("chk.GetListOfStaticPages", null, mapperFunc);
+            var list = GetListWithCustomMapping("[easds].GetListOfStaticPages", null, mapperFunc);
             return list;           
         }
 
         public StaticPage Get(int id)
         {
-            var obj = GetObjectWithCustomMapping("chk.GetStaticPage", new { @StaticPageId = id }, MapDataRrowToStaticPage);
+            var obj = GetObjectWithCustomMapping("[easds].GetStaticPage", new { @StaticPageId = id }, MapDataRrowToStaticPage);
             return obj;
         }
 

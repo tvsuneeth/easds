@@ -73,8 +73,8 @@ namespace TWG.EASDataService.Data.Repository
         }
 
         public Article GetArticle(int id)
-        {            
-            string commandText = "chk.GetArticle";            
+        {
+            string commandText = "[easds].GetArticle";            
             var obj = GetObjectWithCustomMapping<Article>(commandText, new { @ArticleId = id }, MapDataRrowToArticle);
             return obj;           
         }
@@ -97,7 +97,7 @@ namespace TWG.EASDataService.Data.Repository
                     connection.Open();
                     command.Connection = connection;
                     command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "chk.GetArticles";
+                    command.CommandText = "[easds].GetArticles";
 
                     command.Parameters.Add(new SqlParameter("@PageNumber", page));
                     command.Parameters.Add(new SqlParameter("@PageSize", pageSize));
@@ -163,7 +163,7 @@ namespace TWG.EASDataService.Data.Repository
 
         public List<ArticleModificationSummary> GetChangedArticles(DateTime changedSince)
         {                        
-            var list = GetListWithAutoMapping<ArticleModificationSummary>(@"[chk].[GetArticlesChangedSince]", new { @changedDate = changedSince });
+            var list = GetListWithAutoMapping<ArticleModificationSummary>(@"[easds].[GetArticlesChangedSince]", new { @changedDate = changedSince });
             return list;
         }
              

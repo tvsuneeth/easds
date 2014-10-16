@@ -1,6 +1,6 @@
-USE [CatererAndHotelKeeper_Systest]
+Use [DBNameHere]
 GO
-/****** Object:  StoredProcedure [chk].[GetCompaniesPaged]    Script Date: 09/19/2014 12:21:27 ******/
+/****** Object:  StoredProcedure [easds].[GetCompaniesPaged]    Script Date: 09/19/2014 12:21:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,7 +10,7 @@ GO
 -- Create date: March 2013
 -- Description:	Gets the paged results of companies satrting with a character
 -- =============================================
-ALTER PROCEDURE [chk].[GetCompaniesPaged]
+CREATE PROCEDURE [easds].[GetCompaniesPaged]
 (
 	@StartsWith nchar(1) = '',
 	@SearchPhrase varchar(100) = '',
@@ -108,69 +108,5 @@ BEGIN
 		) as result      
 		--where rowid > ((@CurrentPage - 1) * @PageSize) and rowid <(@CurrentPage * @PageSize + 1)
 	END
-	ELSE
-	BEGIN
-		DECLARE @categoriesFilterTab TABLE(Id int)
-		INSERT @categoriesFilterTab SELECT Id FROM [dbo].ParamParserFn(@CategoryFilter, ',')
-		
-		-- perform article selection in searched categories
-		DECLARE @articleInCategories TABLE(Id int)
-		INSERT @articleInCategories
-			SELECT DISTINCT CMCA.liCompanyID
-			FROM CompanyMultipleCategoryItemAssignments CMCA
-		WHERE CMCA.liCategoryItemID IN (SELECT * FROM @categoriesFilterTab)
-			
-		IF (@SearchPhrase <> '' AND @CategoryFilter <> '' )
-		BEGIN
-			SELECT * 
-			FROM    
-			(
-				SELECT	c.[liCompanyID], c.[sName], c.[sDescription],
-						ROW_NUMBER() OVER (order by s.[RANK] DESC) AS ROWID,
-						COUNT(*) OVER () AS total_count  
-				FROM	
-					[dbo].[Companies] c
-					INNER JOIN FREETEXTTABLE([dbo].[Companies], ([sName], [sDescription]), @SearchPhrase) s ON c.liCompanyID = s.[KEY]
-				WHERE	c.[liCompanyStatusID] = 20
-				AND c.[liCompanyID] IN (SELECT Id FROM @articleInCategories)
-			) AS result      
-			--WHERE rowid > ((@CurrentPage - 1) * @PageSize) and rowid <(@CurrentPage * @PageSize + 1)
-		END
-		ELSE
-		BEGIN
-			IF (@CategoryFilter <> '')
-			BEGIN
-				SELECT * 
-				FROM    
-				(
-					SELECT	c.[liCompanyID], c.[sName], c.[sDescription],
-							ROW_NUMBER() OVER (order by c.[sName]) AS ROWID,
-							COUNT(*) OVER () AS total_count  
-					FROM [dbo].[Companies] c
-					WHERE	c.[liCompanyStatusID] = 20
-					AND c.[liCompanyID] IN (SELECT Id FROM @articleInCategories)
-				) AS result      
-				--WHERE rowid > ((@CurrentPage - 1) * @PageSize) and rowid <(@CurrentPage * @PageSize + 1)
-			END
-			ELSE
-			BEGIN
-				IF (@SearchPhrase <> '')
-				BEGIN
-					select * 
-					from    
-					(
-						SELECT	c.[liCompanyID], c.[sName], c.[sDescription],
-								ROW_NUMBER() OVER (order by s.[RANK] DESC) AS ROWID,
-								COUNT(*) OVER () AS total_count  
-						FROM	[dbo].[Companies] c 
-							INNER JOIN 
-							FREETEXTTABLE([dbo].[Companies], ([sName], [sDescription]), @SearchPhrase) s
-							ON c.liCompanyID = s.[KEY]
-						WHERE	c.[liCompanyStatusID] = 20
-					) as result      
-					--where rowid > ((@CurrentPage - 1) * @PageSize) and rowid <(@CurrentPage * @PageSize + 1)
-				END
-			END
-		END
-	END
+	
 END

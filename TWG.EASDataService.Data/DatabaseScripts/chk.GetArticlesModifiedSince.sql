@@ -1,13 +1,13 @@
-USE [CatererAndHotelKeeper_Systest]
+USE [DBNameHere]
 GO
-/****** Object:  StoredProcedure [chk].[GetArticlesModifiedSince]    Script Date: 06/26/2014 12:39:50 ******/
+/****** Object:  StoredProcedure [easds].[GetArticlesModifiedSince]    Script Date: 06/26/2014 12:39:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
 
-ALTER PROCEDURE [chk].[GetArticlesModifiedSince]
+ALTER PROCEDURE [easds].[GetArticlesModifiedSince]
 (		
 	@modifiedDate DATETIME
 )

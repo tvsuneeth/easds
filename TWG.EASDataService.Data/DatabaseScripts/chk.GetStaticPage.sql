@@ -1,13 +1,13 @@
-USE [CatererAndHotelKeeper_Systest]
+USE [DBNameHere]
 GO
-/****** Object:  StoredProcedure [chk].[GetStaticPage]    Script Date: 09/19/2014 12:22:43 ******/
+/****** Object:  StoredProcedure [easds].[GetStaticPage]    Script Date: 09/19/2014 12:22:43 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
 
-ALTER PROCEDURE [chk].[GetStaticPage]
+ALTER PROCEDURE [easds].[GetStaticPage]
 (
 	@StaticPageId INT = -1,
 	@StaticPageName NVARCHAR(255) = NULL

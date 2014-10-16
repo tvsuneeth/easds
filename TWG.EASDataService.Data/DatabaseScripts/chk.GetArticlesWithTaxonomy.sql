@@ -1,6 +1,6 @@
-USE [CatererAndHotelKeeper_Systest]
+USE [DBNameHere]
 GO
-/****** Object:  StoredProcedure [chk].[GetArticlesWithTaxonomy]    Script Date: 09/19/2014 12:19:11 ******/
+/****** Object:  StoredProcedure [easds].[GetArticlesWithTaxonomy]    Script Date: 09/19/2014 12:19:11 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8,14 +8,14 @@ GO
 
 
 
-ALTER PROCEDURE [chk].[GetArticlesWithTaxonomy]
+ALTER PROCEDURE [easds].[GetArticlesWithTaxonomy]
 (
-	@IncludeArticleSectionNames AS [chk].[ElementTable] READONLY,
-	@IncludeSectorNames AS [chk].[ElementTable] READONLY,
-	@IncludeTopicNames AS [chk].[ElementTable] READONLY,
-	@ExcludeArticleSectionNames AS [chk].[ElementTable] READONLY,
-	@ExcludeSectorNames AS [chk].[ElementTable] READONLY,
-	@ExcludeTopicNames AS [chk].[ElementTable] READONLY,
+	@IncludeArticleSectionNames AS [easds].[ElementTable] READONLY,
+	@IncludeSectorNames AS [easds].[ElementTable] READONLY,
+	@IncludeTopicNames AS [easds].[ElementTable] READONLY,
+	@ExcludeArticleSectionNames AS [easds].[ElementTable] READONLY,
+	@ExcludeSectorNames AS [easds].[ElementTable] READONLY,
+	@ExcludeTopicNames AS [easds].[ElementTable] READONLY,
 	@PageNumber INT,
 	@PageSize INT
 )

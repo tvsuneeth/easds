@@ -26,8 +26,8 @@ namespace TWG.EASDataService.Data.Repository
         }
         
         public List<SlotPageSummary> GetListOfSlotPages()
-        {            
-            string commandName = @"[chk].[GetSlotPages]";            
+        {
+            string commandName = @"[easds].[GetSlotPages]";            
             return GetListWithAutoMapping<SlotPageSummary>(commandName, new { slotPageId=-1 });           
         }
        
@@ -37,7 +37,7 @@ namespace TWG.EASDataService.Data.Repository
 
             using (var connection = CreateConnection())
             {
-                using (var cmd = CreateCommand(connection, @"[chk].[GetSlotPageWithSlots]", new { @slotPageId = slotPageId }))
+                using (var cmd = CreateCommand(connection, @"[easds].[GetSlotPageWithSlots]", new { @slotPageId = slotPageId }))
                 {                    
                     IDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())

@@ -1,4 +1,4 @@
-USE [CatererAndHotelKeeper_Systest]
+USE [DBNameHere]
 GO
 /****** Object:  StoredProcedure [chk].[GetArticleTaxonomy]    Script Date: 09/19/2014 12:19:44 ******/
 SET ANSI_NULLS ON
@@ -7,7 +7,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-ALTER PROCEDURE [chk].[GetArticleTaxonomy]
+ALTER PROCEDURE [easds].[GetArticleTaxonomy]
 (
 	@ArticleId INT
 )
