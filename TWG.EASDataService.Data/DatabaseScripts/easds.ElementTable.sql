@@ -1,0 +1,1 @@
+CREATE TYPE [easds].[ElementTable] AS TABLE ( NAME nvarchar(501) NOT NULL) 

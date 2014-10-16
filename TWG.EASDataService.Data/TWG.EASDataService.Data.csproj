@@ -110,27 +110,27 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DatabaseScripts\chk.ElementTable.sql" />
-    <Content Include="DatabaseScripts\chk.GetArticle.sql" />
-    <Content Include="DatabaseScripts\chk.GetArticles.sql" />
-    <Content Include="DatabaseScripts\chk.GetArticlesModifiedSince.sql" />
-    <Content Include="DatabaseScripts\chk.GetArticlesWithTaxonomy.sql" />
-    <Content Include="DatabaseScripts\chk.GetArticleTaxonomies.sql" />
-    <Content Include="DatabaseScripts\chk.GetArticleTaxonomy.sql" />
-    <Content Include="DatabaseScripts\chk.GetAsset.sql" />
-    <Content Include="DatabaseScripts\chk.GetAssetsModifiedSince.sql" />
-    <Content Include="DatabaseScripts\chk.GetChildrenTaxonomy.sql" />
-    <Content Include="DatabaseScripts\chk.GetCompaniesPaged.sql" />
-    <Content Include="DatabaseScripts\chk.GetCompanyTaxonomies.sql" />
-    <Content Include="DatabaseScripts\chk.GetListOfStaticPages.sql" />
-    <Content Include="DatabaseScripts\chk.GetSlotPages.sql" />
-    <Content Include="DatabaseScripts\chk.GetSlotPageWithSlots.sql" />
-    <Content Include="DatabaseScripts\chk.GetStaticPage.sql" />
-    <Content Include="DatabaseScripts\chk.GetTaxonomy.sql" />
-    <Content Include="DatabaseScripts\chk.GetAllTaxonomyCategoriesandItems.sql" />
+    <Content Include="DatabaseScripts\easds.ElementTable.sql" />
+    <Content Include="DatabaseScripts\easds.GetArticle.sql" />
+    <Content Include="DatabaseScripts\easds.GetArticles.sql" />
+    <Content Include="DatabaseScripts\easds.GetArticlesModifiedSince.sql" />
+    <Content Include="DatabaseScripts\easds.GetArticlesWithTaxonomy.sql" />
+    <Content Include="DatabaseScripts\easds.GetArticleTaxonomies.sql" />
+    <Content Include="DatabaseScripts\easds.GetArticleTaxonomy.sql" />
+    <Content Include="DatabaseScripts\easds.GetAsset.sql" />
+    <Content Include="DatabaseScripts\easds.GetAssetsModifiedSince.sql" />
+    <Content Include="DatabaseScripts\easds.GetChildrenTaxonomy.sql" />
+    <Content Include="DatabaseScripts\easds.GetCompaniesPaged.sql" />
+    <Content Include="DatabaseScripts\easds.GetCompanyTaxonomies.sql" />
+    <Content Include="DatabaseScripts\easds.GetListOfStaticPages.sql" />
+    <Content Include="DatabaseScripts\easds.GetSlotPages.sql" />
+    <Content Include="DatabaseScripts\easds.GetSlotPageWithSlots.sql" />
+    <Content Include="DatabaseScripts\easds.GetStaticPage.sql" />
+    <Content Include="DatabaseScripts\easds.GetTaxonomy.sql" />
+    <Content Include="DatabaseScripts\easds.GetAllTaxonomyCategoriesandItems.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DatabaseScripts\chk.GetArticleChangedSince.sql" />
+    <Content Include="DatabaseScripts\easds.GetArticleChangedSince.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
