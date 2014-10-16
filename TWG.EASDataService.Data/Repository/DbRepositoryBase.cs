@@ -15,7 +15,7 @@ namespace TWG.EASDataService.Data.Repository
     {
         public SqlConnection CreateConnection()
         {
-            SqlConnection conn =  new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString);
+            SqlConnection conn =  new SqlConnection(ConfigurationManager.ConnectionStrings["EASDBConn"].ConnectionString);
             conn.Open();
             return conn;
         }

@@ -11,7 +11,7 @@ using Microsoft.SqlServer.Server;
 
 namespace TWG.EASDataService.Data.Repository
 {
-    public interface IArticleRepository :  IChkRepositoryBase<Article>
+    public interface IArticleRepository :  IRepositoryBase<Article>
     {        
         PagedResult<ArticleSummary> GetAll(String[] excludeArticleSectionNames, String[] excludeSectorNames, String[] excludeTopicNames, int page, int pageSize);        
         List<ArticleModificationSummary> GetChangedArticles(DateTime changedSince);        
@@ -88,9 +88,9 @@ namespace TWG.EASDataService.Data.Repository
 
             var excludeArticleSectionDataTable = Helpers.ElementTableHelper.BuidTable(excludeArticleSectionNames);
             var excludeSectorDataTable = Helpers.ElementTableHelper.BuidTable(excludeSectorNames);
-            var excludeTopicDataTable = Helpers.ElementTableHelper.BuidTable(excludeTopicNames);            
+            var excludeTopicDataTable = Helpers.ElementTableHelper.BuidTable(excludeTopicNames);
 
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["LegacyChk"].ConnectionString))
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["EASDBConn"].ConnectionString))
             {
                 using (var command = new SqlCommand())
                 {

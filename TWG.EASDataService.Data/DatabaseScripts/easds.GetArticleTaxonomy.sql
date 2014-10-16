@@ -1,6 +1,6 @@
 USE [DBNameHere]
 GO
-/****** Object:  StoredProcedure [chk].[GetArticleTaxonomy]    Script Date: 09/19/2014 12:19:44 ******/
+/****** Object:  StoredProcedure [easds].[GetArticleTaxonomy]    Script Date: 09/19/2014 12:19:44 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

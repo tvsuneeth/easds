@@ -9,7 +9,7 @@ using TWG.EASDataService.Business;
 
 namespace  TWG.EASDataService.Data.Repository
 {
-    public interface IStaticPageRepository :  IChkRepositoryBase<StaticPage>
+    public interface IStaticPageRepository :  IRepositoryBase<StaticPage>
     {       
         List<StaticPageSummary> GetAll();
     }

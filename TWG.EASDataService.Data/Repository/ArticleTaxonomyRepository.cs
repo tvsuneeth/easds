@@ -11,7 +11,7 @@ using TWG.EASDataService.Business;
 
 namespace TWG.EASDataService.Data.Repository
 {
-    public interface IArticleTaxonomyRepository : IChkRepositoryBase<List<TaxonomyCategory>>
+    public interface IArticleTaxonomyRepository : IRepositoryBase<List<TaxonomyCategory>>
     {        
     }
 

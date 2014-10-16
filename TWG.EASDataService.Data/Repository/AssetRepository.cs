@@ -10,7 +10,7 @@ using TWG.EASDataService.Business;
 
 namespace TWG.EASDataService.Data.Repository
 {
-    public interface IAssetRepository : IChkRepositoryBase<MediaContent>
+    public interface IAssetRepository : IRepositoryBase<MediaContent>
     {
         IEnumerable<MediaContent> Get(int[] ids);
         List<ModifiedItem> GetMediaContentItemsModifiedSince(DateTime modifiedSince);

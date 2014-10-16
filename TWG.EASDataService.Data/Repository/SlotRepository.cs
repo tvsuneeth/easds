@@ -12,7 +12,7 @@ using TWG.EASDataService.Data.Extensions;
 
 namespace TWG.EASDataService.Data.Repository
 {
-    public interface ISlotRepository :  IChkRepositoryBase<Slot>
+    public interface ISlotRepository :  IRepositoryBase<Slot>
     {
         SlotPage GetSlotPageById(int slotPageId);
         List<SlotPageSummary> GetListOfSlotPages();

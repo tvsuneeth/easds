@@ -13,7 +13,7 @@ namespace TWG.EASDataService.DbContext
     {
         public IDbSet<StaticContentLink> StaticContentLinks { get; set; }
 
-        public DataServiceEntities() : this("ChkDataServiceContext") {}
+        public DataServiceEntities() : this("DataServiceContext") {}
         public DataServiceEntities(String connectionStringOrConnectionName) : base(connectionStringOrConnectionName) {}
 
         public virtual void Commit()

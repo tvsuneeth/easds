@@ -10,7 +10,7 @@ using TWG.EASDataService.Business;
 
 namespace TWG.EASDataService.Data.Repository
 {
-    public interface ITaxonomyRepository : IChkRepositoryBase<TaxonomyItem>
+    public interface ITaxonomyRepository : IRepositoryBase<TaxonomyItem>
     {
 
         List<TaxonomyCategory> GetAllTaxonomyCategoriesAndItems();
