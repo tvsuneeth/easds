@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Extensions\DataRecordExtensions.cs" />
     <Compile Include="Extensions\SqlCommandExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\ElementTableHelper.cs" />
     <Compile Include="Infrastructure\IRepositoryBase.cs" />
     <Compile Include="Repository\ArticleRepository.cs" />

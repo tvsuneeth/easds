@@ -23,7 +23,7 @@ namespace  TWG.EASDataService.Data.Repository
                     new StaticPageSummary()
                     {
                         Id =record.GetValue<int>("liStaticPageID"),
-                        PageName = record.GetValue<string>("sPageURL").Replace(".htm", ""),   
+                        PageName = record.GetValue<string>("sPageURL").RemoveExtension()  
                     }
                );
 
@@ -42,7 +42,7 @@ namespace  TWG.EASDataService.Data.Repository
             var staticPage = new StaticPage
             {
                 Id = record.GetValue<int>("liStaticPageID"),
-                PageName = record.GetValue<string>("sPageURL").Replace(".htm", ""),
+                PageName = record.GetValue<string>("sPageURL").RemoveExtension(),
                 Title = record.GetValue<string>("sTitle"),
                 Body = record.GetValue<string>("sBody"),
                 TitleForHtmlPage = record.GetValue<string>("sPageTitle"),
@@ -52,6 +52,7 @@ namespace  TWG.EASDataService.Data.Repository
             };
             return staticPage;
         }
+        
 
     }
 }
