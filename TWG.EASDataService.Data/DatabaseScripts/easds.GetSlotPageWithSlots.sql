@@ -1,11 +1,11 @@
-﻿USE [DBNameHere]
+﻿USE [TravelGBI_Dev]
 GO
-/****** Object:  StoredProcedure [easds].[GetSlotPageWithSlots]    Script Date: 09/19/2014 12:22:30 ******/
+/****** Object:  StoredProcedure [EASDS].[GetSlotPageWithSlots]    Script Date: 5/8/2015 11:31:39 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-ALTER PROCEDURE [easds].[GetSlotPageWithSlots] 
+ALTER PROCEDURE [EASDS].[GetSlotPageWithSlots] 
 	@slotPageID int
 
 AS
@@ -52,6 +52,7 @@ BEGIN
 	        s.sNotes,
 	        s.bActive,
 	        s.liOrder,
+			s.sRssTitle,
 	        s.dtLastModified,
 	        asset.liAssetID,
 	        asset.sAssetName,
