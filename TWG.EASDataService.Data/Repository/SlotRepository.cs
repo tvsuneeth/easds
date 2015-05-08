@@ -57,6 +57,7 @@ namespace TWG.EASDataService.Data.Repository
                         {
                             Id = reader.GetValue<int>("liSlotID"),
                             Headline = reader.GetValue<string>("sHeadline"),
+                            Title = reader.GetValue<string>("sRssTitle"),
                             SlotName = reader.GetValue<string>("sSlotName"),
                             Content = reader.GetValue<string>("sContent"),
                             URL = reader.GetValue<string>("sURL"),

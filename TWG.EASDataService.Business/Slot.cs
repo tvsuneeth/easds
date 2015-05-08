@@ -11,6 +11,7 @@ namespace TWG.EASDataService.Business
         public int Id { get; set; }
         public string SlotName { get; set; }
         public string Headline { get; set; }
+        public string Title { get; set; }
         public string Content { get; set; }
         public string URL { get; set; }
         public string URLTitle { get; set; }
