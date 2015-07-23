@@ -95,6 +95,7 @@
     <Compile Include="ArticleSection.cs" />
     <Compile Include="ArticleSummary.cs" />
     <Compile Include="ArticleTaxonomy.cs" />
+    <Compile Include="Author.cs" />
     <Compile Include="CompanyTaxonomy.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="IMediaAttachment.cs" />

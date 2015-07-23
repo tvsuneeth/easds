@@ -96,6 +96,7 @@
     <Compile Include="Infrastructure\IRepositoryBase.cs" />
     <Compile Include="Repository\ArticleRepository.cs" />
     <Compile Include="Repository\AssetRepository.cs" />
+    <Compile Include="Repository\AuthorRepository.cs" />
     <Compile Include="Repository\DbRepositoryBase.cs" />
     <Compile Include="Repository\OperatorRepository.cs" />
     <Compile Include="Repository\SlotRepository.cs" />
@@ -132,6 +133,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DatabaseScripts\easds.GetArticleChangedSince.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DatabaseScripts\easds.GetAllAuthors.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

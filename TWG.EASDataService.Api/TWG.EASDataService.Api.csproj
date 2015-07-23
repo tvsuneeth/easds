@@ -190,6 +190,7 @@
     <Compile Include="App_Start\Startup.Routes.cs" />
     <Compile Include="AtomSyndicationFeedFormatter.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\AuthorController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\OperatorsController.cs" />
     <Compile Include="Controllers\SlotController.cs" />

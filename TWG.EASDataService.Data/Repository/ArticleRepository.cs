@@ -42,16 +42,19 @@ namespace TWG.EASDataService.Data.Repository
                 SubHeadline = record.GetValue<string>("sArticleSubHeadline")                
 
             };
-            var author = new Person
+            var author = new Author
             {
+                ID = record.GetValue<int>("liAuthorID") ,
                 Title = record.GetValue<string>("sTitle") == null ? string.Empty: record.GetValue<string>("sTitle").Trim(),
                 FirstName = record.GetValue<string>("sFirstName") == null ? string.Empty: record.GetValue<string>("sFirstName").Trim(),
                 LastName = record.GetValue<string>("sLastName") == null ? string.Empty: record.GetValue<string>("sLastName").Trim(),
                 Email = record.GetValue<string>("sEmailAddress") == null ? string.Empty: record.GetValue<string>("sEmailAddress").Trim(),
-                
+                TelephoneNumber = record.GetValue<string>("sTelephone") == null ? string.Empty : record.GetValue<string>("sTelephone"),
+                ThumbnailImageID = record.GetValue<int>("liAuthorThumbnailImageID")
+ 
             };
 
-            if (!String.IsNullOrWhiteSpace(author.Names))
+            if (author.ID!=0)
             {
                 article.Author = author;
             }

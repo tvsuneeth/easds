@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArticleControllerTests.cs" />
+    <Compile Include="AuthorsControllerTests.cs" />
     <Compile Include="OperatorsControllerTests.cs" />
     <Compile Include="SlotControllerTests.cs" />
     <Compile Include="StaticPageControllerTests.cs" />

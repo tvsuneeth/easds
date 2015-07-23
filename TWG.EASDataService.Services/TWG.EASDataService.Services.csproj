@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArticleService.cs" />
+    <Compile Include="AuthorService.cs" />
     <Compile Include="MediaService.cs" />
     <Compile Include="OperatorsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

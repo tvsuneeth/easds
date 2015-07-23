@@ -12,7 +12,7 @@ namespace TWG.EASDataService.Business
         public virtual DateTime LastModified { get; set; }
         public virtual String MetaDescription { get; set; }
         public virtual String MetaKeywords { get; set; }
-        public virtual Person Author { get; set; }
+        public virtual Author Author { get; set; }
         //public bool HasAttachedMedia { get { return (AttachedMedia != null); } }
         //public MediaContent AttachedMedia { get; set; }
 
