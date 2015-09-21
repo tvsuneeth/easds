@@ -25,62 +25,77 @@ namespace TWG.EASDataService.ClientTest.Controllers
         }
 
         public ActionResult GetService(string param)
-        {            
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            baseUrl = endPointService.GetEndPointUrl();
-            if (baseUrl == string.Empty)
-            {                              
-                return RedirectToAction("Index", "EndPoint");
-            }
-
-            //If the request is for token, return generate a new token
-            object result = null;
-            if (param == "token")
+        {
+            try
             {
-                result = GenerateNewTokenFromService();
-            }
-            else
-            {
-                var token = GetToken();
-                if (token == null || String.IsNullOrEmpty(token.Token))
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                baseUrl = endPointService.GetEndPointUrl();
+                if (baseUrl == string.Empty)
                 {
-                    return Json("Error!!!! unable to get a valid token, try again and if it fails, see generating a new token works by requesting the tocken service ", JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("Index", "EndPoint");
                 }
 
-                string serviceUrl = baseUrl + param;
-                var headers = new Dictionary<string, string>() { { "Authorization", "Bearer " + token.Token } };
+                //If the request is for token, return generate a new token
+                object result = null;
+                if (param == "token")
+                {
+                    result = GenerateNewTokenFromService();
+                }
+                else
+                {
+                    var token = GetToken();
+                    if (token == null || String.IsNullOrEmpty(token.Token))
+                    {
+                        return Json("Error!!!!  unable to get a valid token. 1) try again and if it fails, see generating a new token works by requesting the token service method. 2) Make sure you have set the corret endpoint url ", JsonRequestBehavior.AllowGet);
+                    }
 
-                result = MakeWebRequestAndReturnJasonObject(serviceUrl, "GET", headers, string.Empty);
+                    string serviceUrl = baseUrl + param;
+                    var headers = new Dictionary<string, string>() { { "Authorization", "Bearer " + token.Token } };
+
+                    result = MakeWebRequestAndReturnJasonObject(serviceUrl, "GET", headers, string.Empty);                   
+                }
+                return Json(serializer.Deserialize<object>(result.ToString()), JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                return Json("Unable to process. Make sure you have set the correct endpoint Url");
             }
             
-            return Json(serializer.Deserialize<object>(result.ToString()), JsonRequestBehavior.AllowGet);
+            
 
         }
 
         public ActionResult GetMediaContent(string id)
         {
-            baseUrl = endPointService.GetEndPointUrl();
-            if (baseUrl == string.Empty)
+            try
             {
-                return Json(new { error = "set the Service EndPoint" }, JsonRequestBehavior.AllowGet);
-            }
+                baseUrl = endPointService.GetEndPointUrl();
+                if (baseUrl == string.Empty)
+                {
+                    return RedirectToAction("Index", "EndPoint");
+                }
 
-            var token = GetToken();
-            if (token == null || String.IsNullOrEmpty(token.Token))
+                var token = GetToken();
+                if (token == null || String.IsNullOrEmpty(token.Token))
+                {
+                    return Json("Error!!!!  unable to get a valid token. 1) try again and if it fails, see generating a new token works by requesting the token service method. 2) Make sure you have set the corret endpoint url ", JsonRequestBehavior.AllowGet);
+                }
+
+                string serviceUrl = baseUrl + "mediacontent/" + id;
+                var headers = new Dictionary<string, string>() { { "Authorization", "Bearer " + token.Token } };
+
+                var response = MakeWebRequest(serviceUrl, "GET", headers, string.Empty);
+
+                Stream respStr = response.GetResponseStream();
+                MemoryStream stream = new MemoryStream();
+                respStr.CopyTo(stream);
+
+                return File(stream.ToArray(), response.ContentType);
+            }
+            catch (Exception ex)
             {
-                return Json("Error!!!! unable to get a valid token, try again and if it fails, see generating a new token works ", JsonRequestBehavior.AllowGet);
+                return Json("Unable to process. Make sure you have set the correct endpoint Url");
             }
-
-            string serviceUrl = baseUrl + "mediacontent/" + id;
-            var headers = new Dictionary<string, string>() { { "Authorization", "Bearer " + token.Token } };
-
-            var response = MakeWebRequest(serviceUrl, "GET", headers, string.Empty);
-
-            Stream respStr = response.GetResponseStream();
-            MemoryStream stream = new MemoryStream();
-            respStr.CopyTo(stream);
-
-            return File(stream.ToArray(), response.ContentType);
         }
 
         public AuthToken GetToken()
