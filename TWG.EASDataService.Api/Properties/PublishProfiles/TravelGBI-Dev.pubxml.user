@@ -6,134 +6,134 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\Users\suneeth.thikkal\Desktop\TravelGBI</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\Users\suneeth.thikkal\Desktop\easds</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Elmah.dll">
-      <publishTime>10/16/2014 12:31:45</publishTime>
+      <publishTime>07/23/2015 15:59:05</publishTime>
     </File>
     <File Include="bin/Elmah.Io.dll">
-      <publishTime>10/16/2014 12:29:50</publishTime>
+      <publishTime>07/23/2015 15:58:40</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
-      <publishTime>10/16/2014 12:30:42</publishTime>
+      <publishTime>07/23/2015 15:58:34</publishTime>
     </File>
     <File Include="bin/EntityFramework.SqlServer.dll">
-      <publishTime>10/16/2014 12:30:42</publishTime>
+      <publishTime>07/23/2015 15:58:35</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
-      <publishTime>10/16/2014 12:31:11</publishTime>
+      <publishTime>07/23/2015 15:59:08</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.EntityFramework.dll">
-      <publishTime>10/16/2014 12:32:39</publishTime>
+      <publishTime>07/23/2015 15:59:10</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Owin.dll">
-      <publishTime>10/16/2014 12:31:05</publishTime>
+      <publishTime>07/23/2015 15:59:04</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.dll">
-      <publishTime>10/16/2014 12:29:18</publishTime>
+      <publishTime>07/23/2015 15:58:48</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Host.SystemWeb.dll">
-      <publishTime>10/16/2014 12:29:16</publishTime>
+      <publishTime>07/23/2015 15:58:40</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.Cookies.dll">
-      <publishTime>10/16/2014 12:29:20</publishTime>
+      <publishTime>07/23/2015 15:59:02</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.dll">
-      <publishTime>10/16/2014 12:28:26</publishTime>
+      <publishTime>07/23/2015 15:58:50</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.OAuth.dll">
-      <publishTime>10/16/2014 12:31:46</publishTime>
+      <publishTime>07/23/2015 15:59:05</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
-      <publishTime>10/16/2014 12:30:33</publishTime>
+      <publishTime>07/23/2015 15:59:04</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>10/16/2014 12:30:11</publishTime>
+      <publishTime>07/23/2015 15:59:12</publishTime>
     </File>
     <File Include="bin/Ninject.dll">
-      <publishTime>10/16/2014 12:31:58</publishTime>
+      <publishTime>07/23/2015 15:58:39</publishTime>
     </File>
     <File Include="bin/Ninject.Extensions.Conventions.dll">
-      <publishTime>10/16/2014 12:32:36</publishTime>
+      <publishTime>07/23/2015 15:59:09</publishTime>
     </File>
     <File Include="bin/Ninject.Extensions.Conventions.pdb">
-      <publishTime>10/16/2014 12:32:36</publishTime>
+      <publishTime>07/23/2015 15:59:09</publishTime>
     </File>
     <File Include="bin/Ninject.pdb">
-      <publishTime>10/16/2014 12:31:58</publishTime>
+      <publishTime>07/23/2015 15:58:39</publishTime>
     </File>
     <File Include="bin/Ninject.Web.Common.dll">
-      <publishTime>10/16/2014 12:28:55</publishTime>
+      <publishTime>07/23/2015 15:59:05</publishTime>
     </File>
     <File Include="bin/Ninject.Web.Common.pdb">
-      <publishTime>10/16/2014 12:28:55</publishTime>
+      <publishTime>07/23/2015 15:59:05</publishTime>
     </File>
     <File Include="bin/Owin.dll">
-      <publishTime>10/16/2014 12:29:16</publishTime>
+      <publishTime>07/23/2015 15:58:47</publishTime>
     </File>
     <File Include="bin/PagedList.dll">
-      <publishTime>10/16/2014 12:29:37</publishTime>
+      <publishTime>07/23/2015 15:58:35</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
-      <publishTime>10/16/2014 12:31:21</publishTime>
+      <publishTime>07/23/2015 15:59:12</publishTime>
     </File>
     <File Include="bin/System.Web.Http.dll">
-      <publishTime>10/16/2014 12:29:37</publishTime>
+      <publishTime>07/23/2015 15:58:35</publishTime>
     </File>
     <File Include="bin/System.Web.Http.Owin.dll">
-      <publishTime>10/16/2014 12:29:20</publishTime>
+      <publishTime>07/23/2015 15:59:10</publishTime>
     </File>
     <File Include="bin/System.Web.Http.WebHost.dll">
-      <publishTime>10/16/2014 12:29:20</publishTime>
+      <publishTime>07/23/2015 15:59:02</publishTime>
     </File>
     <File Include="bin/TWG.EASDataService.Api.dll">
-      <publishTime>10/16/2014 15:06:34</publishTime>
+      <publishTime>07/23/2015 16:04:02</publishTime>
     </File>
     <File Include="bin/TWG.EASDataService.Api.pdb">
       <publishTime>10/16/2014 15:06:34</publishTime>
     </File>
     <File Include="bin/TWG.EASDataService.Business.dll">
-      <publishTime>10/16/2014 14:59:55</publishTime>
+      <publishTime>07/23/2015 16:04:00</publishTime>
     </File>
     <File Include="bin/TWG.EASDataService.Business.pdb">
       <publishTime>10/16/2014 14:59:55</publishTime>
     </File>
     <File Include="bin/TWG.EASDataService.Data.dll">
-      <publishTime>10/16/2014 15:04:07</publishTime>
+      <publishTime>07/23/2015 16:04:01</publishTime>
     </File>
     <File Include="bin/TWG.EASDataService.Data.pdb">
       <publishTime>10/16/2014 15:04:07</publishTime>
     </File>
     <File Include="bin/TWG.EASDataService.DbContext.dll">
-      <publishTime>10/16/2014 14:59:56</publishTime>
+      <publishTime>07/23/2015 16:04:01</publishTime>
     </File>
     <File Include="bin/TWG.EASDataService.DbContext.pdb">
       <publishTime>10/16/2014 14:59:56</publishTime>
     </File>
     <File Include="bin/TWG.EASDataService.Services.dll">
-      <publishTime>10/16/2014 15:04:08</publishTime>
+      <publishTime>07/23/2015 16:04:01</publishTime>
     </File>
     <File Include="bin/TWG.EASDataService.Services.pdb">
       <publishTime>10/16/2014 15:04:07</publishTime>
     </File>
     <File Include="bin/WebActivator.dll">
-      <publishTime>10/16/2014 12:31:05</publishTime>
+      <publishTime>07/23/2015 15:58:46</publishTime>
     </File>
     <File Include="bin/WebApi.OutputCache.Core.dll">
-      <publishTime>10/16/2014 12:29:20</publishTime>
+      <publishTime>07/23/2015 15:59:02</publishTime>
     </File>
     <File Include="bin/WebApi.OutputCache.V2.dll">
-      <publishTime>10/16/2014 12:29:20</publishTime>
+      <publishTime>07/23/2015 15:59:02</publishTime>
     </File>
     <File Include="bin/WebApiContrib.IoC.Ninject.dll">
-      <publishTime>10/16/2014 12:29:40</publishTime>
+      <publishTime>07/23/2015 15:59:04</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>10/16/2014 12:28:17</publishTime>
+      <publishTime>07/23/2015 15:58:29</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/16/2014 15:06:34</publishTime>
+      <publishTime>07/23/2015 16:04:03</publishTime>
     </File>
   </ItemGroup>
 </Project>

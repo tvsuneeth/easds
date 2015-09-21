@@ -33,8 +33,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWG.EASDataService.Api", "T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04_CommanTools", "04_CommanTools", "{C73D5793-AE6A-417D-AAAB-42E5AA2C77E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWG.EASDataService.ClientApp", "TWG.EASDataService.ClientApp\TWG.EASDataService.ClientApp.csproj", "{6292106B-487F-4BC9-94E2-4C046906ED1D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWG.EASDataService.ClientTest", "TWG.EASDataService.ClientTest\TWG.EASDataService.ClientTest.csproj", "{4CAFFAB7-E786-404E-80ED-24D99D2B7BD2}"
 EndProject
 Global
@@ -188,20 +186,6 @@ Global
 		{90809807-CF9C-430D-AE3C-B041B79EBEB2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{90809807-CF9C-430D-AE3C-B041B79EBEB2}.TravelGBI.Dev|Any CPU.ActiveCfg = TravelGBI.Dev|Any CPU
 		{90809807-CF9C-430D-AE3C-B041B79EBEB2}.TravelGBI.Dev|Any CPU.Build.0 = TravelGBI.Dev|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Caterer.Dev|Any CPU.ActiveCfg = Caterer.Dev|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Caterer.Dev|Any CPU.Build.0 = Caterer.Dev|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Caterer.Release|Any CPU.ActiveCfg = Caterer.Release|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Caterer.Release|Any CPU.Build.0 = Caterer.Release|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Caterer.SysTest|Any CPU.ActiveCfg = Caterer.SysTest|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Caterer.SysTest|Any CPU.Build.0 = Caterer.SysTest|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Caterer.UAT|Any CPU.ActiveCfg = Caterer.UAT|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Caterer.UAT|Any CPU.Build.0 = Caterer.UAT|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.TravelGBI.Dev|Any CPU.ActiveCfg = TravelGBI.Dev|Any CPU
-		{6292106B-487F-4BC9-94E2-4C046906ED1D}.TravelGBI.Dev|Any CPU.Build.0 = TravelGBI.Dev|Any CPU
 		{4CAFFAB7-E786-404E-80ED-24D99D2B7BD2}.Caterer.Dev|Any CPU.ActiveCfg = Release|Any CPU
 		{4CAFFAB7-E786-404E-80ED-24D99D2B7BD2}.Caterer.Dev|Any CPU.Build.0 = Release|Any CPU
 		{4CAFFAB7-E786-404E-80ED-24D99D2B7BD2}.Caterer.Release|Any CPU.ActiveCfg = Release|Any CPU
