@@ -1,0 +1,39 @@
+﻿@model TWG.EASDataService.ClientTest.Models.EndPointVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Set Service Endpoint Url</h2>
+@using (Html.BeginForm("Submit", "Endpoint"))
+{
+    <table>
+        <tr>
+            <td>
+                Service Endpoint Url<br />
+            </td>
+            <td>
+                @Html.ValidationMessageFor(model => model.Url)    <br />
+                @Html.TextBoxFor(model => model.Url)
+                <br />
+                ( Example <b> http://131.61.7.122:9095/ </b> )
+            </td>
+            <td>
+                <input type="submit" name="SaveButton" value="Submit" />
+
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2"></td>
+
+        </tr>
+    </table>
+}
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
