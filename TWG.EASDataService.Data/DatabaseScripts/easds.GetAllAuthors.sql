@@ -1,6 +1,6 @@
-﻿USE [TW2010_Dev]
+﻿USE [TW2010_systest]
 GO
-/****** Object:  StoredProcedure [EASDS].[GetAllAuthors]    Script Date: 7/21/2015 5:26:50 PM ******/
+/****** Object:  StoredProcedure [EASDS].[GetAllAuthors]    Script Date: 9/22/2015 3:07:28 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -29,7 +29,7 @@ BEGIN
     BEGIN TRY
     --==========
     
-	SELECT liAuthorID as 'ID' , sFirstName as 'FirstName', sLastName as 'LastName', sEMailAddress as 'Email' , liThumbNailImageID as 'ThumbnailImageID' , sTelephone as 'TelephoneNumber'
+	SELECT liAuthorID as 'ID' , sFirstName as 'FirstName', sLastName as 'LastName', sEMailAddress as 'Email' , liThumbNailImageID as 'ThumbnailImageID' , sTelephone as 'TelephoneNumber' , sdescription as 'Description'
 	FROM Authors WHERE liAuthorStatusID = 20
 
 	

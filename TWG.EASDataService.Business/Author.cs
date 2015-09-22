@@ -16,5 +16,6 @@ namespace TWG.EASDataService.Business
         public int ThumbnailImageID { get; set; }
         public string TelephoneNumber { get; set; }
         public String Names { get { return String.Format("{0} {1}", FirstName, LastName); } }
+        public string Description { get; set; }
     }
 }
