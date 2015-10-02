@@ -14,92 +14,79 @@ using System.Web.Script.Serialization;
 using TWG.EASDataService.ClientTest.Core;
 using TWG.EASDataService.ClientTest.Services;
 
-namespace TWG.EASDataService.ClientTest.Controllers
-{
-    public class HomeController : Controller
-    {
-        public string baseUrl;
-        public EndPointService endPointService;
-        public HomeController()
-        {
-            endPointService = new EndPointService();  
-        }
 
-        public ActionResult GetService(string param)
+namespace TWG.EASDataService.ClientTest.Services
+{
+
+    public interface IServiceRequester
+    {
+        object GetService(string baseUrl, string param);
+        HttpWebResponse GetMediaContent(string baseUrl, string param);
+        AuthToken GetToken(string baseUrl);
+    }
+    public class ServiceRequester : IServiceRequester
+    {
+
+        public object GetService(string baseUrl,string param)
         {
             try
             {
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
-                baseUrl = endPointService.GetCurrentEndPointUrl();
-                if (baseUrl == string.Empty)
-                {
-                    return RedirectToAction("Index", "EndPoint");
-                }
+                serializer.MaxJsonLength = Int32.MaxValue;
 
                 //If the request is for token, return generate a new token
                 object result = null;
                 if (param == "token")
                 {
-                    result = GenerateNewTokenFromService();
+                    result = GenerateNewTokenFromService(baseUrl);
                 }
                 else
                 {
-                    var token = GetToken();
+                    var token = GetToken(baseUrl);
                     if (token == null || String.IsNullOrEmpty(token.Token))
                     {
-                        return Json("Error!!!!  unable to get a valid token. 1) try again and if it fails, see generating a new token works by requesting the token service method. 2) Make sure you have set the corret endpoint url ", JsonRequestBehavior.AllowGet);
+                        return null;
                     }
 
                     string serviceUrl = baseUrl + param;
                     var headers = new Dictionary<string, string>() { { "Authorization", "Bearer " + token.Token } };
 
-                    result = MakeWebRequestAndReturnJasonObject(serviceUrl, "GET", headers, string.Empty);                   
+                    result = MakeWebRequestAndReturnJasonObject(serviceUrl, "GET", headers, string.Empty);
                 }
-                return Json(serializer.Deserialize<object>(result.ToString()), JsonRequestBehavior.AllowGet);
-            }
-            catch(Exception ex)
-            {
-                return Json("Unable to process the request. Make sure you have set the correct endpoint Url and the requested resource exists", JsonRequestBehavior.AllowGet);
-            }
-            
-            
-
-        }
-
-        public ActionResult GetMediaContent(string id)
-        {
-            try
-            {
-                baseUrl = endPointService.GetCurrentEndPointUrl();
-                if (baseUrl == string.Empty)
-                {
-                    return RedirectToAction("Index", "EndPoint");
-                }
-
-                var token = GetToken();
-                if (token == null || String.IsNullOrEmpty(token.Token))
-                {
-                    return Json("Error!!!!  unable to get a valid token. 1) try again and if it fails, see generating a new token works by requesting the token service method. 2) Make sure you have set the corret endpoint url ", JsonRequestBehavior.AllowGet);
-                }
-
-                string serviceUrl = baseUrl + "mediacontent/" + id;
-                var headers = new Dictionary<string, string>() { { "Authorization", "Bearer " + token.Token } };
-
-                var response = MakeWebRequest(serviceUrl, "GET", headers, string.Empty);
-
-                Stream respStr = response.GetResponseStream();
-                MemoryStream stream = new MemoryStream();
-                respStr.CopyTo(stream);
-
-                return File(stream.ToArray(), response.ContentType);
+                return serializer.Deserialize<object>(result.ToString());
             }
             catch (Exception ex)
             {
-                return Json("Unable to process the request. Make sure you have set the correct endpoint Url and the requested resource exists", JsonRequestBehavior.AllowGet);
+               // return Json("Unable to process the request. Make sure you have set the correct endpoint Url and the requested resource exists", JsonRequestBehavior.AllowGet);
+                return null;
             }
         }
 
-        public AuthToken GetToken()
+        public HttpWebResponse GetMediaContent(string baseUrl, string param)
+        {
+            try
+            {
+
+                var token = GetToken(baseUrl);
+                if (token == null || String.IsNullOrEmpty(token.Token))
+                {
+                    return null;                    
+                }
+
+                string serviceUrl = baseUrl + param;
+                var headers = new Dictionary<string, string>() { { "Authorization", "Bearer " + token.Token } };
+
+                var response = MakeWebRequest(serviceUrl, "GET", headers, string.Empty);
+               
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public AuthToken GetToken(string baseUrl)
         {
             AuthToken token = null;
             var service = baseUrl.Remove(0, baseUrl.IndexOf("//") + 2);
@@ -107,17 +94,17 @@ namespace TWG.EASDataService.ClientTest.Controllers
             string sessionKey = "token_" + service;
             try
             {
-                if (Session[sessionKey] != null)
+                if (HttpContext.Current.Session[sessionKey] != null)
                 {
-                    token = (AuthToken)Session[sessionKey];
+                    token = (AuthToken)HttpContext.Current.Session[sessionKey];
                     if (DateTime.Now > token.ExpiryDate)
                     {
-                        Session[sessionKey] = token = BuildNewAuthToken();
+                        HttpContext.Current.Session[sessionKey] = token = BuildNewAuthToken(baseUrl);
                     }
                 }
                 else
                 {
-                    Session[sessionKey] = token = BuildNewAuthToken();
+                    HttpContext.Current.Session[sessionKey] = token = BuildNewAuthToken(baseUrl);
                 }
             }
             catch (Exception ex)
@@ -127,19 +114,19 @@ namespace TWG.EASDataService.ClientTest.Controllers
             return token;
         }
 
-        public AuthToken BuildNewAuthToken()
+        public AuthToken BuildNewAuthToken(string baseUrl)
         {
-            dynamic tokenJson = GenerateNewTokenFromService();
+            dynamic tokenJson = GenerateNewTokenFromService(baseUrl);
 
             var token = new AuthToken()
             {
                 ExpiryDate = (DateTime)tokenJson[".expires"],
-                Token = (String)tokenJson["access_token"],               
+                Token = (String)tokenJson["access_token"],
             };
             return token;
         }
 
-        public object GenerateNewTokenFromService()
+        public object GenerateNewTokenFromService(string baseUrl)
         {
             string grantType = "password";
             string username = GetConfigValue("username");
@@ -205,8 +192,5 @@ namespace TWG.EASDataService.ClientTest.Controllers
         {
             return WebConfigurationManager.AppSettings[key];
         }
-
     }
-
-
 }

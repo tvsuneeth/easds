@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<ServiceInstances>
+  <Instance>
+    <Name>Caterer Live</Name>
+    <Url>http://eas.thecaterer.com</Url>
+  </Instance>
+  <Instance>
+    <Name>Caterer Test</Name>
+    <Url>http://5.79.7.220:9071</Url>
+  </Instance>
+  <Instance>
+    <Name>TravelGBI Live</Name>
+    <Url>http://dataservice.travelgbi.com</Url>
+  </Instance>
+  <Instance>
+    <Name>TravelGBI Test</Name>
+    <Url>http://5.79.7.220:8091</Url>
+  </Instance>
+  <Instance>
+    <Name>TravelWeekly Test</Name>
+    <Url>http://5.79.7.220:9056</Url>
+  </Instance>
+</ServiceInstances>

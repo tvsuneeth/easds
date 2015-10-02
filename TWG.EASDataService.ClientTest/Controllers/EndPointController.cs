@@ -13,24 +13,37 @@ namespace TWG.EASDataService.ClientTest.Controllers
         //
         // GET: /EndPoint/
 
+        public EndPointService endpointSrvc = new EndPointService();
+
         [HttpGet]
         public ActionResult Index()
-        {
-            EndPointVM obj = new EndPointVM();
-            return View(obj); ;
+        {                     
+            EndPointIndexVM vm = new EndPointIndexVM();
+            vm.ServiceInstance = new ServiceInstanceVM();            
+            vm.AvailableInstances = endpointSrvc.GetAllAvailableEndPoints();
+            return View(vm); ;
         }
 
         [HttpPost]
-        public ActionResult submit(EndPointVM ep)
+        public ActionResult submit(EndPointIndexVM vm)
         {
+                        
             if (ModelState.IsValid)
-            {
-                //Session["ServiceEndPointUrl"] = ep.Url;
+            {                
                 EndPointService endpointSrvc = new EndPointService();
-                endpointSrvc.SetEndPoint(ep);
-                return RedirectToAction("Index", "Home");
-            }
-            return View("Index",ep);
+                ServiceInstanceVM sivm = endpointSrvc.GetAllAvailableEndPoints().Where(x => x.Url == vm.ServiceInstance.Url).First();
+                endpointSrvc.SetEndPoint(sivm);                
+
+                if (!Request.IsAjaxRequest())
+                {
+                    return RedirectToAction("Index", "Home", null);
+                }
+                else
+                {
+                    return Content("success");
+                }
+            }           
+            return View("Index",vm);
         }
     }
 }

@@ -1,0 +1,69 @@
+﻿@model TWG.EASDataService.ClientTest.Models.EASDataVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section PageJSScripts
+{
+    <script src="@Url.Content("~/Scripts/EASData.js")"></script>
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+@using (Html.BeginForm("GetService", "EASData"))
+{
+
+<table>
+    <tr>
+        <td><b>Service Instace</b></td>
+        <td><b>Method </b>
+        </td>
+        <td>
+            <span style="display:none;" id="spnMethodParam1"><b>ID</b></span>
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.DropDownListFor(m => m.SelectedInstance, Model.AvailableInstances,"---Please select---" )
+            
+        </td>
+        <td>@Html.DropDownListFor(m => m.SelectedMethod, Model.AvailableMethods, "---Please select---")            
+        </td>
+        <td>
+            <div style="display:none;" id="divMethodParam1"> @Html.TextBoxFor(m => m.MethodParam1, new { @style="width:70px;" }) </div>
+        </td>
+        <td>
+        <input type="submit" name="SaveButton" value="Submit" id="btnSubmit" /> </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.ValidationMessageFor(model => model.SelectedInstance)
+        </td>
+        <td>
+            @Html.ValidationMessageFor(model => model.SelectedMethod)
+        </td>
+        <td>
+            @Html.ValidationMessageFor(m => m.MethodParam1)
+        </td>
+    </tr>
+
+</table>
+
+}
+
+<br>
+<span id="spnEndPointUrl"></span>
+<div id="divLoading" style="display:none;width:950px;height:550px;overflow:scroll;background-color:white;border:1px thin;margin: 0px auto 0px auto;text-align: center;vertical-align:middle">
+    <img style="display:block;margin-left:auto;margin-right:auto;" align="center"  src="~/Images/red-loading.gif" />
+</div>
+<div contenteditable="true" id="resultDiv" style="width:950px;height:550px;overflow:scroll;background-color:white;border:1px solid lightblue;">
+
+</div>
+
+
+

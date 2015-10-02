@@ -7,7 +7,11 @@
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
-    </head>
+        @Scripts.Render("~/bundles/jquery")
+        <script type="text/javascript" src="~/Scripts/app.js"></script>
+        <script src="~/Scripts/jquery.json-view.js"></script>        
+        <link href="~/Content/jquery.json-view.css" rel="stylesheet"></head>
+        @RenderSection("PageJSScripts", false/*required*/)
     <body>
         <header>
             <div class="content-wrapper">
@@ -36,7 +40,7 @@
             </div>
         </footer>
 
-        @Scripts.Render("~/bundles/jquery")
+        
         @RenderSection("scripts", required: false)
     </body>
 </html>

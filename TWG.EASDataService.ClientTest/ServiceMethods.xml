@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ServiceMethods>
+  <Method Name="Article/&lt;ID&gt;" />
+  <Method Name="Articles/ChangedSince/&lt;Date&gt;" />
+  <Method Name="Authors" />
+  <Method Name="Operators" />
+  <Method Name="MediaContent/&lt;ID&gt;" />
+  <Method Name="mediacontent/modifiedsince/&lt;Date&gt;" />
+  <Method Name="SlotPages" />
+  <Method Name="SlotPage/&lt;ID&gt;" />
+  <Method Name="StaticPages" />
+  <Method Name="StaticPage/&lt;ID&gt;" />
+  <Method Name="Taxonomy" />
+</ServiceMethods>

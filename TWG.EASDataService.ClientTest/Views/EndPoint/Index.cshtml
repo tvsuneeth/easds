@@ -1,4 +1,4 @@
-﻿@model TWG.EASDataService.ClientTest.Models.EndPointVM
+﻿@model TWG.EASDataService.ClientTest.Models.EndPointIndexVM
 
 @{
     ViewBag.Title = "Index";
@@ -6,32 +6,67 @@
 }
 
 
-<h2>Set Service Endpoint Url</h2>
-@using (Html.BeginForm("Submit", "Endpoint"))
+@section PageJSScripts
 {
+    <script src="@Url.Content("~/Scripts/SetEndPoint.js")"></script>
+}
+<p><b>Select a Service</b></p>
+ 
+<div id="divLoading" style="display:none">
+    <img src="~/Images/red-loading.gif" />
+</div>
+
+@using (Html.BeginForm("Submit", "Endpoint"))
+{       
     <table>
+        @foreach (var instance in Model.AvailableInstances)
+        {
+            <tr>                            
+                <td>
+                    <b>@Html.ActionLink(@instance.Name, "", "", new { Url = @instance.Url }, new { @class = "InstanceLInk", @onclick = "return false;" }) </b> (@instance.Url) 
+                                       
+                </td>
+                
+            </tr>
+        }       
         <tr>
-            <td>
-                Service Endpoint Url<br />
-            </td>
-            <td>
-                @Html.ValidationMessageFor(model => model.Url)    <br />
-                @Html.TextBoxFor(model => model.Url)
-                <br />
-                ( Example <b> http://131.61.7.122:9095/ </b> )
-            </td>
-            <td>
-                <input type="submit" name="SaveButton" value="Submit" />
+            <td></td>                    
+        </tr>
 
+        <tr>           
+            <td >
+                <br /><br />   <b>OR</b> <br />
             </td>
         </tr>
-        <tr>
-            <td></td>
-            <td colspan="2"></td>
-
-        </tr>
+        <tr></tr>
     </table>
 }
+
+@using (Html.BeginForm("Submit", "Endpoint"))
+{
+    
+        <table>
+            <tr>
+                <td>
+                    Enter Service Endpoint Url<br />
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(model => model.ServiceInstance.Url)    <br />
+                    @Html.TextBoxFor(model => model.ServiceInstance.Url)
+                    <br />
+                    ( Example <b> http://131.61.7.122:9095/ </b> )
+                </td>
+                <td>
+                    <input type="submit" name="SaveButton" value="Submit" />
+
+                </td>
+            </tr>           
+        </table>  
+}
+ 
+
+
+
 
 @section Scripts
 {

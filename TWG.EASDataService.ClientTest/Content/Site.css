@@ -4,6 +4,12 @@
     padding: 0;
 }
 
+.InstanceLInk
+{
+    color:blue;
+
+}
+
 body {
     background-color: #fff;
     border-top: solid 10px #000;
@@ -15,11 +21,11 @@ body {
 }
 
 a {
-    color: #333;
+    color: blue;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
-    text-decoration: underline;
+    text-decoration:underline;
 }
 
     a:link, a:visited,
